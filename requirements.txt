@@ -1,0 +1,28 @@
+# AccentResearch pipeline dependencies
+# Install with: pip install -r requirements.txt
+
+# HTTP & web
+httpx>=0.27
+requests>=2.31
+trafilatura>=2.0
+playwright>=1.40
+beautifulsoup4>=4.12
+feedparser>=6.0
+ddgs>=0.1
+
+# Academic APIs
+pyalex>=0.13            # OpenAlex (optional helper)
+
+# LLM / embeddings
+# Ollama runs separately — no Python SDK needed (uses HTTP)
+anthropic>=0.40          # Claude Opus 4.6 for daily strategic synthesis
+python-dotenv>=1.0       # Load CLAUDE_API_KEY from pipeline/.env
+
+# Storage
+chromadb>=0.5
+
+# Utilities
+loguru>=0.7
+tqdm>=4.66
+python-dateutil>=2.9
+pyyaml>=6.0              # daily_tasks.yaml config parsing

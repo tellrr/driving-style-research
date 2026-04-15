@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Driving Style Research — Statistics</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      background: #0f172a;
+      color: #e2e8f0;
+      min-height: 100vh;
+      padding: 2.5rem 1.5rem;
+    }
+
+    .wrapper {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      font-size: 1.75rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .subtitle {
+      color: #64748b;
+      font-size: 0.875rem;
+      margin-top: 0.35rem;
+      margin-bottom: 2.25rem;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.25rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .card {
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 14px;
+      padding: 1.75rem 1.5rem;
+      text-align: center;
+    }
+
+    .card-value {
+      font-size: 2.75rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1;
+    }
+
+    .card-label {
+      font-size: 0.8rem;
+      color: #94a3b8;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      margin-top: 0.65rem;
+    }
+
+    .card:nth-child(1) .card-value { color: #38bdf8; }
+    .card:nth-child(2) .card-value { color: #34d399; }
+    .card:nth-child(3) .card-value { color: #a78bfa; }
+
+    .chart-panel {
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 14px;
+      padding: 1.75rem 1.5rem 1.5rem;
+    }
+
+    .chart-header {
+      display: flex;
+      align-items: baseline;
+      gap: 0.75rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .chart-title {
+      font-size: 1.05rem;
+      font-weight: 600;
+    }
+
+    .chart-meta {
+      font-size: 0.8rem;
+      color: #64748b;
+    }
+
+    .chart-container {
+      position: relative;
+      height: 400px;
+    }
+
+    .no-data {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 200px;
+      color: #475569;
+      font-size: 0.95rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrapper">
+    <h1>Driving Style Research &mdash; Pipeline Statistics</h1>
+    <p class="subtitle">
+      Generated: 2026-04-15 09:41 UTC
+      &nbsp;&middot;&nbsp;
+      0 daily snapshot(s)
+    </p>
+
+    <div class="stats">
+      <div class="card">
+        <div class="card-value">0</div>
+        <div class="card-label">Documents Scraped</div>
+      </div>
+      <div class="card">
+        <div class="card-value">0</div>
+        <div class="card-label">Relevant Documents</div>
+      </div>
+      <div class="card">
+        <div class="card-value">0</div>
+        <div class="card-label">GitHub Repos Found</div>
+      </div>
+    </div>
+
+    <div class="chart-panel">
+      <div class="chart-header">
+        <span class="chart-title">Research Progress by Pillar</span>
+        <span class="chart-meta">(% toward goal, assessed daily by Claude Opus)</span>
+      </div>
+      <div class="chart-container">
+        <div class="no-data">No history yet — run the pipeline to collect data.</div>
+        <canvas id="pillarChart" style="display:none;"></canvas>
+      </div>
+    </div>
+
+
+  </div>
+
+  <script>
+  (function() {
+    const chartData = {"labels": [], "datasets": [{"label": "Behavior Metrics & Scoring", "data": [], "borderColor": "#38bdf8", "backgroundColor": "#38bdf822", "tension": 0.3, "fill": false, "pointRadius": 5, "pointHoverRadius": 7, "spanGaps": true}, {"label": "Safety & Force Thresholds", "data": [], "borderColor": "#a78bfa", "backgroundColor": "#a78bfa22", "tension": 0.3, "fill": false, "pointRadius": 5, "pointHoverRadius": 7, "spanGaps": true}, {"label": "Cost & Maintenance Impact", "data": [], "borderColor": "#34d399", "backgroundColor": "#34d39922", "tension": 0.3, "fill": false, "pointRadius": 5, "pointHoverRadius": 7, "spanGaps": true}, {"label": "Driver & Route Context", "data": [], "borderColor": "#fb923c", "backgroundColor": "#fb923c22", "tension": 0.3, "fill": false, "pointRadius": 5, "pointHoverRadius": 7, "spanGaps": true}, {"label": "Service & Report Design", "data": [], "borderColor": "#f472b6", "backgroundColor": "#f472b622", "tension": 0.3, "fill": false, "pointRadius": 5, "pointHoverRadius": 7, "spanGaps": true}]};
+    if (!chartData.labels || chartData.labels.length === 0) return;
+
+    const ctx = document.getElementById('pillarChart').getContext('2d');
+    new Chart(ctx, {
+      type: 'line',
+      data: chartData,
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        interaction: {
+          mode: 'index',
+          intersect: false,
+        },
+        plugins: {
+          legend: {
+            labels: {
+              color: '#cbd5e1',
+              font: { size: 13 },
+              padding: 20,
+              usePointStyle: true,
+            }
+          },
+          tooltip: {
+            backgroundColor: '#0f172a',
+            borderColor: '#334155',
+            borderWidth: 1,
+            titleColor: '#e2e8f0',
+            bodyColor: '#94a3b8',
+            padding: 12,
+            callbacks: {
+              label: (ctx) => {
+                const v = ctx.parsed.y;
+                return ` ${ctx.dataset.label}: ${v !== null ? v + '%' : 'n/a'}`;
+              }
+            }
+          }
+        },
+        scales: {
+          x: {
+            ticks: { color: '#94a3b8', font: { size: 12 } },
+            grid:  { color: '#1e293b' },
+          },
+          y: {
+            min: 0,
+            max: 100,
+            ticks: {
+              color: '#94a3b8',
+              font: { size: 12 },
+              callback: (v) => v + '%',
+            },
+            grid: { color: '#334155' },
+          }
+        }
+      }
+    });
+  })();
+  </script>
+</body>
+</html>

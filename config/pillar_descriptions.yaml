@@ -1,0 +1,18 @@
+# Pillar descriptions shown on the Research Progress dashboard.
+# Each key must exactly match the pillar name used in pillar_history.json
+# (i.e. the pillar names defined in your strategic_report.py template).
+#
+# Descriptions appear as cards below the progress chart — one card per pillar,
+# with a coloured left border matching the chart line colour.
+#
+# To enable: fill in your pillar names and descriptions below, then re-run
+# the pipeline (cloud_sync.sync_progress will read and push this file automatically).
+
+descriptions:
+  # Replace these with your actual pillar names and descriptions:
+  # Example Pillar 1: >-
+  #   One to three sentences explaining what this pillar covers and why it matters
+  #   for the project goal. Plain language — no jargon.
+  #
+  # Example Pillar 2: >-
+  #   ...

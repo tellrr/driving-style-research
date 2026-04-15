@@ -1,0 +1,179 @@
+# Daily generation tasks — run automatically after each strategic report.
+#
+# Each task extracts one or more sections from today's strategic report,
+# optionally incorporates its own previous output for day-to-day continuity,
+# calls Claude via the API, and publishes the HTML result to the Research Dashboard.
+#
+# Fields:
+#   name            Unique slug, used in filenames and dashboard URLs
+#   title           Human-readable tab label in the Research Dashboard
+#   enabled         true/false — disable without deleting the entry
+#   source_sections List of markdown heading strings to extract from today's report
+#   use_previous    true — include this task's previous HTML output so it evolves day-to-day
+#   llm             "claude-sonnet" | "claude-opus"
+#   max_tokens      Maximum tokens for the LLM response
+#   prompt          Prompt template. Placeholders: {{source}}, {{previous}}, {{date}}
+#
+# Available report sections:
+#   ### 1. Progress by Pillar
+#   ### 2. Key Gaps
+#   ### 3. Promising Leads
+#   ### 4. Overall Strategic Position
+#   ### 5. Suggested Search Directions
+#   ### 6. What Would You Build?
+#
+# Output: response MUST start with "<!DOCTYPE html>" — anything else is treated as error.
+
+tasks:
+
+  - name: report-mockup
+    title: "Report Mockup"
+    enabled: true
+    source_sections:
+      - "### 6. What Would You Build?"
+      - "### 1. Progress by Pillar"
+    use_previous: true
+    llm: claude-sonnet
+    max_tokens: 32000
+    prompt: |
+      You are a senior fleet telematics product designer and front-end developer maintaining
+      an evolving prototype of a fleet management reporting dashboard and driver coaching app.
+
+      The product is used by fleet managers (web dashboard) and drivers (mobile app) to monitor
+      driving style, safety events, costs, and performance. Data comes from GPS tracking,
+      G-sensors, optionally CAN bus and tachograph.
+
+      ## Today's research guidance
+      New findings from today's research — use these to decide what to ADD or UPDATE:
+
+      {{source}}
+
+      ## Your previous mockup (base — preserve everything unless research changes it)
+      {{previous}}
+
+      ## Curation rules — evolve the design, don't just accumulate
+      Apply these rules in order when deciding what to do with each existing screen:
+
+      1. DEDUPLICATE: If two existing screens address the same concept or data view (e.g. both
+         show a driver score summary), merge them into one superior screen. Each distinct
+         interaction pattern = exactly one screen.
+
+      2. PROMOTE: If a meaningful feature is crammed as a sub-section of a larger screen
+         (e.g. cargo G-force shown as a small card inside a trip detail), extract it into its
+         own dedicated screen.
+
+      3. REPLACE: If today's research produces a clearly better design for an existing screen,
+         replace it. Do not keep both.
+
+      4. UPDATE: If today's research refines part of a screen (e.g. better threshold values,
+         a new chart type), update that part in place.
+
+      5. ADD: If today's research introduces a concept not yet represented (e.g. road surface
+         quality correction, tire wear risk score), add a new screen for it.
+
+      6. If no previous mockup exists, design from scratch using the research guidance.
+
+      The goal is a clean, non-redundant set of screens where every card earns its place.
+
+      ## Screen categories to cover (as research matures, add screens from these areas)
+      - Fleet manager dashboard (web): overview, driver leaderboard, fleet KPIs, alert feed
+      - Driver detail view (web): trip list, event timeline, score breakdown, trend chart
+      - Driver mobile app: personal score, today's trip summary, coaching tips, event replay
+      - Report views: driving style report, maintenance cost impact, cargo safety report,
+        eco-driving report, fatigue risk report, country/road context report
+      - Alert configuration: threshold setup, alert severity levels, notification preferences
+      - Comparative views: driver vs fleet average, vehicle category comparison, country comparison
+
+      ## Output format — gallery layout (REQUIRED)
+      The output is NOT a single phone/browser shell with tabs. It is a GALLERY PAGE that
+      shows every screen as its own shell (phone for mobile, browser-chrome for web), laid
+      out in a responsive grid.
+
+      Structure:
+      ```
+      <!DOCTYPE html>
+      <html>
+      <head><meta charset="utf-8"><title>Fleet Telematics Mockup · {{date}}</title></head>
+      <body style="background:#070a10; padding:2rem; font-family:system-ui,sans-serif;">
+        <h1 style="color:#e2e8f0; font-size:1.5rem; margin-bottom:0.5rem;">
+          Fleet Telematics — Report &amp; Dashboard Mockups · {{date}}
+        </h1>
+        <p style="color:#64748b; margin-bottom:2rem; font-size:0.875rem;">
+          Evolving design prototype · updated from daily research
+        </p>
+
+        <div style="display:grid; grid-template-columns:repeat(auto-fill,minmax(380px,1fr)); gap:2rem;">
+
+          <!-- One card per screen: -->
+          <div>
+            <div style="font-size:0.75rem; color:#64748b; margin-bottom:0.5rem; text-transform:uppercase; letter-spacing:0.05em;">
+              [emoji] [Screen Name] · [web/mobile]
+            </div>
+            <div class="shell">
+              <!-- shell = phone or browser-chrome wrapper -->
+              <div class="screen" style="display:block;">
+                [full screen content with realistic data]
+              </div>
+            </div>
+          </div>
+
+          <!-- repeat for every screen -->
+        </div>
+      </body>
+      </html>
+      ```
+
+      CSS design system (embed in <style> tag in <head>):
+      - Page background: #070a10
+      - Shell/card background: #0f1117
+      - Surface (cards inside screen): #1a1d27
+      - Border: #2d3748
+      - Text primary: #e2e8f0
+      - Text muted: #94a3b8
+      - Accent blue: #6c8fff
+      - Success/safe green: #34d399
+      - Warning yellow: #fbbf24
+      - Danger red: #f87171
+      - Phone shell: max-width 390px, border-radius 32px, padding 0, overflow hidden
+      - Browser shell: max-width 520px, border-radius 12px, with a browser chrome bar at top
+      - All CSS inline or in embedded <style> — zero external dependencies
+      - NO placeholder text — all copy must be realistic fleet/driver content with real-looking numbers
+
+      Rules:
+      - Apply the curation rules above — result must be a clean, non-redundant set
+      - Every distinct report type or screen gets its own card
+      - Include a mix of web dashboard screens and mobile driver app screens
+      - Charts and graphs: use SVG inline — bar charts, line charts, gauge dials, heat maps
+      - Show realistic data: driver names, scores (0-100), trip distances, G-force values (e.g. 0.42g), speeds (km/h), dates
+      - Use color coding consistently: green = safe/good, yellow = warning, red = critical/harsh
+
+      Return ONLY the raw HTML — no markdown fences, no explanation.
+
+  - name: daily-brief
+    title: "Daily Brief"
+    enabled: true
+    source_sections:
+      - "### 1. Progress by Pillar"
+      - "### 3. Promising Leads"
+      - "### 4. Overall Strategic Position"
+    use_previous: false
+    llm: claude-sonnet
+    max_tokens: 6000
+    prompt: |
+      You are a research analyst producing a daily HTML briefing for a fleet telematics
+      product research project.
+
+      Today's research report (relevant sections):
+      {{source}}
+
+      Produce a single, complete, self-contained HTML file. The page should:
+      - Use a clean dark theme (#0f1117 background, #6c8fff accent, #e2e8f0 text)
+      - Have a header with title "Driving Style Research — Daily Brief" and date {{date}}
+      - Show a 2-3 sentence executive summary of today's key insight
+      - Show a "Pillar Progress" section with a bar for each pillar (fill % from report)
+      - Show the top 3 promising leads as cards: title, source, and one sentence on why it matters for building fleet services
+      - Show a "Today's Strategic Position" box with 2-3 sentences
+      - Be fully readable without any external CSS or JS dependencies
+      - All CSS inline
+
+      Return ONLY the raw HTML — no markdown fences, no explanation.
