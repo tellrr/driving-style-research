@@ -32,7 +32,7 @@ echo  Model: OK
 
 echo.
 echo  Starting pipeline  ^(Ctrl+C to stop^)
-echo  Logs: logs\pipeline_%date:~-4,4%-%date:~-10,2%-%date:~-7,2%.log
+echo  Logs: logs\ (see logs\ folder)
 echo.
 echo ============================================================
 echo.
