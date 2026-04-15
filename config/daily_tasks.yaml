@@ -15,12 +15,13 @@
 #   prompt          Prompt template. Placeholders: {{source}}, {{previous}}, {{date}}
 #
 # Available report sections:
-#   ### 1. Progress by Pillar
-#   ### 2. Key Gaps
-#   ### 3. Promising Leads
-#   ### 4. Overall Strategic Position
-#   ### 5. Suggested Search Directions
-#   ### 6. What Would You Build?
+#   ## 1. Progress by Pillar
+#   ## 2. Key Gaps
+#   ## 3. Promising Leads
+#   ## 4. Overall Strategic Position
+#   ## 5. Suggested Search Directions
+#   ## 6. What Would You Build?
+#   ## 7. Report & Graph Suggestions
 #
 # Output: response MUST start with "<!DOCTYPE html>" — anything else is treated as error.
 
@@ -30,11 +31,11 @@ tasks:
     title: "Report Mockup"
     enabled: true
     source_sections:
-      - "### 6. What Would You Build?"
-      - "### 1. Progress by Pillar"
+      - "## 6. What Would You Build?"
+      - "## 1. Progress by Pillar"
     use_previous: true
     llm: claude-sonnet
-    max_tokens: 32000
+    max_tokens: 64000
     prompt: |
       You are a senior fleet telematics product designer and front-end developer maintaining
       an evolving prototype of a fleet management reporting dashboard and driver coaching app.
@@ -153,9 +154,9 @@ tasks:
     title: "Daily Brief"
     enabled: true
     source_sections:
-      - "### 1. Progress by Pillar"
-      - "### 3. Promising Leads"
-      - "### 4. Overall Strategic Position"
+      - "## 1. Progress by Pillar"
+      - "## 3. Promising Leads"
+      - "## 4. Overall Strategic Position"
     use_previous: false
     llm: claude-sonnet
     max_tokens: 6000

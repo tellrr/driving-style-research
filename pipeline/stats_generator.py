@@ -23,21 +23,20 @@ STATS_HTML_PATH = ROOT / "reports" / "stats.html"
 DAILY_REPORTS_DIR = ROOT / "reports" / "daily"
 
 
-def _latest_mockup_rel_path() -> tuple[str, str] | tuple[None, None]:
+def _latest_report_graph_rel_path() -> tuple[str, str] | tuple[None, None]:
     """
-    Return (relative_path, date_label) for the most recent *_app-mockup.html in
-    reports/daily/, falling back to reports/app-mockup-v2.html or app-mockup.html.
+    Return (relative_path, date_label) for the most recent
+    *_report-graph-suggestions.html in reports/daily/.
     Returns (None, None) if nothing is found.
     """
     if DAILY_REPORTS_DIR.exists():
-        candidates = sorted(DAILY_REPORTS_DIR.glob("*_app-mockup.html"), reverse=True)
+        candidates = sorted(
+            DAILY_REPORTS_DIR.glob("*_report-graph-suggestions.html"), reverse=True
+        )
         if candidates:
             path = candidates[0]
             date_label = path.stem.split("_")[0]
             return f"daily/{path.name}", date_label
-    for fallback in ("app-mockup-v2.html", "app-mockup.html"):
-        if (ROOT / "reports" / fallback).exists():
-            return fallback, "static"
     return None, None
 
 # Colour palette for up to 8 pillars — chosen for contrast on a dark background
@@ -103,15 +102,15 @@ def generate_stats_html() -> Path:
     )
     canvas_display = "block" if has_data else "none"
 
-    # Mockup section (optional — shown when a daily app-mockup output exists)
-    mockup_rel, mockup_date = _latest_mockup_rel_path()
-    if mockup_rel:
-        mockup_label = f"App Mockup ({mockup_date})" if mockup_date != "static" else "App Mockup"
+    # Report & Graph Suggestions section (shown when a daily output exists)
+    report_graph_rel, report_graph_date = _latest_report_graph_rel_path()
+    if report_graph_rel:
+        section_label = f"Report &amp; Graph Suggestions ({report_graph_date})"
         mockup_section = (
             f'  <div style="margin-top:2.5rem;">\n'
-            f'    <div class="chart-header"><span class="chart-title">{mockup_label}</span></div>\n'
-            f'    <iframe src="{mockup_rel}" style="width:100%;height:900px;border:none;'
-            f'border-radius:10px;background:#070a10;" title="App Mockup"></iframe>\n'
+            f'    <div class="chart-header"><span class="chart-title">{section_label}</span></div>\n'
+            f'    <iframe src="{report_graph_rel}" style="width:100%;height:900px;border:none;'
+            f'border-radius:10px;background:#070a10;" title="Report &amp; Graph Suggestions"></iframe>\n'
             f'  </div>'
         )
     else:

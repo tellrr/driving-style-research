@@ -24,10 +24,12 @@ from config.settings import project_meta
 from models import Article
 from pipeline.stats_tracker import record_snapshot
 from pipeline.stats_generator import generate_stats_html
+from pipeline import cloud_sync
 from storage.db import Database
 
 ROOT = Path(__file__).parent.parent
 STRATEGIC_REPORTS_DIR = ROOT / "reports" / "strategic"
+DAILY_REPORTS_DIR = ROOT / "reports" / "daily"
 SUGGESTED_KW_PATH = ROOT / "data" / "suggested_keywords.json"
 ENV_PATH = Path(__file__).parent / ".env"
 
@@ -110,6 +112,14 @@ describe concretely what you would build or do **today**:
 - **What to defer:** Which pillar ideas must wait because research is too thin?
 - **Biggest insight:** What is the single most surprising or counterintuitive finding
   that should directly shape design or strategy?
+
+### 7. Report & Graph Suggestions
+Based **only** on the research collected so far, suggest 6–10 specific reports and
+graphs that a fleet telematics platform should include. For each:
+- **Name & type** — report or graph name, chart type (line, bar, gauge, scatter, heat map, table…)
+- **Key dimensions** — axes, groupings, or breakdowns that make it meaningful
+- **Research basis** — cite 1–2 specific papers / findings that justify this metric
+- **Audience** — fleet manager / driver / operations director
 """
 
 
@@ -154,10 +164,11 @@ def run_strategic_report(db: Database, reports_dir: Path | None = None) -> list[
     # ── Build prompt from project_meta ─────────────────────────────────────
     goal = project_meta.goal or f"Research project: {project_meta.name}"
     user_template = _build_user_template(goal)
-    user_msg = user_template.format(
-        previous_report=previous_report or "*No previous report — this is the first run.*",
-        n=len(top_articles),
-        articles_block=articles_block,
+    user_msg = (
+        user_template
+        .replace("{previous_report}", previous_report or "*No previous report — this is the first run.*")
+        .replace("{n}", str(len(top_articles)))
+        .replace("{articles_block}", articles_block)
     )
 
     # ── Call Opus 4.6 ──────────────────────────────────────────────────────
@@ -217,6 +228,12 @@ def run_strategic_report(db: Database, reports_dir: Path | None = None) -> list[
     if suggested:
         _save_suggested_keywords(suggested)
         logger.info(f"Suggested keywords updated: {len(suggested)} terms")
+
+    # ── Generate Report & Graph Suggestions HTML ───────────────────────────
+    try:
+        _generate_report_graph_html(content, today, client)
+    except Exception as e:
+        logger.warning(f"Report & Graph Suggestions HTML generation failed (non-fatal): {e}")
 
     # ── Record pillar history and regenerate stats dashboard ──────────────
     try:
@@ -306,3 +323,168 @@ def _save_suggested_keywords(keywords: list[str]):
     seen = {k.lower() for k in existing}
     merged = existing + [k for k in keywords if k.lower() not in seen]
     SUGGESTED_KW_PATH.write_text(json.dumps(merged, indent=2, ensure_ascii=False), encoding="utf-8")
+
+
+_REPORT_GRAPH_SYSTEM = (
+    "You are a senior data-visualisation engineer and fleet telematics product designer. "
+    "You produce clean, self-contained HTML gallery pages that showcase dashboard report "
+    "and graph suggestions. All CSS is embedded; zero external dependencies."
+)
+
+_REPORT_GRAPH_HTML_PROMPT = """\
+You are maintaining an evolving HTML gallery of fleet telematics report and graph
+suggestions. Today's research has produced an updated list of suggestions.
+
+## Today's research guidance
+{suggestions}
+
+## Your previous gallery (base — preserve everything unless research changes it)
+{previous}
+
+## Curation rules — evolve the gallery, don't just accumulate
+Apply these rules in order for each existing card:
+
+1. DEDUPLICATE: If two cards cover the same metric or view, merge them into one superior card.
+2. REPLACE: If today's research provides a clearly better design for an existing card, replace it.
+3. UPDATE: If today's research refines part of a card (better thresholds, new dimension, stronger
+   research basis), update that part in place.
+4. ADD: If today's research introduces a report or graph concept not yet in the gallery, add a new card.
+5. If no previous gallery exists, design from scratch using today's guidance.
+
+The goal is a clean, non-redundant set of cards where every card earns its place.
+
+## Output requirements
+Return ONLY raw HTML — no markdown fences, no explanation.
+
+Page structure and design system:
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Report & Graph Suggestions · {date}</title>
+  <style>
+    *, *::before, *::after {{ box-sizing: border-box; margin: 0; padding: 0; }}
+    body {{ background: #070a10; color: #e2e8f0; font-family: system-ui, sans-serif;
+           padding: 2rem 1.5rem; }}
+    h1 {{ font-size: 1.5rem; font-weight: 700; color: #e2e8f0; margin-bottom: 0.4rem; }}
+    .meta {{ color: #64748b; font-size: 0.875rem; margin-bottom: 2rem; }}
+    .grid {{ display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+             gap: 1.75rem; }}
+    .card {{ background: #0f1117; border: 1px solid #2d3748; border-radius: 12px;
+             padding: 1.25rem; display: flex; flex-direction: column; gap: 0.75rem; }}
+    .card-title {{ font-size: 1rem; font-weight: 600; color: #e2e8f0; }}
+    .badge {{ display: inline-block; background: #1e293b; color: #6c8fff;
+              border: 1px solid #334155; border-radius: 6px; font-size: 0.7rem;
+              padding: 0.2rem 0.55rem; text-transform: uppercase; letter-spacing: 0.05em; }}
+    .preview {{ background: #1a1d27; border-radius: 8px; padding: 1rem;
+                min-height: 140px; display: flex; align-items: center;
+                justify-content: center; }}
+    .dimensions {{ font-size: 0.8rem; color: #94a3b8; }}
+    .basis {{ font-size: 0.8rem; color: #64748b; font-style: italic; }}
+    .audience {{ font-size: 0.75rem; color: #34d399; font-weight: 500; }}
+  </style>
+</head>
+<body>
+  <h1>Report &amp; Graph Suggestions</h1>
+  <p class="meta">Evolving design · updated from daily research · {date}</p>
+  <div class="grid">
+    <!-- one card per report/graph: -->
+    <div class="card">
+      <div class="card-title">[Report / Graph name]</div>
+      <div><span class="badge">[chart type]</span></div>
+      <div class="preview">
+        <!-- SVG inline preview — a realistic miniature chart using CSS color tokens:
+             accent #6c8fff, safe #34d399, warn #fbbf24, danger #f87171 -->
+      </div>
+      <div class="dimensions"><strong>Dimensions:</strong> [axes, groupings]</div>
+      <div class="basis"><strong>Research basis:</strong> [paper / finding]</div>
+      <div class="audience"><strong>Audience:</strong> [fleet manager / driver / ops]</div>
+    </div>
+  </div>
+</body>
+</html>
+
+Rules:
+- Apply the curation rules above — result must be a clean, non-redundant set
+- Each card MUST include an SVG inline chart preview (bar, line, gauge, scatter, heat map…)
+  that looks like a realistic miniature of the actual chart — not a placeholder box
+- Use realistic fleet telematics values in SVGs (scores 0-100, G-force 0.1-1.2g, km/h, dates)
+- Color code consistently: green = safe/good, yellow = warning, red = critical
+- All CSS inline or in the embedded <style> — no external resources
+"""
+
+
+def _extract_section(content: str, heading: str) -> str:
+    """Extract a markdown section by heading text regardless of heading level (#–###)."""
+    clean = re.escape(heading.lstrip("# ").strip())
+    pattern = re.compile(
+        rf"(#{{1,6}}\s+{clean}.*?)(?=\n#{{1,2}}\s|\Z)",
+        re.DOTALL | re.IGNORECASE,
+    )
+    m = pattern.search(content)
+    return m.group(1).strip() if m else ""
+
+
+def _load_previous_report_graph_html(today: str) -> str:
+    """Return the most recent *_report-graph-suggestions.html before today, or empty string."""
+    if not DAILY_REPORTS_DIR.exists():
+        return ""
+    candidates = sorted(DAILY_REPORTS_DIR.glob("*_report-graph-suggestions.html"), reverse=True)
+    for path in candidates:
+        date_prefix = path.stem.split("_")[0]
+        if date_prefix < today:
+            try:
+                content = path.read_text(encoding="utf-8")
+                # Truncate to stay within context limits
+                if len(content) > 55000:
+                    content = content[:55000] + "\n<!-- (truncated for context length) -->\n"
+                logger.debug(f"Loaded previous report-graph HTML from {path.name} ({len(content):,} chars)")
+                return content
+            except Exception as e:
+                logger.warning(f"Could not read previous report-graph HTML {path}: {e}")
+    return ""
+
+
+def _generate_report_graph_html(report_content: str, today: str, client) -> None:
+    """
+    Extract the 'Report & Graph Suggestions' section from the Opus report,
+    call Claude Sonnet to generate/evolve a styled HTML gallery, and save it to
+    reports/daily/YYYY-MM-DD_report-graph-suggestions.html.
+    Loads the previous day's output so the gallery evolves incrementally.
+    """
+    suggestions = _extract_section(report_content, "7. Report & Graph Suggestions")
+    if not suggestions:
+        logger.warning("No 'Report & Graph Suggestions' section found in report — skipping HTML generation")
+        return
+
+    previous = _load_previous_report_graph_html(today)
+    user_msg = _REPORT_GRAPH_HTML_PROMPT.format(
+        suggestions=suggestions,
+        date=today,
+        previous=previous if previous else "(no previous gallery — design from scratch)",
+    )
+
+    try:
+        message = client.messages.create(
+            model="claude-sonnet-4-6",
+            max_tokens=16000,
+            system=_REPORT_GRAPH_SYSTEM,
+            messages=[{"role": "user", "content": user_msg}],
+        )
+        html = message.content[0].text.strip()
+    except Exception as e:
+        logger.error(f"Sonnet call for Report & Graph Suggestions HTML failed: {e}")
+        return
+
+    if not html.lower().startswith("<!doctype"):
+        logger.warning("Sonnet response did not start with <!DOCTYPE html> — skipping save")
+        return
+
+    DAILY_REPORTS_DIR.mkdir(parents=True, exist_ok=True)
+    out_path = DAILY_REPORTS_DIR / f"{today}_report-graph-suggestions.html"
+    out_path.write_text(html, encoding="utf-8")
+    logger.info(f"Report & Graph Suggestions HTML saved: {out_path}")
+
+    pushed = cloud_sync.sync_output(today, "report-graph-suggestions", "Report & Graph Suggestions", out_path)
+    if pushed:
+        logger.info("cloud_sync: Report & Graph Suggestions pushed to dashboard")

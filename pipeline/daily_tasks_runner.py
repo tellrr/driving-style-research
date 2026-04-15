@@ -64,10 +64,10 @@ def _extract_sections(report_md: str, section_headings: list[str]) -> str:
         # Find the heading position
         match = re.search(pattern, report_md, re.IGNORECASE)
         if not match:
-            # Fallback: search by the text content without the hashes
+            # Fallback: search by text content at any heading level
             text_only = heading.strip().lstrip("#").strip()
             match = re.search(
-                rf"(?m)^#{{{level},}}\s+{re.escape(text_only)}\s*$",
+                rf"(?m)^#{{1,6}}\s+{re.escape(text_only)}\s*$",
                 report_md,
                 re.IGNORECASE,
             )

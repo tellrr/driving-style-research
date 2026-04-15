@@ -8,11 +8,17 @@ When starting a new project, only config/topic_config.md needs to be edited.
 The dataclass defaults in this file are reasonable for most setups.
 """
 
+import os
 import re
 from dataclasses import dataclass, field
 from pathlib import Path
 
+from dotenv import load_dotenv
+
 ROOT = Path(__file__).parent.parent
+
+# Load pipeline/.env early so LLMConfig field defaults pick up the variables
+load_dotenv(ROOT / "pipeline" / ".env")
 
 
 # ---------------------------------------------------------------------------
@@ -21,12 +27,30 @@ ROOT = Path(__file__).parent.parent
 
 @dataclass
 class LLMConfig:
-    pipeline_model: str = "qwen3.5:4b"        # local Ollama model for filter/categorize/summarize
-    synthesis_model: str = "qwen3.5:4b"        # local Ollama model for nightly synthesis passes
+    provider: str = field(default_factory=lambda: os.getenv("LLM_PROVIDER", "ollama"))
+
+    # Per-provider model names — set the right one, then just flip LLM_PROVIDER
+    pipeline_model_ollama: str = field(default_factory=lambda: os.getenv("PIPELINE_MODEL_OLLAMA", "qwen3.5:4b"))
+    pipeline_model_gemini: str = field(default_factory=lambda: os.getenv("PIPELINE_MODEL_GEMINI", "gemini-3.1-flash-lite-preview"))
+    pipeline_model_openai: str = field(default_factory=lambda: os.getenv("PIPELINE_MODEL_OPENAI", "gpt-5-mini"))
+
+    report_model: str = field(default_factory=lambda: os.getenv("REPORT_MODEL", "claude-opus-4-6"))
     embed_model: str = "nomic-embed-text"       # local Ollama embedding model
     base_url: str = "http://localhost:11434"
     timeout: int = 120                          # seconds per LLM call
     temperature: float = 0.1                    # low = consistent structured output
+
+    # Resolved at init — rest of the codebase uses these two unchanged
+    pipeline_model: str = field(init=False)
+    synthesis_model: str = field(init=False)
+
+    def __post_init__(self):
+        model = {
+            "gemini": self.pipeline_model_gemini,
+            "openai": self.pipeline_model_openai,
+        }.get(self.provider, self.pipeline_model_ollama)
+        self.pipeline_model = model
+        self.synthesis_model = model
 
 
 @dataclass
@@ -55,7 +79,7 @@ class PipelineConfig:
 
 @dataclass
 class OrchestratorConfig:
-    cycle_interval_seconds: int = 900           # wait time after each cycle completes
+    cycle_interval_seconds: int = 300           # wait time after each cycle completes
     synthesis_interval_hours: int = 3           # daily synthesis pass interval
     weekly_synthesis_interval_days: int = 7
     max_pipeline_per_cycle: int = 50            # cap LLM calls per cycle

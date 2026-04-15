@@ -20,7 +20,7 @@ if str(ROOT) not in sys.path:
 from loguru import logger
 
 from config.settings import config, project_meta
-from llm.client import OllamaClient
+from llm import create_llm_client
 from orchestrator import Orchestrator
 from scraper.scheduler import Scraper
 from storage.db import Database
@@ -44,14 +44,8 @@ def build_components():
 
     db = Database(config.data_dir / "research.db")
 
-    llm = OllamaClient(
-        base_url=config.llm.base_url,
-        pipeline_model=config.llm.pipeline_model,
-        synthesis_model=config.llm.synthesis_model,
-        embed_model=config.llm.embed_model,
-        temperature=config.llm.temperature,
-        timeout=config.llm.timeout,
-    )
+    llm = create_llm_client(config)
+    logger.info(f"LLM provider: {config.llm.provider} | pipeline model: {config.llm.pipeline_model}")
 
     vs = VectorStore(
         db_path=config.data_dir / "chroma",
@@ -67,7 +61,8 @@ def build_components():
 def cmd_status(orchestrator: Orchestrator):
     s = orchestrator.status()
     print(f"\n=== {project_meta.name} — Pipeline Status ===")
-    print(f"  Ollama available : {s['ollama_available']}")
+    print(f"  LLM provider     : {config.llm.provider} ({config.llm.pipeline_model})")
+    print(f"  LLM available    : {s['llm_available']}")
     print(f"  Cycle count      : {s['cycle']}")
     print(f"  Total articles   : {s['total_articles']}")
     print(f"  Vector store     : {s['vector_store_count']} items")

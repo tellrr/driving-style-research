@@ -114,9 +114,9 @@ def _parse_pillar_percentages(content: str) -> dict[str, int | None]:
     pillars = _get_pillars()
     result: dict[str, int | None] = {p: None for p in pillars}
 
-    # Matches bold pillar name followed by bold percentage in the same table row
+    # Matches bold pillar name followed by percentage (bold optional) in the same table row
     pattern = re.compile(
-        r'\|\s*\*\*([^|*\n]+?)\*\*\s*\|\s*\*\*(\d+)%\*\*',
+        r'\|\s*\*\*([^|*\n]+?)\*\*\s*\|\s*(?:\*\*)?(\d+)%(?:\*\*)?',
         re.IGNORECASE,
     )
 

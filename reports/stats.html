@@ -111,22 +111,22 @@
   <div class="wrapper">
     <h1>Driving Style Research &mdash; Pipeline Statistics</h1>
     <p class="subtitle">
-      Generated: 2026-04-15 09:41 UTC
+      Generated: 2026-04-15 16:16 UTC
       &nbsp;&middot;&nbsp;
-      0 daily snapshot(s)
+      1 daily snapshot(s)
     </p>
 
     <div class="stats">
       <div class="card">
-        <div class="card-value">0</div>
+        <div class="card-value">2,380</div>
         <div class="card-label">Documents Scraped</div>
       </div>
       <div class="card">
-        <div class="card-value">0</div>
+        <div class="card-value">139</div>
         <div class="card-label">Relevant Documents</div>
       </div>
       <div class="card">
-        <div class="card-value">0</div>
+        <div class="card-value">10</div>
         <div class="card-label">GitHub Repos Found</div>
       </div>
     </div>
@@ -137,17 +137,20 @@
         <span class="chart-meta">(% toward goal, assessed daily by Claude Opus)</span>
       </div>
       <div class="chart-container">
-        <div class="no-data">No history yet — run the pipeline to collect data.</div>
-        <canvas id="pillarChart" style="display:none;"></canvas>
+        
+        <canvas id="pillarChart" style="display:block;"></canvas>
       </div>
     </div>
 
-
+  <div style="margin-top:2.5rem;">
+    <div class="chart-header"><span class="chart-title">Report &amp; Graph Suggestions (2026-04-15)</span></div>
+    <iframe src="daily/2026-04-15_report-graph-suggestions.html" style="width:100%;height:900px;border:none;border-radius:10px;background:#070a10;" title="Report &amp; Graph Suggestions"></iframe>
+  </div>
   </div>
 
   <script>
   (function() {
-    const chartData = {"labels": [], "datasets": [{"label": "Behavior Metrics & Scoring", "data": [], "borderColor": "#38bdf8", "backgroundColor": "#38bdf822", "tension": 0.3, "fill": false, "pointRadius": 5, "pointHoverRadius": 7, "spanGaps": true}, {"label": "Safety & Force Thresholds", "data": [], "borderColor": "#a78bfa", "backgroundColor": "#a78bfa22", "tension": 0.3, "fill": false, "pointRadius": 5, "pointHoverRadius": 7, "spanGaps": true}, {"label": "Cost & Maintenance Impact", "data": [], "borderColor": "#34d399", "backgroundColor": "#34d39922", "tension": 0.3, "fill": false, "pointRadius": 5, "pointHoverRadius": 7, "spanGaps": true}, {"label": "Driver & Route Context", "data": [], "borderColor": "#fb923c", "backgroundColor": "#fb923c22", "tension": 0.3, "fill": false, "pointRadius": 5, "pointHoverRadius": 7, "spanGaps": true}, {"label": "Service & Report Design", "data": [], "borderColor": "#f472b6", "backgroundColor": "#f472b622", "tension": 0.3, "fill": false, "pointRadius": 5, "pointHoverRadius": 7, "spanGaps": true}]};
+    const chartData = {"labels": ["2026-04-15"], "datasets": [{"label": "Behavior Metrics & Scoring", "data": [92], "borderColor": "#38bdf8", "backgroundColor": "#38bdf822", "tension": 0.3, "fill": false, "pointRadius": 5, "pointHoverRadius": 7, "spanGaps": true}, {"label": "Safety & Force Thresholds", "data": [75], "borderColor": "#a78bfa", "backgroundColor": "#a78bfa22", "tension": 0.3, "fill": false, "pointRadius": 5, "pointHoverRadius": 7, "spanGaps": true}, {"label": "Cost & Maintenance Impact", "data": [25], "borderColor": "#34d399", "backgroundColor": "#34d39922", "tension": 0.3, "fill": false, "pointRadius": 5, "pointHoverRadius": 7, "spanGaps": true}, {"label": "Driver & Route Context", "data": [68], "borderColor": "#fb923c", "backgroundColor": "#fb923c22", "tension": 0.3, "fill": false, "pointRadius": 5, "pointHoverRadius": 7, "spanGaps": true}, {"label": "Service & Report Design", "data": [60], "borderColor": "#f472b6", "backgroundColor": "#f472b622", "tension": 0.3, "fill": false, "pointRadius": 5, "pointHoverRadius": 7, "spanGaps": true}]};
     if (!chartData.labels || chartData.labels.length === 0) return;
 
     const ctx = document.getElementById('pillarChart').getContext('2d');

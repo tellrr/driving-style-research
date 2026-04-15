@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Driving Style Research — Daily Brief</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: #0f1117;
+    color: #e2e8f0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+    padding: 32px 16px 64px;
+  }
+  a { color: #6c8fff; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  /* HEADER */
+  .header {
+    border-bottom: 2px solid #6c8fff;
+    padding-bottom: 20px;
+    margin-bottom: 36px;
+  }
+  .header-meta {
+    display: flex;
+    align-items: baseline;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-bottom: 6px;
+  }
+  .header-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: #ffffff;
+    letter-spacing: 0.01em;
+  }
+  .header-date {
+    font-size: 13px;
+    color: #94a3b8;
+    font-weight: 500;
+    background: #1e2330;
+    padding: 3px 10px;
+    border-radius: 20px;
+    border: 1px solid #2d3549;
+  }
+  .header-subtitle {
+    font-size: 13px;
+    color: #64748b;
+    margin-top: 4px;
+  }
+
+  /* SECTION LABELS */
+  .section-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #6c8fff;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: #1e2330;
+  }
+
+  /* EXECUTIVE SUMMARY */
+  .exec-summary {
+    background: #141824;
+    border: 1px solid #1e2a45;
+    border-left: 4px solid #6c8fff;
+    border-radius: 8px;
+    padding: 20px 24px;
+    margin-bottom: 40px;
+    color: #cbd5e1;
+    font-size: 15px;
+    line-height: 1.75;
+  }
+
+  /* PILLAR PROGRESS */
+  .pillars {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    margin-bottom: 44px;
+  }
+  .pillar-row {
+    background: #141824;
+    border: 1px solid #1e2330;
+    border-radius: 8px;
+    padding: 16px 20px;
+  }
+  .pillar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .pillar-name {
+    font-weight: 600;
+    color: #e2e8f0;
+    font-size: 14px;
+  }
+  .pillar-pct {
+    font-size: 13px;
+    font-weight: 700;
+    color: #6c8fff;
+    min-width: 36px;
+    text-align: right;
+  }
+  .bar-track {
+    width: 100%;
+    height: 8px;
+    background: #1e2330;
+    border-radius: 99px;
+    overflow: hidden;
+    margin-bottom: 8px;
+  }
+  .bar-fill {
+    height: 100%;
+    border-radius: 99px;
+    transition: width 0.3s ease;
+  }
+  .pillar-note {
+    font-size: 12px;
+    color: #64748b;
+    line-height: 1.5;
+  }
+
+  /* FILL COLOURS by progress band */
+  .fill-high   { background: linear-gradient(90deg, #3b63e8, #6c8fff); }
+  .fill-mid    { background: linear-gradient(90deg, #2e7d9e, #4db8d4); }
+  .fill-low    { background: linear-gradient(90deg, #9e4a2e, #e06040); }
+
+  /* STATUS BADGES */
+  .badge {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: 20px;
+    margin-left: 8px;
+    vertical-align: middle;
+  }
+  .badge-ready  { background: #14532d; color: #4ade80; border: 1px solid #166534; }
+  .badge-active { background: #1e3a5f; color: #60a5fa; border: 1px solid #1e4080; }
+  .badge-gap    { background: #4a1519; color: #f87171; border: 1px solid #6b1e24; }
+
+  /* PROMISING LEADS CARDS */
+  .leads-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 18px;
+    margin-bottom: 44px;
+  }
+  .lead-card {
+    background: #141824;
+    border: 1px solid #1e2330;
+    border-radius: 10px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    transition: border-color 0.2s;
+  }
+  .lead-card:hover {
+    border-color: #3d5cbb;
+  }
+  .lead-number {
+    font-size: 11px;
+    font-weight: 700;
+    color: #6c8fff;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .lead-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: #e2e8f0;
+    line-height: 1.4;
+  }
+  .lead-source {
+    font-size: 12px;
+    color: #6c8fff;
+    word-break: break-word;
+  }
+  .lead-why {
+    font-size: 12.5px;
+    color: #94a3b8;
+    line-height: 1.55;
+    border-top: 1px solid #1e2330;
+    padding-top: 10px;
+    margin-top: auto;
+  }
+  .lead-why strong {
+    color: #cbd5e1;
+  }
+
+  /* STRATEGIC POSITION */
+  .strategic-box {
+    background: #0d1422;
+    border: 1px solid #1e3060;
+    border-radius: 10px;
+    padding: 24px 28px;
+    position: relative;
+    overflow: hidden;
+  }
+  .strategic-box::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #3b63e8, #6c8fff, #4db8d4);
+  }
+  .strategic-box p {
+    color: #cbd5e1;
+    font-size: 14.5px;
+    line-height: 1.75;
+  }
+  .strategic-box p + p {
+    margin-top: 12px;
+  }
+  .highlight {
+    color: #ffffff;
+    font-weight: 600;
+  }
+  .blocker {
+    color: #f87171;
+    font-weight: 600;
+  }
+
+  /* FOOTER */
+  .footer {
+    margin-top: 56px;
+    text-align: center;
+    font-size: 12px;
+    color: #334155;
+    border-top: 1px solid #1e2330;
+    padding-top: 20px;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="header-meta">
+      <span class="header-title">Driving Style Research — Daily Brief</span>
+      <span class="header-date">2026-04-15</span>
+    </div>
+    <div class="header-subtitle">Fleet Telematics Product Research · Analyst Briefing</div>
+  </header>
+
+  <!-- EXECUTIVE SUMMARY -->
+  <div class="section-label">Executive Summary</div>
+  <div class="exec-summary">
+    Today's cycle confirms that the <strong>Behavior Metrics &amp; Scoring toolkit is effectively production-ready</strong>, with overlapping validated methods spanning rule-based composites through deep CNNs (96.1% accuracy) and unsupervised CTHMM anomaly scoring (AUC 0.86 trip-level), meaning engineering can begin feature selection immediately.
+    The <strong>Safety &amp; Force Thresholds pillar</strong> is approaching actionable status with four vendor/DOT threshold sets, speed-adaptive patent evidence, and strong road-grade modulation data — but a peer-reviewed vehicle-category G-force lookup table remains absent and an internal calibration study will be required.
+    The <strong>critical programme risk</strong> remains the Cost &amp; Maintenance Impact pillar at 25%: no peer-reviewed evidence links telematics-measured driving behaviour to specific maintenance outcomes (tyre wear, brake intervals, cargo damage), directly undermining a top-3 fleet operator purchase driver and requiring urgent targeted research or operator data partnership.
+  </div>
+
+  <!-- PILLAR PROGRESS -->
+  <div class="section-label">Pillar Progress</div>
+  <div class="pillars">
+
+    <!-- Behavior Metrics & Scoring 92% -->
+    <div class="pillar-row">
+      <div class="pillar-header">
+        <span class="pillar-name">
+          Behavior Metrics &amp; Scoring
+          <span class="badge badge-ready">Production-Ready</span>
+        </span>
+        <span class="pillar-pct">92%</span>
+      </div>
+      <div class="bar-track">
+        <div class="bar-fill fill-high" style="width:92%;"></div>
+      </div>
+      <div class="pillar-note">Comprehensive validated toolkit: CTHMM, CNN (96.1%), XGBoost, credibility blending, near-crash surrogates, NLG feedback. Gap: single composite production formula with published sensitivity/specificity by vehicle category and cold-start ramp curves.</div>
+    </div>
+
+    <!-- Safety & Force Thresholds 75% -->
+    <div class="pillar-row">
+      <div class="pillar-header">
+        <span class="pillar-name">
+          Safety &amp; Force Thresholds
+          <span class="badge badge-active">In Progress ↑</span>
+        </span>
+        <span class="pillar-pct">75%</span>
+      </div>
+      <div class="bar-track">
+        <div class="bar-fill fill-high" style="width:75%;"></div>
+      </div>
+      <div class="pillar-note">Four vendor/DOT threshold sets, speed-adaptive patent, Geotab error taxonomy, road-grade evidence. Gap: no peer-reviewed G-force lookup table differentiated by vehicle category (car, SUV, LCV, HGV) with validated sensitivity/specificity.</div>
+    </div>
+
+    <!-- Driver & Route Context 68% -->
+    <div class="pillar-row">
+      <div class="pillar-header">
+        <span class="pillar-name">
+          Driver &amp; Route Context
+          <span class="badge badge-active">In Progress ↑</span>
+        </span>
+        <span class="pillar-pct">68%</span>
+      </div>
+      <div class="bar-track">
+        <div class="bar-fill fill-mid" style="width:68%;"></div>
+      </div>
+      <div class="pillar-note">Context-aware models cut false positives ~15%; road intersections &amp; pavement quality are top risk predictors; road gradient validated. Gaps: driver nationality/cultural norms as covariate; road-surface-quality impact on G-sensor readings by country; cross-fleet calibration.</div>
+    </div>
+
+    <!-- Service & Report Design 60% -->
+    <div class="pillar-row">
+      <div class="pillar-header">
+        <span class="pillar-name">
+          Service &amp; Report Design
+          <span class="badge badge-active">In Progress ↑</span>
+        </span>
+        <span class="pillar-pct">60%</span>
+      </div>
+      <div class="bar-track">
+        <div class="bar-fill fill-mid" style="width:60%;"></div>
+      </div>
+      <div class="pillar-note">RCT confirms UBI feedback reduces speeding 11–13%, harsh braking 16–21%. Counterintuitive: immediate detailed feedback worsens driving 14.9%. Gaps: no A/B tested dashboard layouts, no empirical graph-type comparison, optimal alert frequency undefined.</div>
+    </div>
+
+    <!-- Cost & Maintenance Impact 25% -->
+    <div class="pillar-row">
+      <div class="pillar-header">
+        <span class="pillar-name">
+          Cost &amp; Maintenance Impact
+          <span class="badge badge-gap">Critical Gap</span>
+        </span>
+        <span class="pillar-pct">25%</span>
+      </div>
+      <div class="bar-track">
+        <div class="bar-fill fill-low" style="width:25%;"></div>
+      </div>
+      <div class="pillar-note">Only indirect evidence: fuel waste from aggressive driving confirmed qualitatively. No peer-reviewed studies linking telematics-measured driving style to tyre wear, brake intervals, cargo damage, or total maintenance cost-per-km.</div>
+    </div>
+
+  </div>
+
+  <!-- PROMISING LEADS -->
+  <div class="section-label">Top Promising Leads</div>
+  <div class="leads-grid">
+
+    <!-- Lead 1 -->
+    <div class="lead-card">
+      <div class="lead-number">Lead 01</div>
+      <div class="lead-title">Robust Data-Driven Framework for Driver Behavior Profiling Using Supervised Machine Learning</div>
+      <a class="lead-source" href="https://doi.org/10.1109/tits.2020.3035700" target="_blank" rel="noopener">doi.org/10.1109/tits.2020.3035700</a>
+      <div class="lead-why"><strong>Why it matters:</strong> Provides 13 mutually exclusive, sensitivity-analysis-validated risk predictors with built-in data quality filters — directly usable as the feature engineering blueprint for the production scoring pipeline without additional derivation work.</div>
+    </div>
+
+    <!-- Lead 2 -->
+    <div class="lead-card">
+      <div class="lead-number">Lead 02</div>
+      <div class="lead-title">Using Contextual Data to Predict Risky Driving Events: A Novel Methodology from Explainable Artificial Intelligence</div>
+      <a class="lead-source" href="https://pubmed.ncbi.nlm.nih.gov/36854225/" target="_blank" rel="noopener">pubmed.ncbi.nlm.nih.gov/36854225</a>
+      <div class="lead-why"><strong>Why it matters:</strong> Quantifies road layout, speed limits, and pavement quality as the dominant contextual risk factors using XAI — making its outputs directly translatable into fleet manager-facing explanations for why a risk score changed, which is a core product requirement.</div>
+    </div>
+
+    <!-- Lead 3 -->
+    <div class="lead-card">
+      <div class="lead-number">Lead 03</div>
+      <div class="lead-title">Safety Assessment of Trucks Based on GPS and In-Vehicle Monitoring Data</div>
+      <a class="lead-source" href="https://pubmed.ncbi.nlm.nih.gov/35202940/" target="_blank" rel="noopener">pubmed.ncbi.nlm.nih.gov/35202940</a>
+      <div class="lead-why"><strong>Why it matters:</strong> Demonstrates that in-vehicle warning signals (yawning, smoking alerts) significantly improve truck crash prediction beyond GPS and behaviour data alone — directly validating our CAN bus and tachograph integration strategy for HGV fleet tiers.</div>
+    </div>
+
+  </div>
+
+  <!-- STRATEGIC POSITION -->
+  <div class="section-label">Today's Strategic Position</div>
+  <div class="strategic-box">
+    <p>
+      The programme is <span class="highlight">approximately 75% of the way to a defensible product specification</span>, with Behavior Metrics &amp; Scoring essentially ready for engineering handoff and Safety &amp; Force Thresholds close to actionable using vendor-derived defaults pending an internal calibration study against our own fleet data by vehicle category.
+    </p>
+    <p>
+      The <span class="blocker">single biggest programme blocker</span> is the Cost &amp; Maintenance Impact pillar (25%): fleet operators consistently rank "reduce maintenance costs" as a top-3 purchase driver, yet no peer-reviewed evidence linking telematics-measured driving behaviour to specific maintenance outcomes — tyre wear, brake replacement intervals, cargo damage frequency, or cost-per-km — has been located, meaning this commercial capability cannot be credibly marketed or priced without conducting a proprietary study or securing an unpublished operator data partnership.
+    </p>
+    <p>
+      Recommended immediate priority: <span class="highlight">initiate a targeted outreach to two or three large fleet operators</span> to negotiate data-sharing agreements covering maintenance records cross-referenced with telematics event logs, which would simultaneously resolve the Cost &amp; Maintenance gap and provide the vehicle-category G-force calibration data needed to close the remaining Safety &amp; Force Thresholds gap.
+    </p>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    Fleet Telematics Product Research · Daily Briefing · Generated 2026-04-15 · Internal Use Only
+  </div>
+
+</div>
+</body>
+</html>

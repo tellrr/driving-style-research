@@ -1,18 +1,34 @@
 # Pillar descriptions shown on the Research Progress dashboard.
 # Each key must exactly match the pillar name used in pillar_history.json
-# (i.e. the pillar names defined in your strategic_report.py template).
-#
-# Descriptions appear as cards below the progress chart — one card per pillar,
-# with a coloured left border matching the chart line colour.
-#
-# To enable: fill in your pillar names and descriptions below, then re-run
-# the pipeline (cloud_sync.sync_progress will read and push this file automatically).
+# (i.e. the pillar names defined in config/topic_config.md ## Pillars section).
 
 descriptions:
-  # Replace these with your actual pillar names and descriptions:
-  # Example Pillar 1: >-
-  #   One to three sentences explaining what this pillar covers and why it matters
-  #   for the project goal. Plain language — no jargon.
-  #
-  # Example Pillar 2: >-
-  #   ...
+  Behavior Metrics & Scoring: >-
+    Classifying and quantifying driving style events — harsh braking, harsh cornering,
+    harsh acceleration, speeding — from raw GPS, G-sensor, and CAN-bus signals into a
+    meaningful, comparable driver score. This pillar defines what "aggressive" and
+    "safe" driving mean in measurable terms and how to weight them in a fleet KPI.
+
+  Safety & Force Thresholds: >-
+    Evidence-based G-force thresholds by vehicle type (passenger car, SUV, LCV, truck),
+    rollover risk indicators, cargo-safe acceleration profiles, and the factors that
+    shift these limits — tire wear level, road surface quality, vehicle loading, and
+    ESC intervention points. Answers: how hard is too hard, for which vehicle?
+
+  Cost & Maintenance Impact: >-
+    Quantified correlations between telematics-derived driving events and real fleet
+    cost outcomes: brake pad and tire wear rates, fuel consumption uplift, cargo damage
+    claims, and total cost of ownership. This is the core value proposition for fleet
+    operators — turning driver scores into euros saved or lost.
+
+  Driver & Route Context: >-
+    How nationality, culture, age, and route familiarity shape driving patterns; how
+    road surface quality varies by country and creates false-positive harsh events in
+    telemetry; and how environmental context (weather, time-of-day, road geometry)
+    should inform dynamic, fair scoring thresholds across a multinational driver pool.
+
+  Service & Report Design: >-
+    What fleet telematics reports and alerts actually work in practice: industry
+    benchmark review of major platforms, optimal alert threshold design, feedback
+    delivery mechanisms that improve rather than worsen driver behavior, and
+    visualization formats for fleet managers and drivers.

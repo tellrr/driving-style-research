@@ -270,5 +270,5 @@ class Orchestrator:
         s = self.db.stats()
         s["cycle"] = self._cycle_count
         s["vector_store_count"] = self.vs.count()
-        s["ollama_available"] = self.llm.is_available()
+        s["llm_available"] = self.llm.is_available()
         return s
