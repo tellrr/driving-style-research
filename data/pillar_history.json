@@ -13,5 +13,20 @@
       "total_relevant": 139,
       "total_github_repos": 10
     }
+  },
+  {
+    "date": "2026-04-16",
+    "pillars": {
+      "Behavior Metrics & Scoring": 95,
+      "Safety & Force Thresholds": 80,
+      "Cost & Maintenance Impact": 28,
+      "Driver & Route Context": 68,
+      "Service & Report Design": 62
+    },
+    "stats": {
+      "total_scraped": 7161,
+      "total_relevant": 756,
+      "total_github_repos": 51
+    }
   }
 ]
