@@ -28,5 +28,65 @@
       "total_relevant": 756,
       "total_github_repos": 51
     }
+  },
+  {
+    "date": "2026-04-17",
+    "pillars": {
+      "Behavior Metrics & Scoring": 97,
+      "Safety & Force Thresholds": 82,
+      "Cost & Maintenance Impact": 30,
+      "Driver & Route Context": 72,
+      "Service & Report Design": 55
+    },
+    "stats": {
+      "total_scraped": 11327,
+      "total_relevant": 1303,
+      "total_github_repos": 64
+    }
+  },
+  {
+    "date": "2026-04-18",
+    "pillars": {
+      "Behavior Metrics & Scoring": 98,
+      "Safety & Force Thresholds": 84,
+      "Cost & Maintenance Impact": 38,
+      "Driver & Route Context": 82,
+      "Service & Report Design": 75
+    },
+    "stats": {
+      "total_scraped": 12888,
+      "total_relevant": 1580,
+      "total_github_repos": 67
+    }
+  },
+  {
+    "date": "2026-04-19",
+    "pillars": {
+      "Behavior Metrics & Scoring": 99,
+      "Safety & Force Thresholds": 85,
+      "Cost & Maintenance Impact": 45,
+      "Driver & Route Context": 84,
+      "Service & Report Design": 70
+    },
+    "stats": {
+      "total_scraped": 13751,
+      "total_relevant": 2039,
+      "total_github_repos": 93
+    }
+  },
+  {
+    "date": "2026-04-20",
+    "pillars": {
+      "Behavior Metrics & Scoring": 99,
+      "Safety & Force Thresholds": 88,
+      "Cost & Maintenance Impact": 48,
+      "Driver & Route Context": 87,
+      "Service & Report Design": 78
+    },
+    "stats": {
+      "total_scraped": 14678,
+      "total_relevant": 2507,
+      "total_github_repos": 134
+    }
   }
 ]

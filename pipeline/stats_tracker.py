@@ -105,8 +105,9 @@ def load_history() -> list[dict]:
 def _parse_pillar_percentages(content: str) -> dict[str, int | None]:
     """Extract pillar progress percentages from the strategic report table.
 
-    Matches rows of the form:
-        | **Pillar Name** | **72%** | ...
+    Handles two cell formats:
+        | **Pillar Name** | **72%** | ...          (plain)
+        | **Pillar Name** | 72% → **88%** | ...    (updated — takes the last %)
 
     Matches each configured pillar by searching for significant words from its
     name in the raw table cell text (case-insensitive).
@@ -114,15 +115,24 @@ def _parse_pillar_percentages(content: str) -> dict[str, int | None]:
     pillars = _get_pillars()
     result: dict[str, int | None] = {p: None for p in pillars}
 
-    # Matches bold pillar name followed by percentage (bold optional) in the same table row
-    pattern = re.compile(
-        r'\|\s*\*\*([^|*\n]+?)\*\*\s*\|\s*(?:\*\*)?(\d+)%(?:\*\*)?',
+    # Match table rows: | **Pillar Name** | <progress cell> |
+    row_pattern = re.compile(
+        r'\|\s*\*\*([^|*\n]+?)\*\*\s*\|\s*([^|\n]+?)\s*\|',
         re.IGNORECASE,
     )
+    pct_pattern = re.compile(r'(\d+)%')
 
-    for m in pattern.finditer(content):
+    for m in row_pattern.finditer(content):
         raw = m.group(1).lower().strip()
-        pct = int(m.group(2))
+        cell = m.group(2)
+
+        # Collect all percentages in the cell; take the last one.
+        # "85% → **88%**" → [85, 88] → 88 (the updated value after the arrow)
+        pcts = pct_pattern.findall(cell)
+        if not pcts:
+            continue
+        pct = int(pcts[-1])
+
         for pillar in pillars:
             # Match if any significant word (>3 chars) from the pillar name appears in the cell
             significant_words = [w.lower() for w in pillar.split() if len(w) > 3]

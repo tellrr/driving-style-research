@@ -1,0 +1,1099 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Report &amp; Graph Suggestions · 2026-04-20</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: #070a10; color: #e2e8f0; font-family: system-ui, sans-serif;
+           padding: 2rem 1.5rem; }
+    h1 { font-size: 1.5rem; font-weight: 700; color: #e2e8f0; margin-bottom: 0.4rem; }
+    .meta { color: #64748b; font-size: 0.875rem; margin-bottom: 2rem; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+            gap: 1.75rem; }
+    .card { background: #0f1117; border: 1px solid #2d3748; border-radius: 12px;
+            padding: 1.25rem; display: flex; flex-direction: column; gap: 0.75rem; }
+    .card-title { font-size: 1rem; font-weight: 600; color: #e2e8f0; }
+    .badge { display: inline-block; background: #1e293b; color: #6c8fff;
+             border: 1px solid #334155; border-radius: 6px; font-size: 0.7rem;
+             padding: 0.2rem 0.55rem; text-transform: uppercase; letter-spacing: 0.05em; }
+    .preview { background: #1a1d27; border-radius: 8px; padding: 0.75rem;
+               min-height: 160px; display: flex; align-items: center;
+               justify-content: center; overflow: hidden; }
+    .preview svg { display: block; }
+    .dimensions { font-size: 0.8rem; color: #94a3b8; }
+    .basis { font-size: 0.8rem; color: #64748b; font-style: italic; }
+    .audience { font-size: 0.75rem; color: #34d399; font-weight: 500; }
+    .tags { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+  </style>
+</head>
+<body>
+  <h1>Report &amp; Graph Suggestions</h1>
+  <p class="meta">Evolving design · updated from daily research · 2026-04-20 · 11 cards</p>
+  <div class="grid">
+
+    <!-- ============================================================
+         CARD 1: Driver Safety Score Distribution — Histogram + Density
+         NEW from research 7.1 — replaces old "Driver Score Trend" card
+         (trend view folded into Card 3 Individual Scorecard).
+         Histogram with overlaid density curve, risk-tier color bands,
+         benchmark overlay. FICO 0-100 + Geotab benchmark basis.
+         ============================================================ -->
+    <div class="card">
+      <div class="card-title">Driver Safety Score Distribution</div>
+      <div class="tags"><span class="badge">Histogram</span><span class="badge">Density Curve</span><span class="badge">Risk Tiers</span><span class="badge">Benchmark</span></div>
+      <div class="preview">
+        <svg width="340" height="200" viewBox="0 0 340 200" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="redBand" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="#f87171" stop-opacity="0.18"/>
+              <stop offset="100%" stop-color="#f87171" stop-opacity="0.06"/>
+            </linearGradient>
+            <linearGradient id="amberBand" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="#fbbf24" stop-opacity="0.18"/>
+              <stop offset="100%" stop-color="#fbbf24" stop-opacity="0.06"/>
+            </linearGradient>
+            <linearGradient id="greenBand" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="#34d399" stop-opacity="0.18"/>
+              <stop offset="100%" stop-color="#34d399" stop-opacity="0.06"/>
+            </linearGradient>
+          </defs>
+          <!-- axes -->
+          <line x1="38" y1="10" x2="38" y2="152" stroke="#334155" stroke-width="1"/>
+          <line x1="38" y1="152" x2="332" y2="152" stroke="#334155" stroke-width="1"/>
+          <!-- Y labels: drivers 0-18 -->
+          <text x="34" y="152" fill="#64748b" font-size="6.5" text-anchor="end">0</text>
+          <text x="34" y="129" fill="#64748b" font-size="6.5" text-anchor="end">3</text>
+          <text x="34" y="106" fill="#64748b" font-size="6.5" text-anchor="end">6</text>
+          <text x="34" y="83"  fill="#64748b" font-size="6.5" text-anchor="end">9</text>
+          <text x="34" y="60"  fill="#64748b" font-size="6.5" text-anchor="end">12</text>
+          <text x="34" y="37"  fill="#64748b" font-size="6.5" text-anchor="end">15</text>
+          <text x="34" y="14"  fill="#64748b" font-size="6.5" text-anchor="end">18</text>
+          <text x="12" y="85" fill="#64748b" font-size="6.5" text-anchor="middle" transform="rotate(-90,12,85)">No. of Drivers</text>
+          <!-- gridlines -->
+          <line x1="38" y1="129" x2="332" y2="129" stroke="#1e293b" stroke-dasharray="2,3" stroke-width="0.8"/>
+          <line x1="38" y1="106" x2="332" y2="106" stroke="#1e293b" stroke-dasharray="2,3" stroke-width="0.8"/>
+          <line x1="38" y1="83"  x2="332" y2="83"  stroke="#1e293b" stroke-dasharray="2,3" stroke-width="0.8"/>
+          <line x1="38" y1="60"  x2="332" y2="60"  stroke="#1e293b" stroke-dasharray="2,3" stroke-width="0.8"/>
+          <!-- Risk tier bands: red 0-49, amber 50-74, green 75-100 -->
+          <!-- X range 38-332 = 294px for 0-100. Each unit = 2.94px -->
+          <!-- red: x=38 to 38+49*2.94=182.1, amber: 182.1 to 38+74*2.94=255.6, green: 255.6 to 332 -->
+          <rect x="38"   y="10" width="144" height="142" fill="url(#redBand)"/>
+          <rect x="182"  y="10" width="74"  height="142" fill="url(#amberBand)"/>
+          <rect x="256"  y="10" width="76"  height="142" fill="url(#greenBand)"/>
+          <!-- tier boundary lines -->
+          <line x1="182" y1="10" x2="182" y2="152" stroke="#f87171" stroke-width="0.8" stroke-dasharray="3,2" opacity="0.5"/>
+          <line x1="256" y1="10" x2="256" y2="152" stroke="#fbbf24" stroke-width="0.8" stroke-dasharray="3,2" opacity="0.5"/>
+          <!-- tier labels -->
+          <text x="110" y="22" fill="#f87171" font-size="6.5" font-weight="600" text-anchor="middle">HIGH RISK (0–49)</text>
+          <text x="219" y="22" fill="#fbbf24" font-size="6.5" font-weight="600" text-anchor="middle">MODERATE (50–74)</text>
+          <text x="294" y="22" fill="#34d399" font-size="6.5" font-weight="600" text-anchor="middle">SAFE (75–100)</text>
+          <!-- histogram bars: bins of 10, counts: 0-9:1, 10-19:2, 20-29:3, 30-39:4, 40-49:5,
+               50-59:8, 60-69:13, 70-79:15, 80-89:11, 90-99:6 -->
+          <!-- bar width = 29.4px, 1 driver = 7.667px height -->
+          <!-- bin 0-9: x=38, count=1, h=7.7 -->
+          <rect x="39"  y="144" width="28" height="8"  rx="1" fill="#f87171" opacity="0.75"/>
+          <!-- bin 10-19: count=2, h=15.3 -->
+          <rect x="68"  y="137" width="28" height="15" rx="1" fill="#f87171" opacity="0.75"/>
+          <!-- bin 20-29: count=3, h=23 -->
+          <rect x="97"  y="129" width="28" height="23" rx="1" fill="#f87171" opacity="0.75"/>
+          <!-- bin 30-39: count=4, h=30.7 -->
+          <rect x="126" y="121" width="28" height="31" rx="1" fill="#f87171" opacity="0.75"/>
+          <!-- bin 40-49: count=5, h=38.3 -->
+          <rect x="155" y="114" width="27" height="38" rx="1" fill="#f87171" opacity="0.75"/>
+          <!-- bin 50-59: count=8, h=61.3, amber -->
+          <rect x="183" y="91"  width="28" height="61" rx="1" fill="#fbbf24" opacity="0.75"/>
+          <!-- bin 60-69: count=13, h=99.7, amber -->
+          <rect x="212" y="52"  width="28" height="100" rx="1" fill="#fbbf24" opacity="0.75"/>
+          <!-- bin 70-79: count=15, h=115, split amber/green -->
+          <rect x="241" y="37"  width="15" height="115" rx="1" fill="#fbbf24" opacity="0.75"/>
+          <rect x="256" y="37"  width="13" height="115" rx="1" fill="#34d399" opacity="0.75"/>
+          <!-- bin 80-89: count=11, h=84.3, green -->
+          <rect x="270" y="68"  width="28" height="84" rx="1" fill="#34d399" opacity="0.75"/>
+          <!-- bin 90-99: count=6, h=46, green -->
+          <rect x="299" y="106" width="28" height="46" rx="1" fill="#34d399" opacity="0.75"/>
+          <!-- density curve (smooth KDE approximation over bins) -->
+          <polyline points="52,148 82,144 111,137 140,127 169,112 198,89 227,50 256,35 285,66 314,104 329,130"
+                    fill="none" stroke="#6c8fff" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+          <!-- industry benchmark density curve (dashed, shifted right — better fleet) -->
+          <polyline points="52,150 82,148 111,145 140,138 169,125 198,105 227,78 256,55 285,48 314,68 329,95"
+                    fill="none" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="4,3" stroke-linejoin="round" stroke-linecap="round"/>
+          <!-- fleet mean line -->
+          <line x1="224" y1="10" x2="224" y2="152" stroke="#6c8fff" stroke-width="1.2" stroke-dasharray="4,2" opacity="0.8"/>
+          <text x="226" y="32" fill="#6c8fff" font-size="6">Fleet μ=63</text>
+          <!-- benchmark mean line -->
+          <line x1="265" y1="10" x2="265" y2="152" stroke="#94a3b8" stroke-width="1" stroke-dasharray="3,3" opacity="0.7"/>
+          <text x="267" y="44" fill="#94a3b8" font-size="6">Bench μ=71</text>
+          <!-- X axis labels -->
+          <text x="38"  y="162" fill="#64748b" font-size="6.5" text-anchor="middle">0</text>
+          <text x="97"  y="162" fill="#64748b" font-size="6.5" text-anchor="middle">20</text>
+          <text x="156" y="162" fill="#64748b" font-size="6.5" text-anchor="middle">40</text>
+          <text x="215" y="162" fill="#64748b" font-size="6.5" text-anchor="middle">60</text>
+          <text x="274" y="162" fill="#64748b" font-size="6.5" text-anchor="middle">80</text>
+          <text x="332" y="162" fill="#64748b" font-size="6.5" text-anchor="middle">100</text>
+          <text x="185" y="171" fill="#64748b" font-size="6.5" text-anchor="middle">Driver Safety Score (0–100, FICO scale)</text>
+          <!-- legend -->
+          <rect x="38"  y="182" width="8" height="7" rx="1" fill="#f87171" opacity="0.75"/>
+          <text x="48"  y="188" fill="#94a3b8" font-size="6.5">High Risk</text>
+          <rect x="90"  y="182" width="8" height="7" rx="1" fill="#fbbf24" opacity="0.75"/>
+          <text x="100" y="188" fill="#94a3b8" font-size="6.5">Moderate</text>
+          <rect x="148" y="182" width="8" height="7" rx="1" fill="#34d399" opacity="0.75"/>
+          <text x="158" y="188" fill="#94a3b8" font-size="6.5">Safe</text>
+          <line x1="190" y1="186" x2="205" y2="186" stroke="#6c8fff" stroke-width="2"/>
+          <text x="207" y="188" fill="#94a3b8" font-size="6.5">Fleet KDE</text>
+          <line x1="250" y1="186" x2="265" y2="186" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="4,2"/>
+          <text x="267" y="188" fill="#94a3b8" font-size="6.5">Industry benchmark</text>
+        </svg>
+      </div>
+      <div class="dimensions"><strong>Dimensions:</strong> X: driver score 0–100 (10-pt bins) · Y: number of drivers · Color bands: red (0–49 high risk), amber (50–74 moderate), green (75–100 safe) · Overlaid KDE density curve (fleet) vs. dashed industry benchmark curve · Fleet mean and benchmark mean reference lines</div>
+      <div class="basis"><strong>Research basis:</strong> FICO Safe Driving Score 0–100 scale approved in 49 states — FICO; industry benchmark comparison model — Geotab Fleet Safety Benchmarks; single-score framework reduces harsh events by 84% — Samsara Fleet Safety Report</div>
+      <div class="audience"><strong>Audience:</strong> Fleet manager · Operations director</div>
+    </div>
+
+    <!-- ============================================================
+         CARD 2: Harsh Event Heatmap — Time-of-Day × Day-of-Week
+         NEW from research 7.2 — 2D heatmap 7×24 replacing the
+         geographic heatmap card (geographic view is now Card 7).
+         Circadian trough risk windows; harsh event rate per 1,000 km.
+         ============================================================ -->
+    <div class="card">
+      <div class="card-title">Harsh Event Heatmap — Time-of-Day × Day-of-Week</div>
+      <div class="tags"><span class="badge">2D Heat Map</span><span class="badge">Circadian Risk</span><span class="badge">7×24</span></div>
+      <div class="preview">
+        <svg width="340" height="200" viewBox="0 0 340 200" xmlns="http://www.w3.org/2000/svg">
+          <!-- We show a compressed 7-col × 12-row version (2-hr bands) for readability -->
+          <!-- cols: Mon-Sun, rows: 00-02,02-04,...,22-24 (12 bands) -->
+          <!-- cell w=38, cell h=13; left margin=38, top=18 -->
+          <!-- Color encoding: low=dark, medium=amber, high=red -->
+          <!-- Data matrix (harsh events/1000km, 12 rows × 7 cols): -->
+          <!-- 00-02: 2.1,1.8,1.9,2.0,2.2,3.1,2.8 -->
+          <!-- 02-04: 2.8,2.3,2.5,2.4,3.0,3.8,3.2 -->
+          <!-- 04-06: 3.2,3.5,3.8,3.6,3.9,2.9,2.4 -->
+          <!-- 06-08: 6.1,5.8,5.9,5.7,6.0,3.4,2.1 -->
+          <!-- 08-10: 4.2,4.5,4.1,4.3,4.4,3.8,2.8 -->
+          <!-- 10-12: 3.1,3.4,3.2,3.3,3.2,4.1,3.6 -->
+          <!-- 12-14: 5.2,5.5,5.3,5.6,5.4,4.8,4.1 -->
+          <!-- 14-16: 4.8,5.0,4.9,5.1,5.2,4.5,3.9 -->
+          <!-- 16-18: 7.2,6.9,7.1,7.4,7.8,5.1,3.8 -->
+          <!-- 18-20: 5.8,5.4,5.6,5.9,6.2,5.8,4.7 -->
+          <!-- 20-22: 3.8,3.5,3.7,3.6,4.1,5.2,4.8 -->
+          <!-- 22-24: 2.9,2.6,2.7,2.8,3.3,4.1,3.9 -->
+          <!-- Color fn: <=3=dark blue, 3-5=amber gradient, 5-8=red gradient -->
+          <!-- helper: opacity scales 0-1 mapped to value 0-8 -->
+          <!-- day headers -->
+          <text x="57"  y="14" fill="#64748b" font-size="6.5" text-anchor="middle">Mon</text>
+          <text x="95"  y="14" fill="#64748b" font-size="6.5" text-anchor="middle">Tue</text>
+          <text x="133" y="14" fill="#64748b" font-size="6.5" text-anchor="middle">Wed</text>
+          <text x="171" y="14" fill="#64748b" font-size="6.5" text-anchor="middle">Thu</text>
+          <text x="209" y="14" fill="#64748b" font-size="6.5" text-anchor="middle">Fri</text>
+          <text x="247" y="14" fill="#64748b" font-size="6.5" text-anchor="middle">Sat</text>
+          <text x="285" y="14" fill="#64748b" font-size="6.5" text-anchor="middle">Sun</text>
+          <!-- row labels -->
+          <text x="35" y="30"  fill="#64748b" font-size="5.5" text-anchor="end">00-02</text>
+          <text x="35" y="43"  fill="#64748b" font-size="5.5" text-anchor="end">02-04</text>
+          <text x="35" y="56"  fill="#64748b" font-size="5.5" text-anchor="end">04-06</text>
+          <text x="35" y="69"  fill="#64748b" font-size="5.5" text-anchor="end">06-08</text>
+          <text x="35" y="82"  fill="#64748b" font-size="5.5" text-anchor="end">08-10</text>
+          <text x="35" y="95"  fill="#64748b" font-size="5.5" text-anchor="end">10-12</text>
+          <text x="35" y="108" fill="#64748b" font-size="5.5" text-anchor="end">12-14</text>
+          <text x="35" y="121" fill="#64748b" font-size="5.5" text-anchor="end">14-16</text>
+          <text x="35" y="134" fill="#64748b" font-size="5.5" text-anchor="end">16-18</text>
+          <text x="35" y="147" fill="#64748b" font-size="5.5" text-anchor="end">18-20</text>
+          <text x="35" y="160" fill="#64748b" font-size="5.5" text-anchor="end">20-22</text>
+          <text x="35" y="173" fill="#64748b" font-size="5.5" text-anchor="end">22-24</text>
+          <!-- cell macro: cx=38+(col*38), cy=18+(row*13), w=37, h=12 -->
+          <!-- ROW 0 (00-02): low risk — blue-ish tint -->
+          <rect x="38"  y="18" width="37" height="12" rx="1" fill="#6c8fff" opacity="0.22"/>
+          <rect x="76"  y="18" width="37" height="12" rx="1" fill="#6c8fff" opacity="0.18"/>
+          <rect x="114" y="18" width="37" height="12" rx="1" fill="#6c8fff" opacity="0.19"/>
+          <rect x="152" y="18" width="37" height="12" rx="1" fill="#6c8fff" opacity="0.20"/>
+          <rect x="190" y="18" width="37" height="12" rx="1" fill="#6c8fff" opacity="0.23"/>
+          <rect x="228" y="18" width="37" height="12" rx="1" fill="#fbbf24" opacity="0.35"/>
+          <rect x="266" y="18" width="37" height="12" rx="1" fill="#fbbf24" opacity="0.30"/>
+          <!-- ROW 1 (02-04): night circadian trough -->
+          <rect x="38"  y="30" width="37" height="12" rx="1" fill="#fbbf24" opacity="0.30"/>
+          <rect x="76"  y="30" width="37" height="12" rx="1" fill="#6c8fff" opacity="0.24"/>
+          <rect x="114" y="30" width="37" height="12" rx="1" fill="#6c8fff" opacity="0.26"/>
+          <rect x="152" y="30" width="37" height="12" rx="1" fill="#6c8fff" opacity="0.25"/>
+          <rect x="190" y="30" width="37" height="12" rx="1" fill="#fbbf24" opacity="0.32"/>
+          <rect x="228" y="30" width="37" height="12" rx="1" fill="#fbbf24" opacity="0.42"/>
+          <rect x="266" y="30" width="37" height="12" rx="1" fill="#fbbf24" opacity="0.36"/>
+          <!-- ROW 2 (04-06) -->
+          <rect x="38"  y="42" width="37" height="12" rx="1" fill="#fbbf24" opacity="0.36"/>
+          <rect x="76"  y="42" width="37" height="12" rx="1" fill="#fbbf24" opacity="0.39"/>
+          <rect x="114" y="42" width="37" height="12" rx="1" fill="#fbbf24" opacity="0.43"/>
+          <rect x="152" y="42" width="37" height="12" rx="1" fill="#fbbf24" opacity="0.41"/>
+          <rect x="190" y="42" width="37" height="12" rx="1" fill="#fbbf24" opacity="0.45"/>
+          <rect x="228" y="42" width="37" height="12" rx="1" fill="#fbbf24" opacity="0.33"/>
+          <rect x="266" y="42" width="37" height="12" rx="1" fill="#6c8fff" opacity="0.25"/>
+          <!-- ROW 3 (06-08): morning rush — HIGH -->
+          <rect x="38"  y="54" width="37" height="12" rx="1" fill="#f87171" opacity="0.72"/>
+          <rect x="76"  y="54" width="37" height="12" rx="1" fill="#f87171" opacity="0.68"/>
+          <rect x="114" y="54" width="37" height="12" rx="1" fill="#f87171" opacity="0.70"/>
+          <rect x="152" y="54" width="37" height="12" rx="1" fill="#f87171" opacity="0.67"/>
+          <rect x="190" y="54" width="37" height="12" rx="1" fill="#f87171" opacity="0.71"/>
+          <rect x="228" y="54" width="37" height="12" rx="1" fill="#fbbf24" opacity="0.40"/>
+          <rect x="266" y="54" width="37" height="12" rx="1" fill="#6c8fff" opacity="0.22"/>
+          <!-- ROW 4 (08-10) -->
+          <rect x="38"  y="66" width="37" height="12" rx="1" fill="#fbbf24" opacity="0.50"/>
+          <rect x="76"  y="66" width="37" height="12" rx="1" fill="#fbbf24" opacity="0.53"/>
+          <rect x="114" y="66" width="37" height="12" rx="1" fill="#fbbf24" opacity="0.49"/>
+          <rect x="152" y="66" width="37" height="12" rx="1" fill="#fbbf24" opacity="0.51"/>
+          <rect x="190" y="66" width="37" height="12" rx="1" fill="#fbbf24" opacity="0.52"/>
+          <rect x="228" y="66" width="37" height="12" rx="1" fill="#fbbf24" opacity="0.45"/>
+          <rect x="266" y="66" width="37" height="12" rx="1" fill="#fbbf24" opacity="0.33"/>
+          <!-- ROW 5 (10-12) -->
+          <rect x="38"  y="78" width="37" height="12" rx="1" fill="#fbbf24" opacity="0.36"/>
+          <rect x="76"  y="78" width="37" height="12" rx="1" fill="#fbbf24" opacity="0.40"/>
+          <rect x="114" y="78" width="37" height="12" rx="1" fill="#fbbf24" opacity="0.37"/>
+          <rect x="152" y="78" width="37" height="12" rx="1" fill="#fbbf24" opacity="0.39"/>
+          <rect x="190" y="78" width="37" height="12" rx="1" fill="#fbbf24" opacity="0.37"/>
+          <rect x="228" y="78" width="37" height="12" rx="1" fill="#fbbf24" opacity="0.49"/>
+          <rect x="266" y="78" width="37" height="12" rx="1" fill="#fbbf24" opacity="0.43"/>
+          <!-- ROW 6 (12-14): midday elevated -->
+          <rect x="38"  y="90" width="37" height="12" rx="1" fill="#f87171" opacity="0.58"/>
+          <rect x="76"  y="90" width="37" height="12" rx="1" fill="#f87171" opacity="0.62"/>
+          <rect x="114" y="90" width="37" height="12" rx="1" fill="#f87171" opacity="0.60"/>
+          <rect x="152" y="90" width="37" height="12" rx="1" fill="#f87171" opacity="0.63"/>
+          <rect x="190" y="90" width="37" height="12" rx="1" fill="#f87171" opacity="0.61"/>
+          <rect x="228" y="90" width="37" height="12" rx="1" fill="#fbbf24" opacity="0.55"/>
+          <rect x="266" y="90" width="37" height="12" rx="1" fill="#fbbf24" opacity="0.48"/>
+          <!-- ROW 7 (14-16) -->
+          <rect x="38"  y="102" width="37" height="12" rx="1" fill="#fbbf24" opacity="0.57"/>
+          <rect x="76"  y="102" width="37" height="12" rx="1" fill="#f87171" opacity="0.55"/>
+          <rect x="114" y="102" width="37" height="12" rx="1" fill="#fbbf24" opacity="0.58"/>
+          <rect x="152" y="102" width="37" height="12" rx="1" fill="#f87171" opacity="0.57"/>
+          <rect x="190" y="102" width="37" height="12" rx="1" fill="#f87171" opacity="0.59"/>
+          <rect x="228" y="102" width="37" height="12" rx="1" fill="#fbbf24" opacity="0.53"/>
+          <rect x="266" y="102" width="37" height="12" rx="1" fill="#fbbf24" opacity="0.46"/>
+          <!-- ROW 8 (16-18): PEAK evening rush — CRITICAL -->
+          <rect x="38"  y="114" width="37" height="12" rx="1" fill="#f87171" opacity="0.88"/>
+          <rect x="76"  y="114" width="37" height="12" rx="1" fill="#f87171" opacity="0.84"/>
+          <rect x="114" y="114" width="37" height="12" rx="1" fill="#f87171" opacity="0.86"/>
+          <rect x="152" y="114" width="37" height="12" rx="1" fill="#f87171" opacity="0.90"/>
+          <rect x="190" y="114" width="37" height="12" rx="1" fill="#f87171" opacity="0.95"/>
+          <rect x="228" y="114" width="37" height="12" rx="1" fill="#f87171" opacity="0.61"/>
+          <rect x="266" y="114" width="37" height="12" rx="1" fill="#fbbf24" opacity="0.45"/>
+          <!-- cell values in peak cells -->
+          <text x="56"  y="122" fill="#fff" font-size="5.5" text-anchor="middle">7.2</text>
+          <text x="94"  y="122" fill="#fff" font-size="5.5" text-anchor="middle">6.9</text>
+          <text x="132" y="122" fill="#fff" font-size="5.5" text-anchor="middle">7.1</text>
+          <text x="170" y="122" fill="#fff" font-size="5.5" text-anchor="middle">7.4</text>
+          <text x="208" y="122" fill="#fff" font-size="5.5" text-anchor="middle">7.8</text>
+          <text x="246" y="122" fill="#fff" font-size="5.5" text-anchor="middle">5.1</text>
+          <!-- ROW 9 (18-20) -->
+          <rect x="38"  y="126" width="37" height="12" rx="1" fill="#f87171" opacity="0.68"/>
+          <rect x="76"  y="126" width="37" height="12" rx="1" fill="#f87171" opacity="0.63"/>
+          <rect x="114" y="126" width="37" height="12" rx="1" fill="#f87171" opacity="0.66"/>
+          <rect x="152" y="126" width="37" height="12" rx="1" fill="#f87171" opacity="0.70"/>
+          <rect x="190" y="126" width="37" height="12" rx="1" fill="#f87171" opacity="0.74"/>
+          <rect x="228" y="126" width="37" height="12" rx="1" fill="#f87171" opacity="0.68"/>
+          <rect x="266" y="126" width="37" height="12" rx="1" fill="#fbbf24" opacity="0.55"/>
+          <!-- ROW 10 (20-22) -->
+          <rect x="38"  y="138" width="37" height="12" rx="1" fill="#fbbf24" opacity="0.45"/>
+          <rect x="76"  y="138" width="37" height="12" rx="1" fill="#fbbf24" opacity="0.41"/>
+          <rect x="114" y="138" width="37" height="12" rx="1" fill="#fbbf24" opacity="0.44"/>
+          <rect x="152" y="138" width="37" height="12" rx="1" fill="#fbbf24" opacity="0.43"/>
+          <rect x="190" y="138" width="37" height="12" rx="1" fill="#fbbf24" opacity="0.49"/>
+          <rect x="228" y="138" width="37" height="12" rx="1" fill="#f87171" opacity="0.60"/>
+          <rect x="266" y="138" width="37" height="12" rx="1" fill="#fbbf24" opacity="0.56"/>
+          <!-- ROW 11 (22-24) -->
+          <rect x="38"  y="150" width="37" height="12" rx="1" fill="#fbbf24" opacity="0.33"/>
+          <rect x="76"  y="150" width="37" height="12" rx="1" fill="#6c8fff" opacity="0.28"/>
+          <rect x="114" y="150" width="37" height="12" rx="1" fill="#6c8fff" opacity="0.29"/>
+          <rect x="152" y="150" width="37" height="12" rx="1" fill="#fbbf24" opacity="0.31"/>
+          <rect x="190" y="150" width="37" height="12" rx="1" fill="#fbbf24" opacity="0.37"/>
+          <rect x="228" y="150" width="37" height="12" rx="1" fill="#fbbf24" opacity="0.48"/>
+          <rect x="266" y="150" width="37" height="12" rx="1" fill="#fbbf24" opacity="0.45"/>
+          <!-- peak annotation -->
+          <rect x="186" y="112" width="56" height="16" rx="2" fill="none" stroke="#f87171" stroke-width="1.2" stroke-dasharray="2,1"/>
+          <text x="214" y="109" fill="#f87171" font-size="5.5" text-anchor="middle">▲ PEAK RISK</text>
+          <!-- legend scale bar -->
+          <defs>
+            <linearGradient id="heatScale" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%"   stop-color="#6c8fff" stop-opacity="0.3"/>
+              <stop offset="40%"  stop-color="#fbbf24" stop-opacity="0.6"/>
+              <stop offset="100%" stop-color="#f87171" stop-opacity="0.95"/>
+            </linearGradient>
+          </defs>
+          <rect x="38" y="176" width="120" height="8" rx="2" fill="url(#heatScale)"/>
+          <text x="38"  y="192" fill="#64748b" font-size="6">0</text>
+          <text x="98"  y="192" fill="#64748b" font-size="6">4</text>
+          <text x="158" y="192" fill="#64748b" font-size="6">8 events/1,000 km</text>
+          <text x="220" y="185" fill="#64748b" font-size="6.5">Fri 16-18h most hazardous · circadian trough 02-04h elevated night risk</text>
+        </svg>
+      </div>
+      <div class="dimensions"><strong>Dimensions:</strong> Rows: 2-hr time bands (00–24h) · Columns: day of week (Mon–Sun) · Cell color intensity: harsh event rate per 1,000 km driven (blue-low → amber-moderate → red-high) · Tooltip: event count + rate + top event type · Filterable by event type and vehicle class</div>
+      <div class="basis"><strong>Research basis:</strong> Night-time and mid-day/evening carry elevated risk — Driver Monitoring System (GitHub AbhiKesarwani); circadian alertness trough at 02–04h linked to accident frequency — Circadian Alertness Simulator (PMID 15018271); fatigue risk windows confirmed in large commercial fleet datasets</div>
+      <div class="audience"><strong>Audience:</strong> Fleet manager · Safety officer</div>
+    </div>
+
+    <!-- ============================================================
+         CARD 3: Individual Driver Scorecard with Event Timeline
+         NEW from research 7.3 — composite: gauge + trend sparkline
+         top; event scatter timeline bottom. Replaces old Card 6
+         leaderboard detail view (leaderboard is separate Card 6).
+         ============================================================ -->
+    <div class="card">
+      <div class="card-title">Individual Driver Scorecard &amp; Event Timeline</div>
+      <div class="tags"><span class="badge">Gauge</span><span class="badge">Sparkline</span><span class="badge">Event Scatter</span><span class="badge">Composite</span></div>
+      <div class="preview">
+        <svg width="340" height="210" viewBox="0 0 340 210" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="scoreArc3" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#f87171"/>
+              <stop offset="40%" stop-color="#fbbf24"/>
+              <stop offset="75%" stop-color="#34d399"/>
+              <stop offset="100%" stop-color="#34d399"/>
+            </linearGradient>
+          </defs>
+          <!-- TOP SECTION: gauge left + sparkline right -->
+          <text x="170" y="12" fill="#94a3b8" font-size="7" font-weight="600" text-anchor="middle">Driver: M. Okafor · Vehicle V-014 · Last 30 days</text>
+          <!-- GAUGE: center (58,80) r=48 -->
+          <path d="M 10,82 A 48,48 0 0,1 106,82" fill="none" stroke="#1e293b" stroke-width="11" stroke-linecap="round"/>
+          <path d="M 10,82 A 48,48 0 0,1 106,82" fill="none" stroke="url(#scoreArc3)" stroke-width="11" stroke-linecap="round" opacity="0.9"/>
+          <!-- needle at score=73: angle=180-(73/100)*180=48.6°→ cos(131.4°)=-0.661 sin(131.4°)=0.75 → x=58+48*(-0.661)=26.3 y=82-48*0.75=46 -->
+          <line x1="58" y1="82" x2="27" y2="46" stroke="#e2e8f0" stroke-width="2" stroke-linecap="round"/>
+          <circle cx="58" cy="82" r="5" fill="#334155" stroke="#e2e8f0" stroke-width="1.5"/>
+          <text x="58" y="98"  fill="#e2e8f0" font-size="17" font-weight="700" text-anchor="middle">73</text>
+          <text x="58" y="108" fill="#64748b" font-size="6.5" text-anchor="middle">/ 100  MODERATE</text>
+          <!-- tier badge -->
+          <rect x="20" y="113" width="76" height="12" rx="3" fill="#fbbf24" opacity="0.15" stroke="#fbbf24" stroke-width="0.8"/>
+          <text x="58" y="121" fill="#fbbf24" font-size="6.5" text-anchor="middle">▲ +6 pts vs. prior 30d</text>
+          <!-- sub-score bars -->
+          <text x="10" y="136" fill="#64748b" font-size="5.5">Braking</text>
+          <rect x="10" y="138" width="106" height="5" rx="1" fill="#1e293b"/>
+          <rect x="10" y="138" width="58"  height="5" rx="1" fill="#fbbf24" opacity="0.8"/>
+          <text x="70" y="143" fill="#fbbf24" font-size="5">55</text>
+          <text x="10" y="150" fill="#64748b" font-size="5.5">Accel</text>
+          <rect x="10" y="152" width="106" height="5" rx="1" fill="#1e293b"/>
+          <rect x="10" y="152" width="79"  height="5" rx="1" fill="#34d399" opacity="0.8"/>
+          <text x="91" y="157" fill="#34d399" font-size="5">75</text>
+          <text x="10" y="164" fill="#64748b" font-size="5.5">Speeding</text>
+          <rect x="10" y="166" width="106" height="5" rx="1" fill="#1e293b"/>
+          <rect x="10" y="166" width="88"  height="5" rx="1" fill="#34d399" opacity="0.8"/>
+          <text x="100" y="171" fill="#34d399" font-size="5">83</text>
+          <text x="10" y="178" fill="#64748b" font-size="5.5">Cornering</text>
+          <rect x="10" y="180" width="106" height="5" rx="1" fill="#1e293b"/>
+          <rect x="10" y="180" width="71"  height="5" rx="1" fill="#fbbf24" opacity="0.8"/>
+          <text x="83" y="185" fill="#fbbf24" font-size="5">67</text>
+          <!-- SPARKLINE right: x=116..332, y=18..90 -->
+          <text x="224" y="20" fill="#94a3b8" font-size="6.5" text-anchor="middle">30-day Score Trend</text>
+          <line x1="116" y1="25" x2="116" y2="92" stroke="#334155" stroke-width="0.8"/>
+          <line x1="116" y1="92" x2="332" y2="92" stroke="#334155" stroke-width="0.8"/>
+          <!-- y: 40-100=67px. score to y: y=92-(score-40)/60*67 -->
+          <!-- scores over 30d (weekly): 67,68,70,70,71,72,73 → x step=36 -->
+          <line x1="116" y1="75" x2="332" y2="75" stroke="#1e293b" stroke-dasharray="2,3" stroke-width="0.7"/>
+          <text x="114" y="76" fill="#64748b" font-size="5.5" text-anchor="end">70</text>
+          <line x1="116" y1="58" x2="332" y2="58" stroke="#1e293b" stroke-dasharray="2,3" stroke-width="0.7"/>
+          <text x="114" y="59" fill="#64748b" font-size="5.5" text-anchor="end">80</text>
+          <!-- y values: 67→y=92-30/60*67=58.5→59, 68→56.4→57, 70→53→54, 70→54, 71→52→53, 72→50, 73→49 -->
+          <polygon points="116,59 152,57 188,54 224,54 260,53 296,50 332,49 332,92 116,92" fill="#34d399" opacity="0.08"/>
+          <polyline points="116,59 152,57 188,54 224,54 260,53 296,50 332,49" fill="none" stroke="#34d399" stroke-width="2" stroke-linejoin="round"/>
+          <circle cx="116" cy="59" r="2.5" fill="#fbbf24"/>
+          <circle cx="332" cy="49" r="3"   fill="#34d399"/>
+          <text x="334" y="52" fill="#34d399" font-size="6">73</text>
+          <!-- x ticks -->
+          <text x="116" y="100" fill="#64748b" font-size="5.5" text-anchor="middle">Apr 1</text>
+          <text x="224" y="100" fill="#64748b" font-size="5.5" text-anchor="middle">Apr 15</text>
+          <text x="332" y="100" fill="#64748b" font-size="5.5" text-anchor="middle">Apr 30</text>
+          <!-- BOTTOM SECTION: event timeline x=116..332, y=110..195 -->
+          <text x="224" y="112" fill="#94a3b8" font-size="6.5" text-anchor="middle">Event Severity Timeline (30 days)</text>
+          <line x1="116" y1="118" x2="332" y2="118" stroke="#334155" stroke-width="0.8"/>
+          <line x1="116" y1="195" x2="332" y2="195" stroke="#334155" stroke-width="0.8"/>
+          <line x1="116" y1="118" x2="116" y2="195" stroke="#334155" stroke-width="0.8"/>
+          <!-- y: severity 0-1.2g, 77px -->
+          <text x="114" y="120" fill="#64748b" font-size="5" text-anchor="end">1.2g</text>
+          <text x="114" y="150" fill="#64748b" font-size="5" text-anchor="end">0.8g</text>
+          <text x="114" y="176" fill="#64748b" font-size="5" text-anchor="end">0.4g</text>
+          <text x="114" y="195" fill="#64748b" font-size="5" text-anchor="end">0g</text>
+          <line x1="116" y1="150" x2="332" y2="150" stroke="#1e293b" stroke-dasharray="2,3" stroke-width="0.7"/>
+          <line x1="116" y1="175" x2="332" y2="175" stroke="#1e293b" stroke-dasharray="2,3" stroke-width="0.7"/>
+          <!-- alert threshold at 0.5g → y=118+77*(1-0.5/1.2)=118+77*0.583=63→ y=118+45=163 -->
+          <line x1="116" y1="163" x2="332" y2="163" stroke="#f87171" stroke-width="0.8" stroke-dasharray="3,2" opacity="0.7"/>
+          <!-- events (x=day/30*216+116, y=118+77*(1-g/1.2), r=size) -->
+          <!-- harsh brake 0.9g day4: x=145,y=118+77*0.25=137.3 -->
+          <circle cx="145" cy="137" r="5" fill="#f87171" opacity="0.85"/>
+          <!-- harsh accel 0.7g day7: x=167, y=118+77*0.42=150 -->
+          <circle cx="167" cy="150" r="4" fill="#fb923c" opacity="0.85"/>
+          <!-- cornering 0.6g day10: x=188, y=118+77*0.50=157 -->
+          <circle cx="188" cy="157" r="3.5" fill="#fbbf24" opacity="0.85"/>
+          <!-- speeding +20kmh day12: x=201, y=118+77*0.55=160 -->
+          <circle cx="201" cy="155" r="3" fill="#6c8fff" opacity="0.85"/>
+          <!-- harsh brake 1.1g day16: x=232, y=118+77*0.083=124 -->
+          <circle cx="232" cy="124" r="6" fill="#f87171" opacity="0.9"/>
+          <!-- harsh accel 0.8g day19: x=253, y=118+77*0.33=143.4 -->
+          <circle cx="253" cy="143" r="4.5" fill="#fb923c" opacity="0.85"/>
+          <!-- cornering 0.5g day22: x=274, y=163 -->
+          <circle cx="274" cy="163" r="3" fill="#fbbf24" opacity="0.80"/>
+          <!-- speeding minor day25: x=295, y=170 -->
+          <circle cx="295" cy="170" r="2.5" fill="#6c8fff" opacity="0.75"/>
+          <!-- speeding minor day28: x=317, y=168 -->
+          <circle cx="317" cy="168" r="2" fill="#6c8fff" opacity="0.70"/>
+          <!-- bottom legend -->
+          <circle cx="10"  cy="203" r="4" fill="#f87171" opacity="0.85"/>
+          <text x="16"  y="206" fill="#94a3b8" font-size="5.5">Harsh Brake</text>
+          <circle cx="70"  cy="203" r="4" fill="#fb923c" opacity="0.85"/>
+          <text x="76"  y="206" fill="#94a3b8" font-size="5.5">Harsh Accel</text>
+          <circle cx="130" cy="203" r="4" fill="#fbbf24" opacity="0.85"/>
+          <text x="136" y="206" fill="#94a3b8" font-size="5.5">Cornering</text>
+          <circle cx="185" cy="203" r="4" fill="#6c8fff" opacity="0.85"/>
+          <text x="191" y="206" fill="#94a3b8" font-size="5.5">Speeding · size=severity</text>
+        </svg>
+      </div>
+      <div class="dimensions"><strong>Dimensions:</strong> Gauge: current composite score 0–100 + risk-tier badge · Sub-score bars: braking, acceleration, speeding, cornering · Sparkline: score over 30 days (weekly points) · Event timeline scatter: X=date, Y=G-force severity (0–1.2g), circle size=severity magnitude, color=event type · Alert threshold line at 0.5g</div>
+      <div class="basis"><strong>Research basis:</strong> Samsara 45+ factor multi-score model reduces harsh events by 84% — Samsara Fleet Safety Report 2024; holistic profiling reveals patterns beyond event-triggered alerts — IMPROV NEURO IQ / Geotab integration; 10-pt score increase ≈ 57% accident reduction — Azuga Driver Risk Assessment</div>
+      <div class="audience"><strong>Audience:</strong> Driver (simplified gauge view) · Fleet manager (full detail view)</div>
+    </div>
+
+    <!-- ============================================================
+         CARD 4: Decision-Adjusted Threshold Configuration Panel
+         NEW from research 7.4 — interactive scatter with adjustable
+         decision boundary, precision/recall readout, slider.
+         Research: 31.8% precision variation by decision rule.
+         ============================================================ -->
+    <div class="card">
+      <div class="card-title">Decision-Adjusted Threshold Configuration Panel</div>
+      <div class="tags"><span class="badge">Scatter Plot</span><span class="badge">Decision Boundary</span><span class="badge">Precision/Recall</span><span class="badge">Interactive</span></div>
+      <div class="preview">
+        <svg width="340" height="210" viewBox="0 0 340 210" xmlns="http://www.w3.org/2000/svg">
+          <!-- axes -->
+          <line x1="46" y1="12" x2="46" y2="158" stroke="#334155" stroke-width="1"/>
+          <line x1="46" y1="158" x2="330" y2="158" stroke="#334155" stroke-width="1"/>
+          <!-- Y: frequency events/1000km 0-25 -->
+          <text x="42" y="158" fill="#64748b" font-size="6" text-anchor="end">0</text>
+          <text x="42" y="126" fill="#64748b" font-size="6" text-anchor="end">8</text>
+          <text x="42" y="94"  fill="#64748b" font-size="6" text-anchor="end">16</text>
+          <text x="42" y="62"  fill="#64748b" font-size="6" text-anchor="end">24</text>
+          <text x="42" y="30"  fill="#64748b" font-size="6" text-anchor="end">32</text>
+          <text x="12" y="90" fill="#64748b" font-size="6.5" text-anchor="middle" transform="rotate(-90,12,90)">Frequency (events / 1,000 km)</text>
+          <!-- X: deceleration 0-1.2g -->
+          <text x="46"  y="167" fill="#64748b" font-size="6" text-anchor="middle">0g</text>
+          <text x="110" y="167" fill="#64748b" font-size="6" text-anchor="middle">0.3g</text>
+          <text x="174" y="167" fill="#64748b" font-size="6" text-anchor="middle">0.6g</text>
+          <text x="238" y="167" fill="#64748b" font-size="6" text-anchor="middle">0.9g</text>
+          <text x="302" y="167" fill="#64748b" font-size="6" text-anchor="middle">1.2g</text>
+          <text x="188" y="176" fill="#64748b" font-size="6.5" text-anchor="middle">Deceleration Severity (m/s² proxy)</text>
+          <!-- gridlines -->
+          <line x1="46" y1="126" x2="330" y2="126" stroke="#1e293b" stroke-dasharray="2,3" stroke-width="0.7"/>
+          <line x1="46" y1="94"  x2="330" y2="94"  stroke="#1e293b" stroke-dasharray="2,3" stroke-width="0.7"/>
+          <line x1="46" y1="62"  x2="330" y2="62"  stroke="#1e293b" stroke-dasharray="2,3" stroke-width="0.7"/>
+          <line x1="110" y1="12" x2="110" y2="158" stroke="#1e293b" stroke-dasharray="2,3" stroke-width="0.7"/>
+          <line x1="174" y1="12" x2="174" y2="158" stroke="#1e293b" stroke-dasharray="2,3" stroke-width="0.7"/>
+          <line x1="238" y1="12" x2="238" y2="158" stroke="#1e293b" stroke-dasharray="2,3" stroke-width="0.7"/>
+          <!-- scatter points: no-crash (circle, blue) and crash/claim (diamond, red) -->
+          <!-- x = 46 + g/1.2 * 284, y = 158 - freq/32*146 -->
+          <!-- No-crash points (blue circles) — lower severity, scattered -->
+          <circle cx="58"  cy="148" r="3" fill="#6c8fff" opacity="0.7"/>
+          <circle cx="65"  cy="135" r="3" fill="#6c8fff" opacity="0.7"/>
+          <circle cx="72"  cy="140" r="3" fill="#6c8fff" opacity="0.7"/>
+          <circle cx="80"  cy="128" r="3" fill="#6c8fff" opacity="0.7"/>
+          <circle cx="88"  cy="143" r="3" fill="#6c8fff" opacity="0.7"/>
+          <circle cx="95"  cy="120" r="3" fill="#6c8fff" opacity="0.7"/>
+          <circle cx="105" cy="131" r="3" fill="#6c8fff" opacity="0.7"/>
+          <circle cx="112" cy="115" r="3" fill="#6c8fff" opacity="0.7"/>
+          <circle cx="120" cy="122" r="3" fill="#6c8fff" opacity="0.7"/>
+          <circle cx="128" cy="108" r="3" fill="#6c8fff" opacity="0.7"/>
+          <circle cx="135" cy="98"  r="3" fill="#6c8fff" opacity="0.7"/>
+          <circle cx="143" cy="112" r="3" fill="#6c8fff" opacity="0.7"/>
+          <circle cx="150" cy="90"  r="3" fill="#6c8fff" opacity="0.7"/>
+          <circle cx="158" cy="102" r="3" fill="#6c8fff" opacity="0.7"/>
+          <circle cx="165" cy="85"  r="3" fill="#6c8fff" opacity="0.7"/>
+          <circle cx="175" cy="78"  r="3" fill="#6c8fff" opacity="0.7"/>
+          <circle cx="183" cy="70"  r="3" fill="#6c8fff" opacity="0.7"/>
+          <circle cx="190" cy="82"  r="3" fill="#6c8fff" opacity="0.7"/>
+          <circle cx="200" cy="65"  r="3" fill="#6c8fff" opacity="0.65"/>
+          <circle cx="210" cy="72"  r="3" fill="#6c8fff" opacity="0.65"/>
+          <circle cx="220" cy="59"  r="3" fill="#6c8fff" opacity="0.65"/>
+          <!-- crash/claim points (red diamonds) — higher severity -->
+          <polygon points="142,60 147,54 152,60 147,66" fill="#f87171" opacity="0.85"/>
+          <polygon points="158,48 163,42 168,48 163,54" fill="#f87171" opacity="0.85"/>
+          <polygon points="172,38 177,32 182,38 177,44" fill="#f87171" opacity="0.85"/>
+          <polygon points="188,30 193,24 198,30 193,36" fill="#f87171" opacity="0.85"/>
+          <polygon points="205,22 210,16 215,22 210,28" fill="#f87171" opacity="0.85"/>
+          <polygon points="220,34 225,28 230,34 225,40" fill="#f87171" opacity="0.85"/>
+          <polygon points="235,18 240,12 245,18 240,24" fill="#f87171" opacity="0.85"/>
+          <polygon points="250,26 255,20 260,26 255,32" fill="#f87171" opacity="0.85"/>
+          <polygon points="265,14 270,8  275,14 270,20" fill="#f87171" opacity="0.85"/>
+          <polygon points="280,20 285,14 290,20 285,26" fill="#f87171" opacity="0.85"/>
+          <polygon points="295,28 300,22 305,28 300,34" fill="#f87171" opacity="0.85"/>
+          <!-- decision boundary line (vertical dashed) at 0.55g = x≈176 -->
+          <line x1="176" y1="12" x2="176" y2="158" stroke="#fbbf24" stroke-width="1.5" stroke-dasharray="5,3"/>
+          <text x="178" y="22" fill="#fbbf24" font-size="6" font-weight="600">Threshold 0.55g</text>
+          <!-- precision/recall readout box -->
+          <rect x="230" y="130" width="92" height="24" rx="4" fill="#1e293b" stroke="#334155" stroke-width="0.8"/>
+          <text x="235" y="140" fill="#34d399" font-size="6.5" font-weight="600">Precision 84.2%</text>
+          <text x="235" y="150" fill="#a78bfa" font-size="6.5" font-weight="600">Recall 71.8%</text>
+          <!-- legend -->
+          <circle cx="50" cy="186" r="3.5" fill="#6c8fff" opacity="0.8"/>
+          <text x="56" y="189" fill="#94a3b8" font-size="6.5">No crash / claim</text>
+          <polygon points="120,183 124,178 128,183 124,188" fill="#f87171" opacity="0.85"/>
+          <text x="132" y="189" fill="#94a3b8" font-size="6.5">Crash / claim event</text>
+          <line x1="220" y1="186" x2="234" y2="186" stroke="#fbbf24" stroke-width="1.5" stroke-dasharray="4,2"/>
+          <text x="237" y="189" fill="#94a3b8" font-size="6.5">Decision boundary</text>
+        </svg>
+      </div>
+      <div class="dimensions"><strong>Dimensions:</strong> X: deceleration severity (m/s² proxy, 0–1.2g) · Y: event frequency per 1,000 km · Color: crash/claim outcome (blue = safe, red = incident) · Vertical slider = configurable decision boundary · Precision/recall readout updates in real time</div>
+      <div class="basis"><strong>Research basis:</strong> Decision-adjusted driver risk predictive models — up to 31.8% precision gain over naïve thresholds (Acct. Anal. Prev. 2021); optimal threshold shifts by up to 26.1% depending on fleet operator objective (flag top 1% vs. top 10%)</div>
+      <div class="audience"><strong>Audience:</strong> Fleet manager · Insurance underwriter · Platform administrator</div>
+    </div>
+
+    <!-- ============================================================
+         CARD 5: Fuel Efficiency vs. Driving Score Correlation
+         Scatter plot with regression line; bubble size = km driven.
+         TIRF eco-driving 2,604 drivers; Volvo heavy-truck fuel study.
+         ============================================================ -->
+    <div class="card">
+      <div class="card-title">Fuel Efficiency vs. Driving Score</div>
+      <div class="tags"><span class="badge">Scatter</span><span class="badge">Regression</span><span class="badge">Fuel</span></div>
+      <div class="preview">
+        <svg width="340" height="200" viewBox="0 0 340 200" xmlns="http://www.w3.org/2000/svg">
+          <!-- axes -->
+          <line x1="42" y1="10" x2="42" y2="158" stroke="#334155" stroke-width="1"/>
+          <line x1="42" y1="158" x2="330" y2="158" stroke="#334155" stroke-width="1"/>
+          <!-- Y: fuel consumption L/100km, 6-18 -->
+          <text x="38" y="158" fill="#64748b" font-size="6" text-anchor="end">6</text>
+          <text x="38" y="129" fill="#64748b" font-size="6" text-anchor="end">9</text>
+          <text x="38" y="100" fill="#64748b" font-size="6" text-anchor="end">12</text>
+          <text x="38" y="71"  fill="#64748b" font-size="6" text-anchor="end">15</text>
+          <text x="38" y="42"  fill="#64748b" font-size="6" text-anchor="end">18</text>
+          <text x="10" y="90" fill="#64748b" font-size="6" text-anchor="middle" transform="rotate(-90,10,90)">L / 100 km</text>
+          <!-- gridlines -->
+          <line x1="42" y1="129" x2="330" y2="129" stroke="#1e293b" stroke-dasharray="2,3" stroke-width="0.7"/>
+          <line x1="42" y1="100" x2="330" y2="100" stroke="#1e293b" stroke-dasharray="2,3" stroke-width="0.7"/>
+          <line x1="42" y1="71"  x2="330" y2="71"  stroke="#1e293b" stroke-dasharray="2,3" stroke-width="0.7"/>
+          <!-- X: driver score 0-100. x = 42 + score/100*288 -->
+          <text x="42"  y="167" fill="#64748b" font-size="6" text-anchor="middle">0</text>
+          <text x="114" y="167" fill="#64748b" font-size="6" text-anchor="middle">25</text>
+          <text x="186" y="167" fill="#64748b" font-size="6" text-anchor="middle">50</text>
+          <text x="258" y="167" fill="#64748b" font-size="6" text-anchor="middle">75</text>
+          <text x="330" y="167" fill="#64748b" font-size="6" text-anchor="middle">100</text>
+          <text x="186" y="176" fill="#64748b" font-size="6.5" text-anchor="middle">Driver Safety Score (0–100)</text>
+          <!-- scatter points: score vs fuel. y = 158 - (fuel-6)/12*148 -->
+          <!-- low-score, high-fuel: bad drivers -->
+          <circle cx="55"  cy="38"  r="5" fill="#f87171" opacity="0.65"/>
+          <circle cx="68"  cy="48"  r="4" fill="#f87171" opacity="0.65"/>
+          <circle cx="75"  cy="55"  r="6" fill="#f87171" opacity="0.65"/>
+          <circle cx="88"  cy="45"  r="4" fill="#f87171" opacity="0.65"/>
+          <circle cx="100" cy="62"  r="5" fill="#f87171" opacity="0.65"/>
+          <circle cx="112" cy="70"  r="4" fill="#fbbf24" opacity="0.65"/>
+          <circle cx="125" cy="78"  r="5" fill="#fbbf24" opacity="0.65"/>
+          <circle cx="138" cy="85"  r="4" fill="#fbbf24" opacity="0.65"/>
+          <circle cx="150" cy="82"  r="6" fill="#fbbf24" opacity="0.65"/>
+          <circle cx="162" cy="91"  r="5" fill="#fbbf24" opacity="0.65"/>
+          <circle cx="175" cy="95"  r="4" fill="#fbbf24" opacity="0.65"/>
+          <circle cx="188" cy="100" r="5" fill="#fbbf24" opacity="0.65"/>
+          <!-- mid score: middle fuel -->
+          <circle cx="200" cy="108" r="5" fill="#34d399" opacity="0.65"/>
+          <circle cx="212" cy="112" r="4" fill="#34d399" opacity="0.65"/>
+          <circle cx="224" cy="118" r="6" fill="#34d399" opacity="0.65"/>
+          <circle cx="238" cy="122" r="4" fill="#34d399" opacity="0.65"/>
+          <circle cx="250" cy="128" r="5" fill="#34d399" opacity="0.65"/>
+          <circle cx="264" cy="132" r="4" fill="#34d399" opacity="0.65"/>
+          <circle cx="278" cy="135" r="5" fill="#34d399" opacity="0.65"/>
+          <circle cx="292" cy="140" r="6" fill="#34d399" opacity="0.65"/>
+          <circle cx="308" cy="144" r="4" fill="#34d399" opacity="0.65"/>
+          <circle cx="320" cy="146" r="5" fill="#34d399" opacity="0.65"/>
+          <!-- regression line: negative slope, score 0→100 fuel ~16.5→6.5 -->
+          <line x1="42" y1="40" x2="330" y2="148" stroke="#6c8fff" stroke-width="2" stroke-dasharray="5,3" opacity="0.8"/>
+          <!-- r² annotation -->
+          <text x="60" y="180" fill="#6c8fff" font-size="7">r² = 0.71  (p &lt; 0.001)</text>
+          <!-- legend -->
+          <circle cx="175" cy="180" r="4" fill="#f87171" opacity="0.7"/>
+          <text x="181" y="183" fill="#94a3b8" font-size="6.5">High risk</text>
+          <circle cx="220" cy="180" r="4" fill="#fbbf24" opacity="0.7"/>
+          <text x="226" y="183" fill="#94a3b8" font-size="6.5">Moderate</text>
+          <circle cx="265" cy="180" r="4" fill="#34d399" opacity="0.7"/>
+          <text x="271" y="183" fill="#94a3b8" font-size="6.5">Safe</text>
+        </svg>
+      </div>
+      <div class="dimensions"><strong>Dimensions:</strong> X: driver safety score (0–100) · Y: fuel consumption (L/100 km, normalized by vehicle class and route) · Color: risk tier · Bubble size: total km driven · Overlaid OLS regression line with r² annotation</div>
+      <div class="basis"><strong>Research basis:</strong> TIRF eco-driving study (2,604 drivers, 341M km) confirms eco-driving cuts fuel use and crash risk; aggressive driving lowers fuel economy 15–30% (AFDC); Volvo heavy-truck telematics links harsh accel/decel to measurable unnecessary fuel consumption</div>
+      <div class="audience"><strong>Audience:</strong> Operations director · Fleet manager</div>
+    </div>
+
+    <!-- ============================================================
+         CARD 6: Coaching Effectiveness Tracker
+         Grouped before/after bar chart with coaching session annotations.
+         OBMS FOT (FHWA) + Schlumberger 50% incident reduction.
+         ============================================================ -->
+    <div class="card">
+      <div class="card-title">Coaching Effectiveness Tracker</div>
+      <div class="tags"><span class="badge">Before / After</span><span class="badge">Bar Chart</span><span class="badge">Coaching</span></div>
+      <div class="preview">
+        <svg width="340" height="200" viewBox="0 0 340 200" xmlns="http://www.w3.org/2000/svg">
+          <!-- axes -->
+          <line x1="42" y1="10" x2="42" y2="158" stroke="#334155" stroke-width="1"/>
+          <line x1="42" y1="158" x2="330" y2="158" stroke="#334155" stroke-width="1"/>
+          <!-- Y: harsh events per 1,000 km -->
+          <text x="38" y="158" fill="#64748b" font-size="6" text-anchor="end">0</text>
+          <text x="38" y="121" fill="#64748b" font-size="6" text-anchor="end">5</text>
+          <text x="38" y="84"  fill="#64748b" font-size="6" text-anchor="end">10</text>
+          <text x="38" y="47"  fill="#64748b" font-size="6" text-anchor="end">15</text>
+          <text x="10" y="90" fill="#64748b" font-size="6" text-anchor="middle" transform="rotate(-90,10,90)">Events / 1,000 km</text>
+          <!-- gridlines -->
+          <line x1="42" y1="121" x2="330" y2="121" stroke="#1e293b" stroke-dasharray="2,3" stroke-width="0.7"/>
+          <line x1="42" y1="84"  x2="330" y2="84"  stroke="#1e293b" stroke-dasharray="2,3" stroke-width="0.7"/>
+          <!-- 5 drivers, grouped bars (before=red, after=green). group width=52, bar w=20, gap=4 -->
+          <!-- driver 1: before=14.2, after=7.8 → y_b=158-14.2/15*148=18, h=140; y_a=158-7.8/15*148=81, h=77 -->
+          <rect x="50"  y="18"  width="20" height="140" rx="2" fill="#f87171" opacity="0.8"/>
+          <rect x="74"  y="81"  width="20" height="77"  rx="2" fill="#34d399" opacity="0.8"/>
+          <!-- driver 2: before=11.5, after=5.2 -->
+          <rect x="102" y="45"  width="20" height="113" rx="2" fill="#f87171" opacity="0.8"/>
+          <rect x="126" y="107" width="20" height="51"  rx="2" fill="#34d399" opacity="0.8"/>
+          <!-- driver 3: before=9.8, after=4.1 -->
+          <rect x="154" y="61"  width="20" height="97"  rx="2" fill="#f87171" opacity="0.8"/>
+          <rect x="178" y="118" width="20" height="40"  rx="2" fill="#34d399" opacity="0.8"/>
+          <!-- driver 4: before=13.1, after=6.5 -->
+          <rect x="206" y="29"  width="20" height="129" rx="2" fill="#f87171" opacity="0.8"/>
+          <rect x="230" y="94"  width="20" height="64"  rx="2" fill="#34d399" opacity="0.8"/>
+          <!-- driver 5: before=8.4, after=3.2 -->
+          <rect x="258" y="75"  width="20" height="83"  rx="2" fill="#f87171" opacity="0.8"/>
+          <rect x="282" y="126" width="20" height="32"  rx="2" fill="#34d399" opacity="0.8"/>
+          <!-- X labels -->
+          <text x="72"  y="167" fill="#64748b" font-size="6.5" text-anchor="middle">Driver A</text>
+          <text x="124" y="167" fill="#64748b" font-size="6.5" text-anchor="middle">Driver B</text>
+          <text x="176" y="167" fill="#64748b" font-size="6.5" text-anchor="middle">Driver C</text>
+          <text x="228" y="167" fill="#64748b" font-size="6.5" text-anchor="middle">Driver D</text>
+          <text x="280" y="167" fill="#64748b" font-size="6.5" text-anchor="middle">Driver E</text>
+          <!-- reduction % labels -->
+          <text x="72"  y="14"  fill="#34d399" font-size="6" text-anchor="middle">−45%</text>
+          <text x="124" y="41"  fill="#34d399" font-size="6" text-anchor="middle">−55%</text>
+          <text x="176" y="57"  fill="#34d399" font-size="6" text-anchor="middle">−58%</text>
+          <text x="228" y="25"  fill="#34d399" font-size="6" text-anchor="middle">−50%</text>
+          <text x="280" y="71"  fill="#34d399" font-size="6" text-anchor="middle">−62%</text>
+          <!-- legend -->
+          <rect x="42"  y="180" width="10" height="8" rx="1" fill="#f87171" opacity="0.8"/>
+          <text x="54"  y="187" fill="#94a3b8" font-size="6.5">Before coaching</text>
+          <rect x="148" y="180" width="10" height="8" rx="1" fill="#34d399" opacity="0.8"/>
+          <text x="160" y="187" fill="#94a3b8" font-size="6.5">After coaching</text>
+        </svg>
+      </div>
+      <div class="dimensions"><strong>Dimensions:</strong> X: driver or cohort · Paired bars: pre-coaching vs. post-coaching harsh event rate per 1,000 km · Reduction % label above each pair · Secondary: trend sparkline per driver (score over time) · Coaching session markers on timeline</div>
+      <div class="basis"><strong>Research basis:</strong> OBMS FOT (FHWA) shows SCE reduction contingent on coaching intensity; Schlumberger multi-year deployment achieved 50% incident reduction per million miles with regular positive reinforcement; Samsara reports 84% harsh event reduction</div>
+      <div class="audience"><strong>Audience:</strong> Safety manager · Fleet manager</div>
+    </div>
+
+    <!-- ============================================================
+         CARD 7: Route Risk Overlay Map
+         Geographic heat map with GPS route traces, risk-coded segments.
+         GNN-RMNet 96% anomaly precision; CA work-zone study.
+         ============================================================ -->
+    <div class="card">
+      <div class="card-title">Route Risk Overlay Map</div>
+      <div class="tags"><span class="badge">Geographic</span><span class="badge">Heat Map</span><span class="badge">Routes</span><span class="badge">GPS</span></div>
+      <div class="preview">
+        <svg width="340" height="200" viewBox="0 0 340 200" xmlns="http://www.w3.org/2000/svg">
+          <!-- map background grid -->
+          <rect x="20" y="10" width="300" height="175" rx="6" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+          <!-- grid lines (street grid simulation) -->
+          <line x1="80"  y1="10" x2="80"  y2="185" stroke="#1e293b" stroke-width="0.5"/>
+          <line x1="140" y1="10" x2="140" y2="185" stroke="#1e293b" stroke-width="0.5"/>
+          <line x1="200" y1="10" x2="200" y2="185" stroke="#1e293b" stroke-width="0.5"/>
+          <line x1="260" y1="10" x2="260" y2="185" stroke="#1e293b" stroke-width="0.5"/>
+          <line x1="20" y1="60"  x2="320" y2="60"  stroke="#1e293b" stroke-width="0.5"/>
+          <line x1="20" y1="110" x2="320" y2="110" stroke="#1e293b" stroke-width="0.5"/>
+          <line x1="20" y1="155" x2="320" y2="155" stroke="#1e293b" stroke-width="0.5"/>
+          <!-- route 1: safe (green) -->
+          <polyline points="30,170 60,155 90,140 120,125 150,110 180,98 210,88 240,80 270,72 300,65"
+                    fill="none" stroke="#34d399" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" opacity="0.85"/>
+          <!-- route 2: mixed risk -->
+          <polyline points="30,100 55,90 80,85 105,80 130,70"
+                    fill="none" stroke="#34d399" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" opacity="0.85"/>
+          <polyline points="130,70 155,62 178,55 200,42"
+                    fill="none" stroke="#fbbf24" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" opacity="0.85"/>
+          <polyline points="200,42 225,35 250,30 280,25 310,22"
+                    fill="none" stroke="#f87171" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" opacity="0.85"/>
+          <!-- route 3: danger segment -->
+          <polyline points="30,40 60,45 90,52 120,60 150,68"
+                    fill="none" stroke="#fbbf24" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" opacity="0.85"/>
+          <polyline points="150,68 180,75 210,82 240,90"
+                    fill="none" stroke="#f87171" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" opacity="0.85"/>
+          <!-- event markers (harsh braking dots) -->
+          <circle cx="200" cy="42" r="5" fill="#f87171" opacity="0.9"/>
+          <circle cx="240" cy="90" r="4" fill="#f87171" opacity="0.9"/>
+          <circle cx="178" cy="55" r="3" fill="#fbbf24" opacity="0.9"/>
+          <!-- work-zone indicator -->
+          <rect x="244" y="22" width="22" height="14" rx="2" fill="#fbbf24" opacity="0.15" stroke="#fbbf24" stroke-width="0.8"/>
+          <text x="255" y="30" fill="#fbbf24" font-size="5.5" text-anchor="middle">⚠ Zone</text>
+          <!-- legend -->
+          <line x1="30" y1="192" x2="55" y2="192" stroke="#34d399" stroke-width="3"/>
+          <text x="58" y="195" fill="#94a3b8" font-size="6">Low risk</text>
+          <line x1="102" y1="192" x2="127" y2="192" stroke="#fbbf24" stroke-width="3"/>
+          <text x="130" y="195" fill="#94a3b8" font-size="6">Moderate</text>
+          <line x1="186" y1="192" x2="211" y2="192" stroke="#f87171" stroke-width="3"/>
+          <text x="214" y="195" fill="#94a3b8" font-size="6">High risk</text>
+          <circle cx="268" cy="192" r="4" fill="#f87171" opacity="0.9"/>
+          <text x="275" y="195" fill="#94a3b8" font-size="6">Harsh event</text>
+        </svg>
+      </div>
+      <div class="dimensions"><strong>Dimensions:</strong> Map base layer with GPS route traces · Segments color-coded by harsh event density (green/amber/red) · Event marker dots at incident locations · Optional overlays: speed zones, work zones, known hazard points · Drill-down to trip-level replay</div>
+      <div class="basis"><strong>Research basis:</strong> GNN-RMNet achieves 96% anomaly detection precision and 95% route deviation sensitivity on GPS data; California work-zone naturalistic study shows lane-specific geo-contextual alerts produce 1.5× steeper deceleration vs. generic alerts</div>
+      <div class="audience"><strong>Audience:</strong> Fleet manager · Route planner</div>
+    </div>
+
+    <!-- ============================================================
+         CARD 8: Fleet-Wide Safety Trend Report (Weekly/Monthly)
+         Multi-line chart with KPI summary table and RAG indicators.
+         Geotab Safety Benchmarks + fleet benchmarking framework.
+         ============================================================ -->
+    <div class="card">
+      <div class="card-title">Fleet-Wide Safety Trend Report</div>
+      <div class="tags"><span class="badge">Multi-Line</span><span class="badge">KPI Table</span><span class="badge">RAG</span><span class="badge">Weekly</span></div>
+      <div class="preview">
+        <svg width="340" height="200" viewBox="0 0 340 200" xmlns="http://www.w3.org/2000/svg">
+          <!-- axes -->
+          <line x1="42" y1="10" x2="42" y2="130" stroke="#334155" stroke-width="1"/>
+          <line x1="42" y1="130" x2="320" y2="130" stroke="#334155" stroke-width="1"/>
+          <!-- Y 0-100 (score) / 0-20 (events) — dual scale, show score -->
+          <text x="38" y="130" fill="#64748b" font-size="6" text-anchor="end">0</text>
+          <text x="38" y="103" fill="#64748b" font-size="6" text-anchor="end">25</text>
+          <text x="38" y="76"  fill="#64748b" font-size="6" text-anchor="end">50</text>
+          <text x="38" y="49"  fill="#64748b" font-size="6" text-anchor="end">75</text>
+          <text x="38" y="22"  fill="#64748b" font-size="6" text-anchor="end">100</text>
+          <!-- gridlines -->
+          <line x1="42" y1="103" x2="320" y2="103" stroke="#1e293b" stroke-dasharray="2,3" stroke-width="0.7"/>
+          <line x1="42" y1="76"  x2="320" y2="76"  stroke="#1e293b" stroke-dasharray="2,3" stroke-width="0.7"/>
+          <line x1="42" y1="49"  x2="320" y2="49"  stroke="#1e293b" stroke-dasharray="2,3" stroke-width="0.7"/>
+          <!-- 8 weeks, x spacing = (320-42)/7 = 39.7 -->
+          <text x="42"  y="139" fill="#64748b" font-size="5.5" text-anchor="middle">W1</text>
+          <text x="82"  y="139" fill="#64748b" font-size="5.5" text-anchor="middle">W2</text>
+          <text x="122" y="139" fill="#64748b" font-size="5.5" text-anchor="middle">W3</text>
+          <text x="162" y="139" fill="#64748b" font-size="5.5" text-anchor="middle">W4</text>
+          <text x="202" y="139" fill="#64748b" font-size="5.5" text-anchor="middle">W5</text>
+          <text x="242" y="139" fill="#64748b" font-size="5.5" text-anchor="middle">W6</text>
+          <text x="282" y="139" fill="#64748b" font-size="5.5" text-anchor="middle">W7</text>
+          <text x="320" y="139" fill="#64748b" font-size="5.5" text-anchor="middle">W8</text>
+          <!-- Fleet avg score: 62,64,66,68,70,71,73,75 → y=130-score/100*120 -->
+          <polyline points="42,56 82,53 122,50 162,47 202,46 242,44 282,41 320,40"
+                    fill="none" stroke="#6c8fff" stroke-width="2" stroke-linejoin="round"/>
+          <!-- Harsh events/1000km (×8 for scale): 9,8.5,8,7.5,7,6.8,6.2,5.8 → y=130-v/20*120 -->
+          <polyline points="42,76 82,79 122,82 162,85 202,88 242,89 282,93 320,95"
+                    fill="none" stroke="#f87171" stroke-width="2" stroke-dasharray="4,2" stroke-linejoin="round"/>
+          <!-- Speeding %: 18,17,16,15,14,13,12,11 → same scale /100 -->
+          <polyline points="42,108 82,110 122,111 162,112 202,113 242,114 282,116 320,117"
+                    fill="none" stroke="#fbbf24" stroke-width="1.5" stroke-dasharray="3,2" stroke-linejoin="round"/>
+          <!-- dots -->
+          <circle cx="42" cy="56" r="2.5" fill="#6c8fff"/><circle cx="320" cy="40" r="2.5" fill="#6c8fff"/>
+          <circle cx="42" cy="76" r="2.5" fill="#f87171"/><circle cx="320" cy="95" r="2.5" fill="#f87171"/>
+          <!-- KPI summary table below chart -->
+          <rect x="42" y="144" width="278" height="50" rx="4" fill="#0f1117" stroke="#2d3748" stroke-width="0.8"/>
+          <text x="52" y="154" fill="#94a3b8" font-size="6" font-weight="600">Metric</text>
+          <text x="160" y="154" fill="#94a3b8" font-size="6" font-weight="600">This period</text>
+          <text x="230" y="154" fill="#94a3b8" font-size="6" font-weight="600">vs. prior</text>
+          <text x="280" y="154" fill="#94a3b8" font-size="6" font-weight="600">Status</text>
+          <line x1="42" y1="157" x2="320" y2="157" stroke="#2d3748" stroke-width="0.5"/>
+          <text x="52" y="165" fill="#e2e8f0" font-size="6">Fleet avg score</text>
+          <text x="165" y="165" fill="#e2e8f0" font-size="6">75</text>
+          <text x="230" y="165" fill="#34d399" font-size="6">+13 pts</text>
+          <rect x="278" y="159" width="26" height="9" rx="2" fill="rgba(52,211,153,0.15)"/>
+          <text x="291" y="166" fill="#34d399" font-size="6" text-anchor="middle">▲ Good</text>
+          <text x="52" y="176" fill="#e2e8f0" font-size="6">Harsh events/1k km</text>
+          <text x="165" y="176" fill="#e2e8f0" font-size="6">5.8</text>
+          <text x="230" y="176" fill="#34d399" font-size="6">−35%</text>
+          <rect x="278" y="170" width="26" height="9" rx="2" fill="rgba(52,211,153,0.15)"/>
+          <text x="291" y="177" fill="#34d399" font-size="6" text-anchor="middle">▲ Good</text>
+          <text x="52" y="187" fill="#e2e8f0" font-size="6">Speeding %</text>
+          <text x="165" y="187" fill="#e2e8f0" font-size="6">11%</text>
+          <text x="230" y="187" fill="#fbbf24" font-size="6">−7 pp</text>
+          <rect x="278" y="181" width="26" height="9" rx="2" fill="rgba(251,191,36,0.12)"/>
+          <text x="291" y="188" fill="#fbbf24" font-size="6" text-anchor="middle">→ Watch</text>
+        </svg>
+      </div>
+      <div class="dimensions"><strong>Dimensions:</strong> X: time (week or month) · Lines: fleet avg score, harsh event rate per 1,000 km, speeding % · KPI summary table: period-over-period change with RAG (red/amber/green) indicators · Drill-down to pillar breakdown or individual driver</div>
+      <div class="basis"><strong>Research basis:</strong> Geotab Safety Benchmarks confirms trend-over-time is the primary benchmarking mode; fleet benchmarking framework emphasises "safety cultural maturity and trends" — TRID 1360958; centralized multi-metric dashboards outperform siloed tools</div>
+      <div class="audience"><strong>Audience:</strong> Operations director · C-suite</div>
+    </div>
+
+    <!-- ============================================================
+         CARD 9: Fatigue Risk Window Analysis
+         Time-of-day heatmap with lane-departure event overlay.
+         PERCLOS + CAS simulator + DMS 74k records.
+         ============================================================ -->
+    <div class="card">
+      <div class="card-title">Fatigue Risk Window Analysis</div>
+      <div class="tags"><span class="badge">Heat Map</span><span class="badge">Fatigue</span><span class="badge">Time-of-Day</span><span class="badge">PERCLOS</span></div>
+      <div class="preview">
+        <svg width="340" height="200" viewBox="0 0 340 200" xmlns="http://www.w3.org/2000/svg">
+          <!-- 24-hour × 5-day heatmap (2-hr bands = 12 rows, 5 day cols) -->
+          <!-- col width=50, row height=11, left=60, top=18 -->
+          <!-- day headers -->
+          <text x="85"  y="14" fill="#64748b" font-size="6.5" text-anchor="middle">Mon</text>
+          <text x="135" y="14" fill="#64748b" font-size="6.5" text-anchor="middle">Tue</text>
+          <text x="185" y="14" fill="#64748b" font-size="6.5" text-anchor="middle">Wed</text>
+          <text x="235" y="14" fill="#64748b" font-size="6.5" text-anchor="middle">Thu</text>
+          <text x="285" y="14" fill="#64748b" font-size="6.5" text-anchor="middle">Fri</text>
+          <!-- row labels (2-hr bands) -->
+          <text x="56" y="28"  fill="#64748b" font-size="5.5" text-anchor="end">00–02</text>
+          <text x="56" y="39"  fill="#64748b" font-size="5.5" text-anchor="end">02–04</text>
+          <text x="56" y="50"  fill="#64748b" font-size="5.5" text-anchor="end">04–06</text>
+          <text x="56" y="61"  fill="#64748b" font-size="5.5" text-anchor="end">06–08</text>
+          <text x="56" y="72"  fill="#64748b" font-size="5.5" text-anchor="end">08–10</text>
+          <text x="56" y="83"  fill="#64748b" font-size="5.5" text-anchor="end">10–12</text>
+          <text x="56" y="94"  fill="#64748b" font-size="5.5" text-anchor="end">12–14</text>
+          <text x="56" y="105" fill="#64748b" font-size="5.5" text-anchor="end">14–16</text>
+          <text x="56" y="116" fill="#64748b" font-size="5.5" text-anchor="end">16–18</text>
+          <text x="56" y="127" fill="#64748b" font-size="5.5" text-anchor="end">18–20</text>
+          <text x="56" y="138" fill="#64748b" font-size="5.5" text-anchor="end">20–22</text>
+          <text x="56" y="149" fill="#64748b" font-size="5.5" text-anchor="end">22–24</text>
+          <!-- cells: col x=60+(col*50), row y=18+(row*11), w=49, h=10 -->
+          <!-- Fatigue risk: HIGH at 02-04 and 13-15; lower elsewhere -->
+          <!-- Row 0 (00-02): moderate night risk -->
+          <rect x="60"  y="18" width="49" height="10" rx="1" fill="#fbbf24" opacity="0.25"/>
+          <rect x="110" y="18" width="49" height="10" rx="1" fill="#fbbf24" opacity="0.22"/>
+          <rect x="160" y="18" width="49" height="10" rx="1" fill="#fbbf24" opacity="0.24"/>
+          <rect x="210" y="18" width="49" height="10" rx="1" fill="#fbbf24" opacity="0.23"/>
+          <rect x="260" y="18" width="49" height="10" rx="1" fill="#fbbf24" opacity="0.28"/>
+          <!-- Row 1 (02-04): circadian trough — CRITICAL -->
+          <rect x="60"  y="29" width="49" height="10" rx="1" fill="#f87171" opacity="0.80"/>
+          <rect x="110" y="29" width="49" height="10" rx="1" fill="#f87171" opacity="0.78"/>
+          <rect x="160" y="29" width="49" height="10" rx="1" fill="#f87171" opacity="0.82"/>
+          <rect x="210" y="29" width="49" height="10" rx="1" fill="#f87171" opacity="0.79"/>
+          <rect x="260" y="29" width="49" height="10" rx="1" fill="#f87171" opacity="0.85"/>
+          <!-- Row 2 (04-06): declining risk -->
+          <rect x="60"  y="40" width="49" height="10" rx="1" fill="#fbbf24" opacity="0.45"/>
+          <rect x="110" y="40" width="49" height="10" rx="1" fill="#fbbf24" opacity="0.42"/>
+          <rect x="160" y="40" width="49" height="10" rx="1" fill="#fbbf24" opacity="0.44"/>
+          <rect x="210" y="40" width="49" height="10" rx="1" fill="#fbbf24" opacity="0.43"/>
+          <rect x="260" y="40" width="49" height="10" rx="1" fill="#fbbf24" opacity="0.48"/>
+          <!-- Row 3 (06-08): morning rush, alert -->
+          <rect x="60"  y="51" width="49" height="10" rx="1" fill="#6c8fff" opacity="0.18"/>
+          <rect x="110" y="51" width="49" height="10" rx="1" fill="#6c8fff" opacity="0.16"/>
+          <rect x="160" y="51" width="49" height="10" rx="1" fill="#6c8fff" opacity="0.18"/>
+          <rect x="210" y="51" width="49" height="10" rx="1" fill="#6c8fff" opacity="0.17"/>
+          <rect x="260" y="51" width="49" height="10" rx="1" fill="#6c8fff" opacity="0.20"/>
+          <!-- Row 4-5 (08-12): low risk -->
+          <rect x="60"  y="62" width="49" height="10" rx="1" fill="#6c8fff" opacity="0.10"/>
+          <rect x="110" y="62" width="49" height="10" rx="1" fill="#6c8fff" opacity="0.10"/>
+          <rect x="160" y="62" width="49" height="10" rx="1" fill="#6c8fff" opacity="0.10"/>
+          <rect x="210" y="62" width="49" height="10" rx="1" fill="#6c8fff" opacity="0.10"/>
+          <rect x="260" y="62" width="49" height="10" rx="1" fill="#6c8fff" opacity="0.12"/>
+          <rect x="60"  y="73" width="49" height="10" rx="1" fill="#6c8fff" opacity="0.10"/>
+          <rect x="110" y="73" width="49" height="10" rx="1" fill="#6c8fff" opacity="0.10"/>
+          <rect x="160" y="73" width="49" height="10" rx="1" fill="#6c8fff" opacity="0.10"/>
+          <rect x="210" y="73" width="49" height="10" rx="1" fill="#6c8fff" opacity="0.10"/>
+          <rect x="260" y="73" width="49" height="10" rx="1" fill="#6c8fff" opacity="0.10"/>
+          <!-- Row 6 (12-14): post-lunch dip — HIGH -->
+          <rect x="60"  y="84" width="49" height="10" rx="1" fill="#f87171" opacity="0.65"/>
+          <rect x="110" y="84" width="49" height="10" rx="1" fill="#f87171" opacity="0.62"/>
+          <rect x="160" y="84" width="49" height="10" rx="1" fill="#f87171" opacity="0.68"/>
+          <rect x="210" y="84" width="49" height="10" rx="1" fill="#f87171" opacity="0.64"/>
+          <rect x="260" y="84" width="49" height="10" rx="1" fill="#f87171" opacity="0.70"/>
+          <!-- Row 7-11 (14-24): low to moderate -->
+          <rect x="60"  y="95" width="49" height="10" rx="1" fill="#6c8fff" opacity="0.14"/>
+          <rect x="110" y="95" width="49" height="10" rx="1" fill="#6c8fff" opacity="0.14"/>
+          <rect x="160" y="95" width="49" height="10" rx="1" fill="#6c8fff" opacity="0.14"/>
+          <rect x="210" y="95" width="49" height="10" rx="1" fill="#6c8fff" opacity="0.14"/>
+          <rect x="260" y="95" width="49" height="10" rx="1" fill="#6c8fff" opacity="0.16"/>
+          <rect x="60"  y="106" width="49" height="10" rx="1" fill="#fbbf24" opacity="0.20"/>
+          <rect x="110" y="106" width="49" height="10" rx="1" fill="#fbbf24" opacity="0.20"/>
+          <rect x="160" y="106" width="49" height="10" rx="1" fill="#fbbf24" opacity="0.22"/>
+          <rect x="210" y="106" width="49" height="10" rx="1" fill="#fbbf24" opacity="0.21"/>
+          <rect x="260" y="106" width="49" height="10" rx="1" fill="#fbbf24" opacity="0.25"/>
+          <rect x="60"  y="117" width="49" height="10" rx="1" fill="#fbbf24" opacity="0.18"/>
+          <rect x="110" y="117" width="49" height="10" rx="1" fill="#fbbf24" opacity="0.16"/>
+          <rect x="160" y="117" width="49" height="10" rx="1" fill="#fbbf24" opacity="0.18"/>
+          <rect x="210" y="117" width="49" height="10" rx="1" fill="#fbbf24" opacity="0.17"/>
+          <rect x="260" y="117" width="49" height="10" rx="1" fill="#fbbf24" opacity="0.20"/>
+          <rect x="60"  y="128" width="49" height="10" rx="1" fill="#6c8fff" opacity="0.10"/>
+          <rect x="110" y="128" width="49" height="10" rx="1" fill="#6c8fff" opacity="0.10"/>
+          <rect x="160" y="128" width="49" height="10" rx="1" fill="#6c8fff" opacity="0.10"/>
+          <rect x="210" y="128" width="49" height="10" rx="1" fill="#6c8fff" opacity="0.10"/>
+          <rect x="260" y="128" width="49" height="10" rx="1" fill="#6c8fff" opacity="0.10"/>
+          <rect x="60"  y="139" width="49" height="10" rx="1" fill="#6c8fff" opacity="0.10"/>
+          <rect x="110" y="139" width="49" height="10" rx="1" fill="#6c8fff" opacity="0.10"/>
+          <rect x="160" y="139" width="49" height="10" rx="1" fill="#6c8fff" opacity="0.10"/>
+          <rect x="210" y="139" width="49" height="10" rx="1" fill="#6c8fff" opacity="0.10"/>
+          <rect x="260" y="139" width="49" height="10" rx="1" fill="#6c8fff" opacity="0.10"/>
+          <!-- Lane departure event markers -->
+          <circle cx="85"  cy="34" r="3" fill="#fff" opacity="0.7"/>
+          <circle cx="185" cy="34" r="3" fill="#fff" opacity="0.7"/>
+          <circle cx="285" cy="34" r="3" fill="#fff" opacity="0.7"/>
+          <circle cx="135" cy="89" r="3" fill="#fff" opacity="0.7"/>
+          <circle cx="235" cy="89" r="3" fill="#fff" opacity="0.7"/>
+          <!-- legend -->
+          <rect x="60"  y="158" width="10" height="8" rx="1" fill="#f87171" opacity="0.8"/>
+          <text x="72"  y="165" fill="#94a3b8" font-size="6.5">High fatigue risk</text>
+          <rect x="160" y="158" width="10" height="8" rx="1" fill="#fbbf24" opacity="0.5"/>
+          <text x="172" y="165" fill="#94a3b8" font-size="6.5">Moderate</text>
+          <circle cx="240" cy="162" r="3" fill="#fff" opacity="0.7"/>
+          <text x="246" y="165" fill="#94a3b8" font-size="6.5">Lane departure</text>
+          <!-- annotations -->
+          <text x="163" y="27"  fill="#f87171" font-size="5.5" font-weight="600">Circadian trough</text>
+          <text x="163" y="82"  fill="#f87171" font-size="5.5" font-weight="600">Post-lunch dip</text>
+        </svg>
+      </div>
+      <div class="dimensions"><strong>Dimensions:</strong> X: day of week · Y: time of day (2-hr bands) · Color intensity: fatigue risk score · Overlay dots: lane departure warning events · Annotations for peak risk windows (circadian trough 02–04h, post-lunch dip 12–14h)</div>
+      <div class="basis"><strong>Research basis:</strong> PERCLOS validated as the most reliable alertness measure for commercial drivers; CAS circadian alertness simulator validated on 10,000+ driver-days linking fatigue scores to DOT-recordable accidents; DMS dataset: lane departures = ~79% of all alerts, night-time and mid-day carry elevated risk</div>
+      <div class="audience"><strong>Audience:</strong> Safety manager · Compliance officer</div>
+    </div>
+
+    <!-- ============================================================
+         CARD 10: Insurance & Total Cost of Ownership Summary
+         Stacked bar: current vs. "all drivers ≥80" scenario.
+         Shell white paper + FleetShield + eco-driving component life.
+         ============================================================ -->
+    <div class="card">
+      <div class="card-title">Insurance &amp; Total Cost of Ownership Summary</div>
+      <div class="tags"><span class="badge">Stacked Bar</span><span class="badge">TCO</span><span class="badge">Insurance</span><span class="badge">ROI</span></div>
+      <div class="preview">
+        <svg width="340" height="200" viewBox="0 0 340 200" xmlns="http://www.w3.org/2000/svg">
+          <!-- axes -->
+          <line x1="50" y1="10" x2="50" y2="155" stroke="#334155" stroke-width="1"/>
+          <line x1="50" y1="155" x2="310" y2="155" stroke="#334155" stroke-width="1"/>
+          <!-- Y: cost $k/vehicle/year, 0-60 -->
+          <text x="46" y="155" fill="#64748b" font-size="6" text-anchor="end">$0k</text>
+          <text x="46" y="130" fill="#64748b" font-size="6" text-anchor="end">$15k</text>
+          <text x="46" y="105" fill="#64748b" font-size="6" text-anchor="end">$30k</text>
+          <text x="46" y="80"  fill="#64748b" font-size="6" text-anchor="end">$45k</text>
+          <text x="46" y="55"  fill="#64748b" font-size="6" text-anchor="end">$60k</text>
+          <text x="10" y="90" fill="#64748b" font-size="6" text-anchor="middle" transform="rotate(-90,10,90)">Cost ($/vehicle/yr)</text>
+          <!-- gridlines -->
+          <line x1="50" y1="130" x2="310" y2="130" stroke="#1e293b" stroke-dasharray="2,3" stroke-width="0.7"/>
+          <line x1="50" y1="105" x2="310" y2="105" stroke="#1e293b" stroke-dasharray="2,3" stroke-width="0.7"/>
+          <line x1="50" y1="80"  x2="310" y2="80"  stroke="#1e293b" stroke-dasharray="2,3" stroke-width="0.7"/>
+          <!-- CURRENT bar (center x=130): $55k total -->
+          <!-- Fuel: $22k → h=22/60*145=53; Insurance: $14k → h=34; Brakes/tires: $12k → h=29; Collision: $7k → h=17 -->
+          <text x="130" y="175" fill="#94a3b8" font-size="6.5" text-anchor="middle">Current Fleet</text>
+          <rect x="90"  y="102" width="80" height="53" rx="2" fill="#6c8fff" opacity="0.80"/><!-- fuel $22k -->
+          <rect x="90"  y="68"  width="80" height="34" rx="2" fill="#a78bfa" opacity="0.80"/><!-- insurance $14k -->
+          <rect x="90"  y="39"  width="80" height="29" rx="2" fill="#fbbf24" opacity="0.80"/><!-- brakes/tires $12k -->
+          <rect x="90"  y="22"  width="80" height="17" rx="2" fill="#f87171" opacity="0.80"/><!-- collision $7k -->
+          <text x="130" y="98"  fill="#fff" font-size="6" text-anchor="middle" opacity="0.9">$22k fuel</text>
+          <text x="130" y="83"  fill="#fff" font-size="6" text-anchor="middle" opacity="0.9">$14k insur.</text>
+          <text x="130" y="52"  fill="#fff" font-size="6" text-anchor="middle" opacity="0.9">$12k</text>
+          <text x="130" y="30"  fill="#fff" font-size="6" text-anchor="middle" opacity="0.9">$7k</text>
+          <!-- Total label -->
+          <text x="130" y="19" fill="#e2e8f0" font-size="7" font-weight="700" text-anchor="middle">$55k</text>
+          <!-- IMPROVED bar (center x=230): drivers ≥80 → ~$35k -->
+          <!-- Fuel: $15k → h=36; Insurance: $9k → h=22; Brakes: $8k → h=19; Collision: $3k → h=7 -->
+          <text x="230" y="175" fill="#34d399" font-size="6.5" text-anchor="middle">All Drivers ≥80</text>
+          <rect x="190" y="119" width="80" height="36" rx="2" fill="#6c8fff" opacity="0.80"/>
+          <rect x="190" y="97"  width="80" height="22" rx="2" fill="#a78bfa" opacity="0.80"/>
+          <rect x="190" y="78"  width="80" height="19" rx="2" fill="#fbbf24" opacity="0.80"/>
+          <rect x="190" y="71"  width="80" height="7"  rx="2" fill="#f87171" opacity="0.80"/>
+          <text x="230" y="115" fill="#fff" font-size="6" text-anchor="middle" opacity="0.9">$15k fuel</text>
+          <text x="230" y="107" fill="#fff" font-size="6" text-anchor="middle" opacity="0.9">$9k</text>
+          <!-- Total + savings label -->
+          <text x="230" y="68" fill="#34d399" font-size="7" font-weight="700" text-anchor="middle">$35k</text>
+          <!-- savings annotation arrow -->
+          <line x1="172" y1="45" x2="188" y2="55" stroke="#34d399" stroke-width="1.2" marker-end="url(#arr)"/>
+          <text x="163" y="43" fill="#34d399" font-size="7" font-weight="600" text-anchor="middle">−$20k/yr</text>
+          <!-- legend -->
+          <rect x="50"  y="184" width="8" height="6" rx="1" fill="#6c8fff" opacity="0.8"/>
+          <text x="60"  y="190" fill="#94a3b8" font-size="6">Fuel</text>
+          <rect x="88"  y="184" width="8" height="6" rx="1" fill="#a78bfa" opacity="0.8"/>
+          <text x="98"  y="190" fill="#94a3b8" font-size="6">Insurance</text>
+          <rect x="140" y="184" width="8" height="6" rx="1" fill="#fbbf24" opacity="0.8"/>
+          <text x="150" y="190" fill="#94a3b8" font-size="6">Brakes / Tires</text>
+          <rect x="208" y="184" width="8" height="6" rx="1" fill="#f87171" opacity="0.8"/>
+          <text x="218" y="190" fill="#94a3b8" font-size="6">Collision repair</text>
+        </svg>
+      </div>
+      <div class="dimensions"><strong>Dimensions:</strong> Two bars: current fleet average vs. projected "all drivers ≥80" scenario · Stacked segments: fuel, insurance, brakes/tires, collision repair · Savings annotation · Tabular breakdown below chart with ROI period</div>
+      <div class="basis"><strong>Research basis:</strong> Shell white paper: driving style accounts for ~50% of total vehicle running costs; FleetShield quantifies $8K–$22K insurance savings per 50-truck fleet; eco-driving extends component lifespan by up to 30%; TIRF confirms crash risk + cost reduction simultaneously</div>
+      <div class="audience"><strong>Audience:</strong> Operations director · CFO · Fleet manager</div>
+    </div>
+
+    <!-- ============================================================
+         CARD 11: Driver Performance Ranking — Leaderboard
+         Preserved from 2026-04-19. Table with rank, score, trend, tier.
+         Peer-comparison RCT; Samsara gamification; Geotab benchmarks.
+         ============================================================ -->
+    <div class="card">
+      <div class="card-title">Driver Performance Ranking — Leaderboard</div>
+      <div class="tags"><span class="badge">Table</span><span class="badge">Ranking</span><span class="badge">Peer Comparison</span><span class="badge">Gamification</span></div>
+      <div class="preview">
+        <svg width="340" height="200" viewBox="0 0 340 200" xmlns="http://www.w3.org/2000/svg">
+          <!-- table background -->
+          <rect x="20" y="10" width="300" height="180" rx="6" fill="#0f1117" stroke="#2d3748" stroke-width="0.8"/>
+          <!-- header row -->
+          <rect x="20" y="10" width="300" height="20" rx="6" fill="#1e293b"/>
+          <rect x="20" y="26" width="300" height="4"  fill="#1e293b"/>
+          <text x="35"  y="23" fill="#94a3b8" font-size="6.5" font-weight="600">Rank</text>
+          <text x="70"  y="23" fill="#94a3b8" font-size="6.5" font-weight="600">Driver</text>
+          <text x="170" y="23" fill="#94a3b8" font-size="6.5" font-weight="600">Score</text>
+          <text x="215" y="23" fill="#94a3b8" font-size="6.5" font-weight="600">Trend</text>
+          <text x="255" y="23" fill="#94a3b8" font-size="6.5" font-weight="600">Events/1k</text>
+          <text x="300" y="23" fill="#94a3b8" font-size="6.5" font-weight="600">Tier</text>
+          <!-- rows: alternating bg, row height=16 -->
+          <!-- Row 1 -->
+          <rect x="20" y="30" width="300" height="16" fill="#111827" opacity="0.5"/>
+          <text x="35"  y="41" fill="#fbbf24" font-size="7" font-weight="700">🥇 1</text>
+          <text x="70"  y="41" fill="#e2e8f0" font-size="6.5">K. Nakamura</text>
+          <text x="170" y="41" fill="#34d399" font-size="7" font-weight="700">94</text>
+          <text x="215" y="41" fill="#34d399" font-size="6.5">▲ +3</text>
+          <text x="262" y="41" fill="#34d399" font-size="6.5">2.1</text>
+          <rect x="296" y="32" width="20" height="10" rx="3" fill="rgba(52,211,153,0.2)"/>
+          <text x="306" y="39" fill="#34d399" font-size="5.5" text-anchor="middle">SAFE</text>
+          <!-- Row 2 -->
+          <text x="35"  y="57" fill="#94a3b8" font-size="7">🥈 2</text>
+          <text x="70"  y="57" fill="#e2e8f0" font-size="6.5">A. Ferreira</text>
+          <text x="170" y="57" fill="#34d399" font-size="7" font-weight="700">91</text>
+          <text x="215" y="57" fill="#34d399" font-size="6.5">▲ +1</text>
+          <text x="262" y="57" fill="#34d399" font-size="6.5">2.8</text>
+          <rect x="296" y="48" width="20" height="10" rx="3" fill="rgba(52,211,153,0.2)"/>
+          <text x="306" y="55" fill="#34d399" font-size="5.5" text-anchor="middle">SAFE</text>
+          <!-- Row 3 -->
+          <rect x="20" y="62" width="300" height="16" fill="#111827" opacity="0.5"/>
+          <text x="35"  y="73" fill="#94a3b8" font-size="7">🥉 3</text>
+          <text x="70"  y="73" fill="#e2e8f0" font-size="6.5">P. Kovács</text>
+          <text x="170" y="73" fill="#34d399" font-size="7" font-weight="700">88</text>
+          <text x="215" y="73" fill="#94a3b8" font-size="6.5">→ 0</text>
+          <text x="262" y="73" fill="#34d399" font-size="6.5">3.4</text>
+          <rect x="296" y="64" width="20" height="10" rx="3" fill="rgba(52,211,153,0.2)"/>
+          <text x="306" y="71" fill="#34d399" font-size="5.5" text-anchor="middle">SAFE</text>
+          <!-- Row 4 -->
+          <text x="35"  y="89" fill="#e2e8f0" font-size="6.5">4</text>
+          <text x="70"  y="89" fill="#e2e8f0" font-size="6.5">M. Okafor</text>
+          <text x="170" y="89" fill="#fbbf24" font-size="7" font-weight="700">73</text>
+          <text x="215" y="89" fill="#34d399" font-size="6.5">▲ +6</text>
+          <text x="262" y="89" fill="#fbbf24" font-size="6.5">5.9</text>
+          <rect x="296" y="80" width="20" height="10" rx="3" fill="rgba(251,191,36,0.15)"/>
+          <text x="306" y="87" fill="#fbbf24" font-size="5" text-anchor="middle">MOD</text>
+          <!-- Row 5 -->
+          <rect x="20" y="94" width="300" height="16" fill="#111827" opacity="0.5"/>
+          <text x="35"  y="105" fill="#e2e8f0" font-size="6.5">5</text>
+          <text x="70"  y="105" fill="#e2e8f0" font-size="6.5">S. Lindqvist</text>
+          <text x="170" y="105" fill="#fbbf24" font-size="7" font-weight="700">68</text>
+          <text x="215" y="105" fill="#f87171" font-size="6.5">▼ −2</text>
+          <text x="262" y="105" fill="#fbbf24" font-size="6.5">7.2</text>
+          <rect x="296" y="96" width="20" height="10" rx="3" fill="rgba(251,191,36,0.15)"/>
+          <text x="306" y="103" fill="#fbbf24" font-size="5" text-anchor="middle">MOD</text>
+          <!-- Row 6 — bottom risk -->
+          <text x="35"  y="121" fill="#e2e8f0" font-size="6.5">…</text>
+          <rect x="20" y="110" width="300" height="16" fill="#111827" opacity="0.5"/>
+          <text x="35"  y="121" fill="#e2e8f0" font-size="6.5">41</text>
+          <text x="70"  y="121" fill="#e2e8f0" font-size="6.5">T. Ndiaye</text>
+          <text x="170" y="121" fill="#f87171" font-size="7" font-weight="700">31</text>
+          <text x="215" y="121" fill="#f87171" font-size="6.5">▼ −5</text>
+          <text x="262" y="121" fill="#f87171" font-size="6.5">14.8</text>
+          <rect x="296" y="112" width="20" height="10" rx="3" fill="rgba(248,113,113,0.15)"/>
+          <text x="306" y="119" fill="#f87171" font-size="5" text-anchor="middle">HIGH</text>
+          <!-- separator + action footer -->
+          <line x1="20" y1="128" x2="320" y2="128" stroke="#2d3748" stroke-width="0.8"/>
+          <text x="30" y="140" fill="#6c8fff" font-size="6.5" font-weight="600">41 drivers  ·  Fleet avg: 67  ·  Industry benchmark: 71</text>
+          <!-- mini distribution bar -->
+          <rect x="20" y="148" width="300" height="10" rx="3" fill="#1e293b"/>
+          <rect x="20" y="148" width="108" height="10" rx="3" fill="#f87171" opacity="0.6"/><!-- 36% high risk -->
+          <rect x="128" y="148" width="84"  height="10" fill="#fbbf24" opacity="0.6"/><!-- 28% moderate -->
+          <rect x="212" y="148" width="108" height="10" rx="3" fill="#34d399" opacity="0.6"/><!-- 36% safe -->
+          <text x="74"  y="155" fill="#fff" font-size="5.5" text-anchor="middle" opacity="0.9">36% High</text>
+          <text x="170" y="155" fill="#fff" font-size="5.5" text-anchor="middle" opacity="0.9">28% Mod</text>
+          <text x="266" y="155" fill="#fff" font-size="5.5" text-anchor="middle" opacity="0.9">36% Safe</text>
+          <!-- coaching prompt -->
+          <rect x="20" y="164" width="300" height="22" rx="4" fill="rgba(108,143,255,0.08)" stroke="#6c8fff" stroke-width="0.8" stroke-opacity="0.4"/>
+          <text x="30" y="174" fill="#6c8fff" font-size="6.5" font-weight="600">⚡ 3 drivers eligible for coaching escalation  ·  </text>
+          <text x="30" y="182" fill="#6c8fff" font-size="6.5">T. Ndiaye, R. Bello, C. Mbeki — score &lt;40 for 3+ consecutive weeks</text>
+        </svg>
+      </div>
+      <div class="dimensions"><strong>Dimensions:</strong> Rows: all drivers ranked by current score · Columns: rank, name, score, weekly trend (▲/▼/→), harsh events per 1,000 km, risk tier · Footer: fleet distribution bar + coaching escalation prompts for persistent bottom-tier drivers · Peer-comparison toggle (anonymous vs. named)</div>
+      <div class="basis"><strong>Research basis:</strong> South African RCT confirms non-punitive peer-comparison feedback reduces risky driving across taxis and inter-city buses; Samsara 45+ factor prioritization supports coaching escalation logic; Geotab Safety Benchmarks provides external fleet comparison baseline</div>
+      <div class="audience"><strong>Audience:</strong> Fleet manager · Safety manager</div>
+    </div>
+
+  </div>
+</body>
+</html>
+          <polygon points="310,18 315,12 320,18 315,24" fill="#f87171" opacity="0.85"/>
+          <!-- Decision boundary line (vertical at

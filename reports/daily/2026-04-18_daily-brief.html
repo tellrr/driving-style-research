@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Driving Style Research — Daily Brief</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: #0f1117;
+    color: #e2e8f0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+    padding: 0 0 60px 0;
+  }
+  a { color: #6c8fff; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  /* HEADER */
+  .site-header {
+    background: linear-gradient(135deg, #141720 0%, #1a1f2e 100%);
+    border-bottom: 2px solid #6c8fff;
+    padding: 28px 40px 22px 40px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .site-header h1 {
+    font-size: 1.55rem;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    color: #e2e8f0;
+  }
+  .site-header h1 span {
+    color: #6c8fff;
+  }
+  .date-badge {
+    background: #6c8fff22;
+    border: 1px solid #6c8fff55;
+    color: #6c8fff;
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    padding: 4px 14px;
+    border-radius: 20px;
+    white-space: nowrap;
+  }
+
+  /* LAYOUT */
+  .container {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  /* SECTION TITLES */
+  .section-title {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #6c8fff;
+    margin-bottom: 14px;
+    margin-top: 40px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .section-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: #6c8fff33;
+  }
+
+  /* EXECUTIVE SUMMARY */
+  .exec-summary {
+    background: #141720;
+    border: 1px solid #6c8fff44;
+    border-left: 4px solid #6c8fff;
+    border-radius: 8px;
+    padding: 20px 24px;
+    color: #cbd5e1;
+    font-size: 0.97rem;
+    line-height: 1.75;
+  }
+  .exec-summary strong {
+    color: #e2e8f0;
+  }
+
+  /* PILLAR BARS */
+  .pillars-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .pillar-row {
+    background: #141720;
+    border: 1px solid #1e2436;
+    border-radius: 8px;
+    padding: 16px 20px;
+  }
+  .pillar-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .pillar-name {
+    font-weight: 600;
+    font-size: 0.93rem;
+    color: #e2e8f0;
+  }
+  .pillar-pct {
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: #6c8fff;
+    min-width: 44px;
+    text-align: right;
+  }
+  .pillar-status {
+    font-size: 0.78rem;
+    color: #94a3b8;
+    width: 100%;
+    margin-bottom: 8px;
+    line-height: 1.5;
+  }
+  .bar-track {
+    background: #1e2436;
+    border-radius: 999px;
+    height: 8px;
+    overflow: hidden;
+  }
+  .bar-fill {
+    height: 100%;
+    border-radius: 999px;
+    transition: width 0.3s ease;
+  }
+  /* Color by completion tier */
+  .bar-fill.tier-high   { background: linear-gradient(90deg, #4f7eff, #6c8fff); }
+  .bar-fill.tier-mid    { background: linear-gradient(90deg, #3b5fc0, #5a78d8); }
+  .bar-fill.tier-low    { background: linear-gradient(90deg, #2d3f80, #3d5299); }
+
+  /* LEAD CARDS */
+  .leads-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 18px;
+  }
+  .lead-card {
+    background: #141720;
+    border: 1px solid #1e2436;
+    border-radius: 10px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    transition: border-color 0.2s;
+  }
+  .lead-card:hover {
+    border-color: #6c8fff66;
+  }
+  .lead-number {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: #6c8fff;
+    text-transform: uppercase;
+  }
+  .lead-title {
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: #e2e8f0;
+    line-height: 1.45;
+  }
+  .lead-source {
+    font-size: 0.76rem;
+    color: #64748b;
+    font-style: italic;
+  }
+  .lead-why {
+    font-size: 0.83rem;
+    color: #94a3b8;
+    line-height: 1.6;
+    border-top: 1px solid #1e2436;
+    padding-top: 10px;
+    flex: 1;
+  }
+  .lead-why strong {
+    color: #b8c8ff;
+  }
+
+  /* STRATEGIC POSITION */
+  .strategy-box {
+    background: linear-gradient(135deg, #141c30 0%, #0f1420 100%);
+    border: 1px solid #6c8fff55;
+    border-radius: 10px;
+    padding: 24px 28px;
+    position: relative;
+    overflow: hidden;
+  }
+  .strategy-box::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #6c8fff, #4f7eff88, transparent);
+  }
+  .strategy-progress-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+  }
+  .strategy-big-pct {
+    font-size: 2.4rem;
+    font-weight: 800;
+    color: #6c8fff;
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+  .strategy-big-label {
+    font-size: 0.82rem;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-weight: 600;
+  }
+  .strategy-text {
+    font-size: 0.93rem;
+    color: #cbd5e1;
+    line-height: 1.75;
+  }
+  .strategy-text strong {
+    color: #e2e8f0;
+  }
+  .blocker-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 16px;
+  }
+  .chip {
+    background: #1e2436;
+    border: 1px solid #2d3a52;
+    border-radius: 999px;
+    padding: 4px 14px;
+    font-size: 0.76rem;
+    color: #94a3b8;
+    font-weight: 500;
+  }
+  .chip.blocker {
+    border-color: #ff6b6b44;
+    color: #ff9090;
+    background: #2a1a1a;
+  }
+  .chip.secondary {
+    border-color: #ffaa3344;
+    color: #ffc066;
+    background: #231d10;
+  }
+
+  /* FOOTER */
+  .page-footer {
+    margin-top: 52px;
+    border-top: 1px solid #1e2436;
+    padding-top: 16px;
+    text-align: center;
+    font-size: 0.74rem;
+    color: #374151;
+    letter-spacing: 0.04em;
+  }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <h1>Driving Style Research — <span>Daily Brief</span></h1>
+  <div class="date-badge">2026-04-18</div>
+</header>
+
+<div class="container">
+
+  <!-- EXECUTIVE SUMMARY -->
+  <div class="section-title">Executive Summary</div>
+  <div class="exec-summary">
+    Today's cycle confirms that <strong>behavior scoring and driver-context research are now actionable</strong> for product design, with validated composite scoring models, 94–99% classifier accuracy, and strong intervention-effect evidence (up to 76% reduction in harsh events via ADAS + coaching). The most commercially significant new finding is that <strong>hard braking and hard acceleration are differentially predictive by road type</strong> — a single G-force threshold is provably suboptimal — making context-aware, road-type-specific alerting a defensible product differentiator. <strong>The critical unresolved blocker</strong> remains the absence of a peer-reviewed, vehicle-category-specific G-force threshold table with validated sensitivity, specificity, and false-positive rates, which must be resolved before alert logic can be finalized.
+  </div>
+
+  <!-- PILLAR PROGRESS -->
+  <div class="section-title">Pillar Progress</div>
+  <div class="pillars-grid">
+
+    <div class="pillar-row">
+      <div class="pillar-meta">
+        <span class="pillar-name">Behavior Metrics &amp; Scoring</span>
+        <span class="pillar-pct">98%</span>
+      </div>
+      <div class="pillar-status">Effectively complete for product-design purposes. Validated composite scoring, 99.48% OBD-II classifier accuracy, and strong intervention evidence. Remaining gap: composite formula with sensitivity/specificity benchmarks by vehicle category and a validated cold-start ramp curve.</div>
+      <div class="bar-track"><div class="bar-fill tier-high" style="width:98%;"></div></div>
+    </div>
+
+    <div class="pillar-row">
+      <div class="pillar-meta">
+        <span class="pillar-name">Safety &amp; Force Thresholds</span>
+        <span class="pillar-pct">84%</span>
+      </div>
+      <div class="pillar-status">Incremental progress. Configurable G-force thresholds documented in commercial firmware; context-aware safe-operating boundaries validated across three countries. Core gap: no peer-reviewed G-force lookup table differentiated by vehicle category with validated false-positive rates.</div>
+      <div class="bar-track"><div class="bar-fill tier-high" style="width:84%;"></div></div>
+    </div>
+
+    <div class="pillar-row">
+      <div class="pillar-meta">
+        <span class="pillar-name">Driver &amp; Route Context</span>
+        <span class="pillar-pct">82%</span>
+      </div>
+      <div class="pillar-status">Major expansion in cross-cultural driving behavior. Driving style confirmed as culturally mediated across six countries; fatigue detection achieves 94% accuracy. Remaining gaps: road-surface-quality effects on telemetry noise and weather-adjusted scoring models.</div>
+      <div class="bar-track"><div class="bar-fill tier-mid" style="width:82%;"></div></div>
+    </div>
+
+    <div class="pillar-row">
+      <div class="pillar-meta">
+        <span class="pillar-name">Service &amp; Report Design</span>
+        <span class="pillar-pct">75%</span>
+      </div>
+      <div class="pillar-status">Substantial new material on dashboard design, coaching workflows, and commercial best practices. Eco-scoring per trip already productized. Gaps: no A/B testing of visualization types on manager decision quality; limited evidence on optimal alert cadence to avoid fatigue.</div>
+      <div class="bar-track"><div class="bar-fill tier-mid" style="width:75%;"></div></div>
+    </div>
+
+    <div class="pillar-row">
+      <div class="pillar-meta">
+        <span class="pillar-name">Cost &amp; Maintenance Impact</span>
+        <span class="pillar-pct">38%</span>
+      </div>
+      <div class="pillar-status">Meaningful progress in tire wear modeling and fuel linkage. Virtual tire wear sensors validated on CAN-bus data; eco-driving yields 7.6–12% fuel savings in LCV trials. Still missing: peer-reviewed quantification of harsh-event frequency vs. brake pad/disc intervals, suspension failure rates, and cargo damage claims.</div>
+      <div class="bar-track"><div class="bar-fill tier-low" style="width:38%;"></div></div>
+    </div>
+
+  </div>
+
+  <!-- PROMISING LEADS -->
+  <div class="section-title">Top Promising Leads</div>
+  <div class="leads-grid">
+
+    <div class="lead-card">
+      <div class="lead-number">Lead #1</div>
+      <div class="lead-title">Driver Behavior Indices from Large-Scale Fleet Telematics Data as Surrogate Safety Measures</div>
+      <div class="lead-source">Accident Analysis &amp; Prevention — ScienceDirect</div>
+      <div class="lead-why"><strong>Why it matters:</strong> Provides empirical, metropolitan-scale proof that hard braking is the dominant crash surrogate on highways while hard acceleration dominates in urban settings — directly justifying road-type-aware, context-dependent alert thresholds rather than a single fixed G-force cutoff.</div>
+    </div>
+
+    <div class="lead-card">
+      <div class="lead-number">Lead #2</div>
+      <div class="lead-title">Portfolio-Anchored Telematics Risk Scoring with Wavelets</div>
+      <div class="lead-source">burning-cost.github.io / arXiv</div>
+      <div class="lead-why"><strong>Why it matters:</strong> Offers a mathematically principled, closed-form scoring model using wavelet-decomposed acceleration signals with Poisson-Gamma updating that improves trip-by-trip, directly tackling the cold-start problem and providing an auditable, explainable alternative to opaque third-party scoring APIs.</div>
+    </div>
+
+    <div class="lead-card">
+      <div class="lead-number">Lead #3</div>
+      <div class="lead-title">On the Impact of ADAS on Driving Distraction and Risky Behaviour in Irish Commercial Drivers</div>
+      <div class="lead-source">PubMed / Accident Analysis &amp; Prevention</div>
+      <div class="lead-why"><strong>Why it matters:</strong> Demonstrates the strongest intervention-effect evidence in our corpus — 76% reduction in harsh acceleration and 65% in harsh braking through combined passive monitoring, active ADAS, coaching, and rewards in LCV fleets — setting a quantified performance benchmark for coaching-integrated telematics products.</div>
+    </div>
+
+  </div>
+
+  <!-- STRATEGIC POSITION -->
+  <div class="section-title">Today's Strategic Position</div>
+  <div class="strategy-box">
+    <div class="strategy-progress-row">
+      <div>
+        <div class="strategy-big-pct">80%</div>
+        <div class="strategy-big-label">Overall Readiness</div>
+      </div>
+    </div>
+    <div class="strategy-text">
+      The behavior-scoring and driver-context pillars are <strong>ready for product implementation now</strong>, and the service-design pillar has sufficient commercial benchmarking to begin dashboard and coaching-workflow development. <strong>The single largest blocker is the absence of peer-reviewed, vehicle-category-specific G-force thresholds with validated false-positive rates</strong> — without this, alert logic must rely on configurable conservative defaults, risking both over-alerting that erodes fleet-manager trust and under-detection of genuinely dangerous events. A secondary but commercially significant gap is the thin evidence linking telematics-measured harsh events to quantified brake, suspension, and cargo-damage costs, which constrains the ROI narrative available to fleet buyers.
+    </div>
+    <div class="blocker-chips">
+      <div class="chip blocker">🚧 Primary Blocker: G-force threshold table by vehicle category</div>
+      <div class="chip secondary">⚠ Secondary Gap: Brake/suspension/cargo cost quantification</div>
+      <div class="chip">✓ Actionable: Behavior scoring</div>
+      <div class="chip">✓ Actionable: Driver context &amp; coaching</div>
+      <div class="chip">✓ Actionable: Dashboard &amp; report design</div>
+    </div>
+  </div>
+
+</div>
+
+<div class="container">
+  <div class="page-footer">
+    Fleet Telematics Product Research · Daily Brief · 2026-04-18 · Internal Use Only
+  </div>
+</div>
+
+</body>
+</html>

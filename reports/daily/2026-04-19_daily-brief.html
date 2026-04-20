@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Driving Style Research — Daily Brief</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: #0f1117;
+    color: #e2e8f0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+    padding: 32px 16px 64px;
+  }
+  a { color: #6c8fff; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .container {
+    max-width: 860px;
+    margin: 0 auto;
+  }
+
+  /* HEADER */
+  header {
+    border-bottom: 2px solid #6c8fff;
+    padding-bottom: 20px;
+    margin-bottom: 36px;
+  }
+  header .label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #6c8fff;
+    margin-bottom: 6px;
+  }
+  header h1 {
+    font-size: 26px;
+    font-weight: 700;
+    color: #e2e8f0;
+    letter-spacing: -0.01em;
+  }
+  header .date {
+    font-size: 13px;
+    color: #8896b3;
+    margin-top: 4px;
+  }
+
+  /* SECTION TITLES */
+  .section-title {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #6c8fff;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .section-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: #1e2330;
+  }
+
+  /* EXECUTIVE SUMMARY */
+  .exec-summary {
+    background: #13161f;
+    border: 1px solid #1e2842;
+    border-left: 4px solid #6c8fff;
+    border-radius: 8px;
+    padding: 20px 24px;
+    margin-bottom: 36px;
+    color: #c9d4ea;
+    font-size: 15px;
+    line-height: 1.7;
+  }
+
+  /* PILLAR PROGRESS */
+  .pillars {
+    margin-bottom: 36px;
+  }
+  .pillar-row {
+    margin-bottom: 18px;
+  }
+  .pillar-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 6px;
+  }
+  .pillar-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: #e2e8f0;
+  }
+  .pillar-pct {
+    font-size: 13px;
+    font-weight: 700;
+    color: #6c8fff;
+  }
+  .bar-track {
+    width: 100%;
+    height: 10px;
+    background: #1a1f2e;
+    border-radius: 99px;
+    overflow: hidden;
+  }
+  .bar-fill {
+    height: 100%;
+    border-radius: 99px;
+    transition: width 0.3s ease;
+  }
+  /* Color tiers */
+  .tier-high   { background: linear-gradient(90deg, #6c8fff, #7fd4c1); }
+  .tier-mid    { background: linear-gradient(90deg, #6c8fff, #a78bfa); }
+  .tier-low    { background: linear-gradient(90deg, #f59e0b, #f97316); }
+  .pillar-gap {
+    font-size: 11.5px;
+    color: #8896b3;
+    margin-top: 5px;
+    line-height: 1.5;
+  }
+  .pillar-gap span {
+    color: #f59e0b;
+    font-weight: 600;
+  }
+
+  /* PROMISING LEADS */
+  .leads {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 36px;
+  }
+  .lead-card {
+    background: #13161f;
+    border: 1px solid #1e2330;
+    border-radius: 8px;
+    padding: 18px 20px;
+    display: grid;
+    grid-template-columns: 36px 1fr;
+    gap: 0 14px;
+    align-items: start;
+  }
+  .lead-number {
+    width: 36px;
+    height: 36px;
+    background: #1a2140;
+    border: 1px solid #2a3560;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 700;
+    color: #6c8fff;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .lead-body {}
+  .lead-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: #e2e8f0;
+    margin-bottom: 2px;
+    line-height: 1.4;
+  }
+  .lead-source {
+    font-size: 11.5px;
+    color: #6c8fff;
+    margin-bottom: 8px;
+    font-weight: 500;
+  }
+  .lead-why {
+    font-size: 13px;
+    color: #9daec8;
+    line-height: 1.55;
+  }
+  .lead-why strong {
+    color: #c9d4ea;
+  }
+
+  /* STRATEGIC POSITION */
+  .strategic-box {
+    background: #0d1523;
+    border: 1px solid #1e3a5f;
+    border-radius: 8px;
+    padding: 22px 24px;
+  }
+  .strategic-box .completion-badge {
+    display: inline-block;
+    background: #1a2e50;
+    border: 1px solid #2a4a7f;
+    border-radius: 99px;
+    padding: 4px 14px;
+    font-size: 12px;
+    font-weight: 700;
+    color: #6c8fff;
+    margin-bottom: 14px;
+    letter-spacing: 0.04em;
+  }
+  .strategic-box p {
+    font-size: 14px;
+    line-height: 1.7;
+    color: #b8c8e0;
+    margin-bottom: 10px;
+  }
+  .strategic-box p:last-child { margin-bottom: 0; }
+  .strategic-box .blocker {
+    color: #f87171;
+    font-weight: 600;
+  }
+  .strategic-box .positive {
+    color: #6ee7b7;
+    font-weight: 600;
+  }
+
+  /* FOOTER */
+  footer {
+    margin-top: 52px;
+    border-top: 1px solid #1a1f2e;
+    padding-top: 16px;
+    font-size: 11.5px;
+    color: #4a5568;
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- HEADER -->
+  <header>
+    <div class="label">Fleet Telematics · Product Research</div>
+    <h1>Driving Style Research — Daily Brief</h1>
+    <div class="date">Saturday, 19 April 2026</div>
+  </header>
+
+  <!-- EXECUTIVE SUMMARY -->
+  <div class="section-title">Executive Summary</div>
+  <div class="exec-summary">
+    This cycle delivered the strongest causal ROI evidence to date — real-time AI nudges reduced preventable accidents by 31% and near-misses by 44% — while Shell's total-cost-of-ownership analysis confirmed that driving style alone accounts for roughly half of fleet running costs, giving the product a compelling commercial anchor. Fatigue research demolished a persistent design assumption: professional drivers are equally susceptible to sleep deprivation as novices, meaning fatigue monitoring must be applied uniformly across all experience levels. The research corpus is now deep enough to begin building core V1 features immediately, with field calibration planned to close the remaining gap around vehicle-category-specific G-force thresholds.
+  </div>
+
+  <!-- PILLAR PROGRESS -->
+  <div class="section-title">Pillar Progress</div>
+  <div class="pillars">
+
+    <div class="pillar-row">
+      <div class="pillar-meta">
+        <span class="pillar-name">Behavior Metrics &amp; Scoring</span>
+        <span class="pillar-pct">99%</span>
+      </div>
+      <div class="bar-track"><div class="bar-fill tier-high" style="width:99%;"></div></div>
+      <div class="pillar-gap"><span>Micro-gap:</span> Cold-start ramp-curve calibration study and sensitivity/specificity benchmarks segmented by vehicle category.</div>
+    </div>
+
+    <div class="pillar-row">
+      <div class="pillar-meta">
+        <span class="pillar-name">Driver &amp; Route Context</span>
+        <span class="pillar-pct">84%</span>
+      </div>
+      <div class="bar-track"><div class="bar-fill tier-high" style="width:84%;"></div></div>
+      <div class="pillar-gap"><span>Gap:</span> Road-surface quality impact on telemetry patterns beyond the Nairobi case; quantified per-country scoring calibration offsets.</div>
+    </div>
+
+    <div class="pillar-row">
+      <div class="pillar-meta">
+        <span class="pillar-name">Safety &amp; Force Thresholds</span>
+        <span class="pillar-pct">85%</span>
+      </div>
+      <div class="bar-track"><div class="bar-fill tier-mid" style="width:85%;"></div></div>
+      <div class="pillar-gap"><span>Core gap:</span> No peer-reviewed G-force threshold lookup table by vehicle class with validated sensitivity/specificity and false-positive rates.</div>
+    </div>
+
+    <div class="pillar-row">
+      <div class="pillar-meta">
+        <span class="pillar-name">Service &amp; Report Design</span>
+        <span class="pillar-pct">70%</span>
+      </div>
+      <div class="bar-track"><div class="bar-fill tier-mid" style="width:70%;"></div></div>
+      <div class="pillar-gap"><span>Gap:</span> Evidence-based dashboard UX studies; no published A/B tests comparing visualization formats (heat map vs. gauge vs. trend line) on behavioral outcomes.</div>
+    </div>
+
+    <div class="pillar-row">
+      <div class="pillar-meta">
+        <span class="pillar-name">Cost &amp; Maintenance Impact</span>
+        <span class="pillar-pct">45%</span>
+      </div>
+      <div class="bar-track"><div class="bar-fill tier-low" style="width:45%;"></div></div>
+      <div class="pillar-gap"><span>Gap:</span> Peer-reviewed dose-response curves linking harsh-event frequency and severity to specific maintenance intervals (brake pads, suspension) and cargo damage claim rates.</div>
+    </div>
+
+  </div>
+
+  <!-- PROMISING LEADS -->
+  <div class="section-title">Top Promising Leads</div>
+  <div class="leads">
+
+    <div class="lead-card">
+      <div class="lead-number">1</div>
+      <div class="lead-body">
+        <div class="lead-title">From Detect and Repair to Predict and Prevent: Assessing the Viability of Real-Time AI Nudges</div>
+        <div class="lead-source">ijeret.org — IJERET Journal</div>
+        <div class="lead-why">Provides the <strong>strongest causal ROI evidence in the corpus</strong> — a 31% reduction in preventable accidents and 44% reduction in near-misses directly attributable to real-time AI alerting — giving the product team concrete numbers to anchor the alerting feature's business case and customer pitch.</div>
+      </div>
+    </div>
+
+    <div class="lead-card">
+      <div class="lead-number">2</div>
+      <div class="lead-body">
+        <div class="lead-title">The Impact of Driver Behaviour on Vehicle Running Costs</div>
+        <div class="lead-source">Shell Fleet Solutions — White Paper</div>
+        <div class="lead-why">An authoritative industry source confirming that <strong>driving style accounts for approximately 50% of total vehicle ownership cost</strong> across collision, tyre, fuel, and maintenance spend — the single most powerful headline statistic for justifying fleet telematics investment to procurement decision-makers.</div>
+      </div>
+    </div>
+
+    <div class="lead-card">
+      <div class="lead-number">3</div>
+      <div class="lead-body">
+        <div class="lead-title">Harsh Brakes at Potholes in Nairobi: Context-Based Driver Behavior in Developing Cities</div>
+        <div class="lead-source">Academia.edu — Field Study, Nairobi</div>
+        <div class="lead-why">Demonstrates empirically that <strong>harsh-event attribution without road-surface context produces systematically misleading driver scores</strong>, directly mandating a road-quality overlay in the scoring pipeline and preventing unfair penalization of drivers operating in poor infrastructure environments.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- STRATEGIC POSITION -->
+  <div class="section-title">Today's Strategic Position</div>
+  <div class="strategic-box">
+    <div class="completion-badge">~80% Research Complete</div>
+    <p>
+      <span class="positive">The behavior scoring, fatigue detection, eco-driving, and real-time alerting pillars are sufficiently evidenced to begin V1 feature development immediately</span>, with commercial and peer-reviewed sources aligned on core mechanics, thresholds, and incentive structures.
+    </p>
+    <p>
+      <span class="blocker">The single largest technical blocker remains the absence of peer-reviewed, vehicle-category-specific G-force threshold tables with validated false-positive rates</span> — without these, initial thresholds must be set empirically and validated in the field, adding 4–8 weeks of confidence-building time before customers can rely on scoring accuracy.
+    </p>
+    <p>
+      A secondary commercial blocker is the thin dose-response evidence linking harsh-event frequency to specific maintenance cost outcomes; directional estimates are strong but insufficient for contractual SLA commitments on maintenance savings, making this the priority research target for the next cycle.
+    </p>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    Fleet Telematics Product Research · Internal Use Only · Generated 2026-04-19
+  </footer>
+
+</div>
+</body>
+</html>

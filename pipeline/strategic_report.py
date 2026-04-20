@@ -338,20 +338,26 @@ suggestions. Today's research has produced an updated list of suggestions.
 ## Today's research guidance
 {suggestions}
 
-## Your previous gallery (base — preserve everything unless research changes it)
+## Your previous gallery (base — preserve ALL existing cards unless explicitly merged)
 {previous}
 
-## Curation rules — evolve the gallery, don't just accumulate
-Apply these rules in order for each existing card:
+## UI design inspiration from full-screen mockups (extract ideas, not screens)
+{mockup_inspiration}
 
-1. DEDUPLICATE: If two cards cover the same metric or view, merge them into one superior card.
-2. REPLACE: If today's research provides a clearly better design for an existing card, replace it.
-3. UPDATE: If today's research refines part of a card (better thresholds, new dimension, stronger
-   research basis), update that part in place.
-4. ADD: If today's research introduces a report or graph concept not yet in the gallery, add a new card.
+## Curation rules — the gallery must only grow, never shrink
+**CRITICAL: The total number of cards must be ≥ the number of cards in the previous gallery.**
+
+Apply these rules in order:
+
+1. KEEP: Carry forward every existing card unchanged unless it is being merged.
+2. DEDUPLICATE: If two cards are near-identical (same metric, same view), merge them into ONE
+   richer card. The surviving card absorbs all dimensions/research from both. Net count stays the same.
+3. UPDATE: Refine an existing card in place (better thresholds, stronger research, new dimension).
+   Never remove a card — update it.
+4. ADD: If today's research introduces a concept not yet in the gallery, add a new card.
 5. If no previous gallery exists, design from scratch using today's guidance.
 
-The goal is a clean, non-redundant set of cards where every card earns its place.
+The gallery represents the full evolving body of knowledge — ideas are added and refined, never deleted.
 
 ## Output requirements
 Return ONLY raw HTML — no markdown fences, no explanation.
@@ -445,12 +451,38 @@ def _load_previous_report_graph_html(today: str) -> str:
     return ""
 
 
+def _load_previous_mockup_html(today: str) -> str:
+    """Return a brief text summary of screen names from the most recent *_report-mockup.html
+    before today, so design ideas can be absorbed without inflating context."""
+    if not DAILY_REPORTS_DIR.exists():
+        return ""
+    candidates = sorted(DAILY_REPORTS_DIR.glob("*_report-mockup.html"), reverse=True)
+    for path in candidates:
+        date_prefix = path.stem.split("_")[0]
+        if date_prefix < today:
+            try:
+                content = path.read_text(encoding="utf-8")
+                # Extract screen-label texts as a compact list of UI screen titles
+                labels = re.findall(r'class="screen-label"[^>]*>([^<]+)<', content)
+                if labels:
+                    summary = "\n".join(f"- {lbl.strip()}" for lbl in labels)
+                    logger.debug(f"Loaded mockup screen list from {path.name} ({len(labels)} screens)")
+                    return (
+                        f"Previous UI mockup screens from {date_prefix} "
+                        f"(incorporate concepts not already covered by the card gallery):\n{summary}"
+                    )
+            except Exception as e:
+                logger.warning(f"Could not read previous mockup HTML {path}: {e}")
+    return ""
+
+
 def _generate_report_graph_html(report_content: str, today: str, client) -> None:
     """
     Extract the 'Report & Graph Suggestions' section from the Opus report,
     call Claude Sonnet to generate/evolve a styled HTML gallery, and save it to
     reports/daily/YYYY-MM-DD_report-graph-suggestions.html.
     Loads the previous day's output so the gallery evolves incrementally.
+    Uses continuation requests if the response is truncated at max_tokens.
     """
     suggestions = _extract_section(report_content, "7. Report & Graph Suggestions")
     if not suggestions:
@@ -458,20 +490,41 @@ def _generate_report_graph_html(report_content: str, today: str, client) -> None
         return
 
     previous = _load_previous_report_graph_html(today)
+    mockup_inspiration = _load_previous_mockup_html(today)
     user_msg = _REPORT_GRAPH_HTML_PROMPT.format(
         suggestions=suggestions,
         date=today,
         previous=previous if previous else "(no previous gallery — design from scratch)",
+        mockup_inspiration=mockup_inspiration if mockup_inspiration else "(none)",
     )
 
     try:
-        message = client.messages.create(
-            model="claude-sonnet-4-6",
-            max_tokens=16000,
-            system=_REPORT_GRAPH_SYSTEM,
-            messages=[{"role": "user", "content": user_msg}],
-        )
-        html = message.content[0].text.strip()
+        messages: list[dict] = [{"role": "user", "content": user_msg}]
+        html_parts: list[str] = []
+
+        for attempt in range(4):  # initial + up to 3 continuations
+            message = client.messages.create(
+                model="claude-sonnet-4-6",
+                max_tokens=32768,
+                system=_REPORT_GRAPH_SYSTEM,
+                messages=messages,
+            )
+            chunk = message.content[0].text
+            html_parts.append(chunk)
+
+            if message.stop_reason != "max_tokens":
+                break
+
+            logger.warning(
+                f"Report & Graph HTML truncated (attempt {attempt + 1}), sending continuation..."
+            )
+            messages.append({"role": "assistant", "content": chunk})
+            messages.append({
+                "role": "user",
+                "content": "Your HTML was cut off. Continue exactly where you stopped, outputting only raw HTML.",
+            })
+
+        html = "".join(html_parts).strip()
     except Exception as e:
         logger.error(f"Sonnet call for Report & Graph Suggestions HTML failed: {e}")
         return
@@ -479,6 +532,10 @@ def _generate_report_graph_html(report_content: str, today: str, client) -> None
     if not html.lower().startswith("<!doctype"):
         logger.warning("Sonnet response did not start with <!DOCTYPE html> — skipping save")
         return
+
+    # Validate the HTML is complete (not truncated)
+    if not re.search(r'</html\s*>', html, re.IGNORECASE):
+        logger.warning("Report & Graph HTML appears truncated (no </html>) — saving anyway but flagging")
 
     DAILY_REPORTS_DIR.mkdir(parents=True, exist_ok=True)
     out_path = DAILY_REPORTS_DIR / f"{today}_report-graph-suggestions.html"
