@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Driving Style Research — Daily Brief</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: #0f1117;
+    color: #e2e8f0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+    padding: 0 0 60px 0;
+  }
+  a { color: #6c8fff; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  /* HEADER */
+  .header {
+    background: linear-gradient(135deg, #151824 0%, #1a1f2e 100%);
+    border-bottom: 2px solid #6c8fff;
+    padding: 32px 40px 28px 40px;
+  }
+  .header-meta {
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #6c8fff;
+    margin-bottom: 8px;
+    font-weight: 600;
+  }
+  .header h1 {
+    font-size: 26px;
+    font-weight: 700;
+    color: #f0f4ff;
+    letter-spacing: -0.3px;
+  }
+  .header-date {
+    margin-top: 6px;
+    font-size: 13px;
+    color: #8a97b0;
+  }
+
+  /* CONTENT WRAPPER */
+  .content {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 36px 24px 0 24px;
+  }
+
+  /* SECTION TITLES */
+  .section-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #6c8fff;
+    margin-bottom: 14px;
+  }
+
+  /* EXECUTIVE SUMMARY */
+  .exec-summary {
+    background: #151824;
+    border: 1px solid #252d3d;
+    border-left: 4px solid #6c8fff;
+    border-radius: 8px;
+    padding: 22px 26px;
+    margin-bottom: 36px;
+    color: #cbd5e1;
+    font-size: 15px;
+    line-height: 1.75;
+  }
+  .exec-summary strong { color: #f0f4ff; }
+
+  /* PILLAR PROGRESS */
+  .pillars {
+    background: #151824;
+    border: 1px solid #252d3d;
+    border-radius: 8px;
+    padding: 26px 28px;
+    margin-bottom: 36px;
+  }
+  .pillar-row {
+    margin-bottom: 20px;
+  }
+  .pillar-row:last-child { margin-bottom: 0; }
+  .pillar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 7px;
+  }
+  .pillar-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: #e2e8f0;
+  }
+  .pillar-pct {
+    font-size: 13px;
+    font-weight: 700;
+    color: #6c8fff;
+  }
+  .bar-track {
+    background: #1e2535;
+    border-radius: 6px;
+    height: 10px;
+    width: 100%;
+    overflow: hidden;
+  }
+  .bar-fill {
+    height: 100%;
+    border-radius: 6px;
+    background: linear-gradient(90deg, #4a6cf7 0%, #6c8fff 100%);
+    transition: width 0s;
+  }
+  .bar-fill.saturated {
+    background: linear-gradient(90deg, #3d5bd9 0%, #5a78ef 100%);
+  }
+  .pillar-note {
+    margin-top: 6px;
+    font-size: 12px;
+    color: #647088;
+    font-style: italic;
+  }
+
+  /* LEADS CARDS */
+  .leads-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 18px;
+    margin-bottom: 36px;
+  }
+  .lead-card {
+    background: #151824;
+    border: 1px solid #252d3d;
+    border-radius: 8px;
+    padding: 22px 22px 20px 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    transition: border-color 0.2s;
+  }
+  .lead-card:hover {
+    border-color: #6c8fff;
+  }
+  .lead-number {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    background: #6c8fff;
+    color: #0f1117;
+    font-size: 12px;
+    font-weight: 800;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .lead-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: #f0f4ff;
+    line-height: 1.4;
+  }
+  .lead-source {
+    font-size: 12px;
+    color: #6c8fff;
+    word-break: break-all;
+  }
+  .lead-why {
+    font-size: 13px;
+    color: #94a3b8;
+    line-height: 1.6;
+    border-top: 1px solid #1e2535;
+    padding-top: 10px;
+    flex-grow: 1;
+  }
+  .lead-why strong { color: #c8d8f8; }
+
+  /* STRATEGIC POSITION */
+  .strategic-box {
+    background: #11151f;
+    border: 1px solid #252d3d;
+    border-radius: 8px;
+    padding: 24px 28px;
+    position: relative;
+    overflow: hidden;
+  }
+  .strategic-box::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #6c8fff 0%, #4a6cf7 60%, transparent 100%);
+  }
+  .strategic-box p {
+    color: #cbd5e1;
+    font-size: 15px;
+    line-height: 1.75;
+  }
+  .strategic-box strong { color: #f0f4ff; }
+
+  /* DIVIDERS */
+  .section-block { margin-bottom: 36px; }
+
+  /* FOOTER */
+  .footer {
+    margin-top: 48px;
+    text-align: center;
+    font-size: 12px;
+    color: #3a4259;
+    letter-spacing: 0.05em;
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-meta">Fleet Telematics · Product Research</div>
+  <h1>Driving Style Research — Daily Brief</h1>
+  <div class="header-date">2026-04-23 &nbsp;·&nbsp; Research Cycle Summary</div>
+</div>
+
+<div class="content">
+
+  <!-- EXECUTIVE SUMMARY -->
+  <div class="section-block">
+    <div class="section-label">Executive Summary</div>
+    <div class="exec-summary">
+      This cycle delivered the <strong>first vehicle-class-differentiated deceleration thresholds</strong> (8 m/s² for cars, 7 m/s² for trucks) and a Bayesian scoring framework capable of <strong>~7-second near-real-time latency</strong>, substantially closing the Safety & Force Thresholds gap and demonstrating production-ready alerting feasibility. Behaviour metrics and scoring remain saturated at 99%, with advanced academic methods — continuous-time hidden Markov models and federated privacy-preserving scoring — confirming the canonical four-metric composite architecture. <strong>The dose-response cost model remains the single most critical research gap</strong>, blocking ROI calculator and predictive-maintenance module development and keeping the Cost &amp; Maintenance Impact pillar at only 62%.
+    </div>
+  </div>
+
+  <!-- PILLAR PROGRESS -->
+  <div class="section-block">
+    <div class="section-label">Pillar Progress</div>
+    <div class="pillars">
+
+      <div class="pillar-row">
+        <div class="pillar-header">
+          <span class="pillar-name">Behavior Metrics &amp; Scoring</span>
+          <span class="pillar-pct">99%</span>
+        </div>
+        <div class="bar-track"><div class="bar-fill saturated" style="width:99%"></div></div>
+        <div class="pillar-note">Saturated — commercial platforms converge on canonical four-metric composite; Bayesian &amp; CTHMM methods confirmed.</div>
+      </div>
+
+      <div class="pillar-row">
+        <div class="pillar-header">
+          <span class="pillar-name">Safety &amp; Force Thresholds</span>
+          <span class="pillar-pct">95%</span>
+        </div>
+        <div class="bar-track"><div class="bar-fill" style="width:95%"></div></div>
+        <div class="pillar-note">First vehicle-class-stratified deceleration thresholds entered corpus this cycle; full LCV/SUV/articulated/bus table still pending.</div>
+      </div>
+
+      <div class="pillar-row">
+        <div class="pillar-header">
+          <span class="pillar-name">Driver &amp; Route Context</span>
+          <span class="pillar-pct">93%</span>
+        </div>
+        <div class="bar-track"><div class="bar-fill" style="width:93%"></div></div>
+        <div class="pillar-note">Cross-cultural variation and fatigue/microsleep context further reinforced; road-surface telemetry signatures still absent.</div>
+      </div>
+
+      <div class="pillar-row">
+        <div class="pillar-header">
+          <span class="pillar-name">Service &amp; Report Design</span>
+          <span class="pillar-pct">78%</span>
+        </div>
+        <div class="bar-track"><div class="bar-fill" style="width:78%"></div></div>
+        <div class="pillar-note">Substantial dashboard/KPI/feedback-loop evidence added; A/B layout testing and alert-cadence optimisation remain gaps.</div>
+      </div>
+
+      <div class="pillar-row">
+        <div class="pillar-header">
+          <span class="pillar-name">Cost &amp; Maintenance Impact</span>
+          <span class="pillar-pct">62%</span>
+        </div>
+        <div class="bar-track"><div class="bar-fill" style="width:62%"></div></div>
+        <div class="pillar-note">Causal mechanism statements strengthened; peer-reviewed dose-response curves linking event frequency to component failure remain critically absent.</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- TOP PROMISING LEADS -->
+  <div class="section-block">
+    <div class="section-label">Top 3 Promising Leads</div>
+    <div class="leads-grid">
+
+      <div class="lead-card">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <span class="lead-number">1</span>
+          <span class="lead-title">Harsh Braking Incidents — Near-Miss Accidents and HBIs</span>
+        </div>
+        <div class="lead-source">
+          <a href="https://1library.net/article/harsh-braking-incidents-near-miss-accidents-and-hbis.zx0lvlwz" target="_blank" rel="noopener">1library.net</a>
+        </div>
+        <div class="lead-why">
+          Provides the <strong>first peer-sourced vehicle-class-stratified thresholds</strong> (8 m/s² cars, 7 m/s² trucks), enabling fleet service configurations that reduce false positives for mixed-fleet operators without waiting for a complete academic lookup table.
+        </div>
+      </div>
+
+      <div class="lead-card">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <span class="lead-number">2</span>
+          <span class="lead-title">Driving Behavior Recognition and Scoring: A Bayesian Approach</span>
+        </div>
+        <div class="lead-source">
+          <a href="https://www.sciencedirect.com/science/article/pii/S0001457526001326" target="_blank" rel="noopener">ScienceDirect</a>
+        </div>
+        <div class="lead-why">
+          Demonstrates <strong>~7-second near-real-time scoring latency</strong> via a Bayesian sequential credibility-band method, directly validating the feasibility of in-cab alerting at sub-10-second intervals for live driver coaching products.
+        </div>
+      </div>
+
+      <div class="lead-card">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <span class="lead-number">3</span>
+          <span class="lead-title">Evaluating the Long-Term Effects of Telematics Driver Feedback</span>
+        </div>
+        <div class="lead-source">
+          <a href="https://www.nrso.ntua.gr/geyannis/wp-content/uploads/geyannis-pc627.pdf" target="_blank" rel="noopener">ntua.gr</a>
+        </div>
+        <div class="lead-why">
+          Empirically confirms that <strong>feedback effects decay over time</strong>, establishing a mandatory design constraint: fleet coaching and engagement modules must deliver continuous adaptive reinforcement rather than one-shot onboarding interventions to sustain safety gains.
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- STRATEGIC POSITION -->
+  <div class="section-block">
+    <div class="section-label">Today's Strategic Position</div>
+    <div class="strategic-box">
+      <p>
+        The project is <strong>approximately 80% ready to enter product design</strong> for core scoring and in-cab alerting modules, with near-saturated evidence on what to measure, a working vehicle-class threshold table, and real-time scoring feasibility confirmed. <strong>The dose-response cost model is the single highest-priority research gap</strong>: without quantified links between harsh-event frequency and component failure intervals, ROI calculators and predictive-maintenance modules — the primary premium differentiators — cannot be built. Secondary priorities are completing the full LCV/SUV/articulated-truck/bus threshold table with validated sensitivity/specificity, and gathering evidence-based alert-cadence optimisation data to inform suppression logic design.
+      </p>
+    </div>
+  </div>
+
+  <div class="footer">Fleet Telematics Product Research &nbsp;·&nbsp; Internal Use Only &nbsp;·&nbsp; 2026-04-23</div>
+
+</div>
+</body>
+</html>

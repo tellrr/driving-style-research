@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Driving Style Research — Daily Brief</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background-color: #0f1117;
+    color: #e2e8f0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+    padding: 0 0 60px 0;
+  }
+  a { color: #6c8fff; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  /* HEADER */
+  .header {
+    background: linear-gradient(135deg, #161b2e 0%, #1a1f35 100%);
+    border-bottom: 2px solid #6c8fff;
+    padding: 32px 40px 28px 40px;
+  }
+  .header-meta {
+    display: flex;
+    align-items: baseline;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  .header h1 {
+    font-size: 22px;
+    font-weight: 700;
+    color: #ffffff;
+    letter-spacing: 0.01em;
+  }
+  .header .date-badge {
+    background: #6c8fff22;
+    border: 1px solid #6c8fff55;
+    color: #6c8fff;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    padding: 3px 12px;
+    border-radius: 20px;
+    text-transform: uppercase;
+  }
+  .header .subtitle {
+    margin-top: 6px;
+    font-size: 12px;
+    color: #7a8499;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+
+  /* LAYOUT */
+  .container {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 36px 40px 0 40px;
+  }
+
+  /* SECTION HEADERS */
+  .section-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #6c8fff;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: #6c8fff33;
+  }
+
+  /* EXECUTIVE SUMMARY */
+  .exec-summary {
+    background: #161b2e;
+    border: 1px solid #6c8fff44;
+    border-left: 4px solid #6c8fff;
+    border-radius: 8px;
+    padding: 22px 26px;
+    margin-bottom: 40px;
+    color: #c9d5f0;
+    font-size: 15px;
+    line-height: 1.75;
+  }
+  .exec-summary p + p { margin-top: 10px; }
+
+  /* PILLAR PROGRESS */
+  .pillars { margin-bottom: 40px; }
+  .pillar-row {
+    display: grid;
+    grid-template-columns: 200px 1fr 52px;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 14px;
+  }
+  .pillar-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: #c9d5f0;
+    text-align: right;
+    white-space: nowrap;
+  }
+  .bar-track {
+    background: #1e2438;
+    border-radius: 6px;
+    height: 18px;
+    overflow: hidden;
+    position: relative;
+  }
+  .bar-fill {
+    height: 100%;
+    border-radius: 6px;
+    position: relative;
+    transition: width 0.3s ease;
+  }
+  .bar-fill::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: linear-gradient(90deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.12) 100%);
+    border-radius: 6px;
+  }
+  .bar-pct {
+    font-size: 12px;
+    font-weight: 700;
+    color: #e2e8f0;
+    text-align: left;
+  }
+
+  /* fill colours by completion tier */
+  .tier-high   { background: linear-gradient(90deg, #3d6bff, #6c8fff); }
+  .tier-mid    { background: linear-gradient(90deg, #2e7d9f, #3ab8d4); }
+  .tier-low    { background: linear-gradient(90deg, #7a4a9f, #a06cc8); }
+  .tier-warn   { background: linear-gradient(90deg, #c07030, #e09050); }
+
+  .pillar-status {
+    font-size: 11px;
+    color: #7a8499;
+    grid-column: 2 / 4;
+    margin-top: -8px;
+    margin-bottom: 4px;
+    padding-left: 0;
+  }
+
+  /* LEAD CARDS */
+  .leads-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 18px;
+    margin-bottom: 40px;
+  }
+  .lead-card {
+    background: #161b2e;
+    border: 1px solid #2a3050;
+    border-radius: 10px;
+    padding: 22px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    transition: border-color 0.2s;
+  }
+  .lead-card:hover { border-color: #6c8fff88; }
+  .lead-card .card-num {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: #6c8fff;
+    text-transform: uppercase;
+  }
+  .lead-card .card-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: #ffffff;
+    line-height: 1.45;
+  }
+  .lead-card .card-source {
+    font-size: 11px;
+    color: #5a6a99;
+    font-weight: 500;
+  }
+  .lead-card .card-source a {
+    color: #6c8fff99;
+    font-size: 11px;
+  }
+  .lead-card .card-why {
+    font-size: 13px;
+    color: #9aadcc;
+    line-height: 1.6;
+    border-top: 1px solid #2a3050;
+    padding-top: 10px;
+    flex: 1;
+  }
+  .lead-card .card-tag {
+    display: inline-block;
+    background: #6c8fff18;
+    border: 1px solid #6c8fff33;
+    color: #6c8fff;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    padding: 2px 9px;
+    border-radius: 12px;
+    text-transform: uppercase;
+    align-self: flex-start;
+  }
+
+  /* STRATEGIC POSITION */
+  .strategic-box {
+    background: #0d1525;
+    border: 1px solid #2a3050;
+    border-radius: 10px;
+    padding: 24px 28px;
+    margin-bottom: 40px;
+    position: relative;
+    overflow: hidden;
+  }
+  .strategic-box::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #6c8fff, #3ab8d4 60%, #a06cc8);
+  }
+  .strategic-box .overall-pct {
+    font-size: 48px;
+    font-weight: 800;
+    color: #6c8fff;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .strategic-box .overall-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    color: #5a6a99;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  .strategic-box .strategic-text {
+    color: #b0c0dc;
+    font-size: 14px;
+    line-height: 1.75;
+  }
+  .strategic-box .strategic-text p + p { margin-top: 10px; }
+  .blocker-pill {
+    display: inline-block;
+    background: #c07030;
+    color: #ffffff;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.07em;
+    padding: 2px 10px;
+    border-radius: 12px;
+    text-transform: uppercase;
+    vertical-align: middle;
+    margin-right: 4px;
+  }
+
+  /* FOOTER */
+  .footer {
+    text-align: center;
+    font-size: 11px;
+    color: #3a4460;
+    margin-top: 48px;
+    padding-top: 20px;
+    border-top: 1px solid #1e2438;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  @media (max-width: 640px) {
+    .container { padding: 24px 18px 0 18px; }
+    .header { padding: 24px 18px; }
+    .pillar-row { grid-template-columns: 150px 1fr 44px; gap: 10px; }
+    .pillar-name { font-size: 11px; }
+    .strategic-box .overall-pct { font-size: 36px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════ HEADER ═══════════════════════════════ -->
+<header class="header">
+  <div class="header-meta">
+    <h1>Driving Style Research — Daily Brief</h1>
+    <span class="date-badge">2026-04-22</span>
+  </div>
+  <p class="subtitle">Fleet Telematics Product Research &nbsp;·&nbsp; Cycle Report</p>
+</header>
+
+<div class="container">
+
+  <!-- ═══════════════════════════ EXECUTIVE SUMMARY ═══════════════════════ -->
+  <p class="section-label">Executive Summary</p>
+  <div class="exec-summary">
+    <p>This cycle's most consequential finding is that commercially deployed telematics platforms have fully converged on a canonical four-metric composite score, while the academic frontier is now advancing on three distinct fronts — explainability layers (XAI), privacy-preserving federated learning (FedDriveScore), and short-trajectory cold-start viability — each of which directly addresses a known gap in our platform design.</p>
+    <p>On the threshold side, Digital Matter's explicit accelerometer specification (5.5 m/s² cornering at 100 Hz) and MDPI's validation of harsh braking as a roadway-condition-dependent crash surrogate together confirm that context-aware, not universal, defaults are the correct engineering posture. The <strong>Cost &amp; Maintenance pillar remains the primary research deficit</strong>: without peer-reviewed dose-response curves linking event frequency to component degradation, cost-savings claims to fleet operators cannot yet be quantitatively defended.</p>
+  </div>
+
+  <!-- ═══════════════════════════ PILLAR PROGRESS ═══════════════════════ -->
+  <p class="section-label">Pillar Progress</p>
+  <div class="pillars">
+
+    <!-- Behavior Metrics & Scoring — 99% -->
+    <div class="pillar-row">
+      <span class="pillar-name">Behavior Metrics &amp; Scoring</span>
+      <div class="bar-track">
+        <div class="bar-fill tier-high" style="width:99%;"></div>
+      </div>
+      <span class="bar-pct">99%</span>
+    </div>
+    <div class="pillar-row">
+      <span></span>
+      <span class="pillar-status">Saturated — cold-start ramp-curve calibration and per-vehicle-class false-positive benchmarks remain as micro-gaps.</span>
+    </div>
+
+    <!-- Driver & Route Context — 92% -->
+    <div class="pillar-row">
+      <span class="pillar-name">Driver &amp; Route Context</span>
+      <div class="bar-track">
+        <div class="bar-fill tier-high" style="width:92%;"></div>
+      </div>
+      <span class="bar-pct">92%</span>
+    </div>
+    <div class="pillar-row">
+      <span></span>
+      <span class="pillar-status">↑ +2 pp — Strong cross-cultural behavioral variation evidence; road-surface quality quantification still absent.</span>
+    </div>
+
+    <!-- Safety & Force Thresholds — 93% -->
+    <div class="pillar-row">
+      <span class="pillar-name">Safety &amp; Force Thresholds</span>
+      <div class="bar-track">
+        <div class="bar-fill tier-mid" style="width:93%;"></div>
+      </div>
+      <span class="bar-pct">93%</span>
+    </div>
+    <div class="pillar-row">
+      <span></span>
+      <span class="pillar-status">↑ +2 pp — Practitioner defaults are actionable; peer-reviewed vehicle-class-stratified threshold table still missing.</span>
+    </div>
+
+    <!-- Service & Report Design — 74% -->
+    <div class="pillar-row">
+      <span class="pillar-name">Service &amp; Report Design</span>
+      <div class="bar-track">
+        <div class="bar-fill tier-low" style="width:74%;"></div>
+      </div>
+      <span class="bar-pct">74%</span>
+    </div>
+    <div class="pillar-row">
+      <span></span>
+      <span class="pillar-status">↑ +4 pp — Commercial dashboard precedents accumulate; no controlled UX studies or validated alert-frequency guidance yet.</span>
+    </div>
+
+    <!-- Cost & Maintenance Impact — 58% -->
+    <div class="pillar-row">
+      <span class="pillar-name">Cost &amp; Maintenance Impact</span>
+      <div class="bar-track">
+        <div class="bar-fill tier-warn" style="width:58%;"></div>
+      </div>
+      <span class="bar-pct">58%</span>
+    </div>
+    <div class="pillar-row">
+      <span></span>
+      <span class="pillar-status">↑ +3 pp — Directional evidence strengthens; dose-response models linking event frequency to component failure remain absent. PRIMARY BLOCKER.</span>
+    </div>
+
+  </div>
+
+  <!-- ═══════════════════════════ PROMISING LEADS ═══════════════════════ -->
+  <p class="section-label">Top Promising Leads</p>
+  <div class="leads-grid">
+
+    <!-- Lead 1 -->
+    <div class="lead-card">
+      <span class="card-num">Lead 01</span>
+      <span class="card-tag">Cold-Start</span>
+      <p class="card-title">"Can Driving Style be Accurately Inferred from Short Trajectories?"</p>
+      <p class="card-source">Springer &nbsp;·&nbsp; <a href="https://link.springer.com/article/10.1007/s42154-025-00406-3" target="_blank">link.springer.com</a></p>
+      <p class="card-why">Proves that reliable style classification is achievable from short trip segments, giving us an empirical foundation for defining the minimum observation window before a driver score is surfaced to fleet managers — directly solving a key onboarding UX problem.</p>
+    </div>
+
+    <!-- Lead 2 -->
+    <div class="lead-card">
+      <span class="card-num">Lead 02</span>
+      <span class="card-tag">Threshold Calibration</span>
+      <p class="card-title">Evaluating Harsh Braking Events as a Surrogate Measure of Crash Risk</p>
+      <p class="card-source">MDPI Applied Sciences &nbsp;·&nbsp; <a href="https://www.mdpi.com/2624-8921/8/3/68" target="_blank">mdpi.com</a></p>
+      <p class="card-why">Statistically validates harsh braking as a crash-risk proxy on interstates while exposing a critical roadway-condition dependency, confirming that any threshold we ship must be context-aware rather than a single universal value applied across all environments.</p>
+    </div>
+
+    <!-- Lead 3 -->
+    <div class="lead-card">
+      <span class="card-num">Lead 03</span>
+      <span class="card-tag">Freight Context</span>
+      <p class="card-title">Physics-Guided Freight Vehicle Loading Status Estimation</p>
+      <p class="card-source">PubMed / NCBI &nbsp;·&nbsp; <a href="https://pubmed.ncbi.nlm.nih.gov/41796201/" target="_blank">pubmed.ncbi.nlm.nih.gov</a></p>
+      <p class="card-why">Achieves 85.3% load-status accuracy from standard tachograph data alone, enabling load-adjusted threshold calibration without additional hardware — a practical, deployable path to closing the long-standing context gap for freight fleet clients.</p>
+    </div>
+
+  </div>
+
+  <!-- ═════════════════════════ STRATEGIC POSITION ═════════════════════ -->
+  <p class="section-label">Today's Strategic Position</p>
+  <div class="strategic-box">
+    <div class="overall-pct">85%</div>
+    <div class="overall-label">Overall Research Completion Estimate</div>
+    <div class="strategic-text">
+      <p>The behavior-metrics and driver-context pillars are effectively research-complete, and the safety-thresholds pillar now has practitioner-grade defaults (Digital Matter's 5.5 m/s² cornering at 100 Hz) that are immediately usable as system parameters pending peer-reviewed stratification by vehicle class. The service-design pillar has sufficient commercial precedent to begin dashboard prototyping in parallel with continued research.</p>
+      <p><span class="blocker-pill">Blocker</span> The <strong>Cost &amp; Maintenance Impact pillar at 58%</strong> remains the single greatest constraint on go-to-market credibility: without peer-reviewed dose-response curves linking event frequency and severity to specific component degradation intervals, cost-savings claims will rest on directional anecdote rather than defensible engineering models — a material risk when positioning to procurement-conscious fleet operators.</p>
+    </div>
+  </div>
+
+  <div class="footer">Fleet Telematics Product Research &nbsp;·&nbsp; Internal Use Only &nbsp;·&nbsp; 2026-04-22</div>
+
+</div>
+</body>
+</html>
