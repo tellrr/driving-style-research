@@ -1,9 +1,10 @@
 from llm.client import OllamaClient
+from llm.deepseek_client import DeepSeekClient
 from llm.gemini_client import GeminiClient
 from llm.openai_client import OpenAIClient
 
 
-def create_llm_client(config) -> OllamaClient | GeminiClient | OpenAIClient:
+def create_llm_client(config) -> OllamaClient | GeminiClient | OpenAIClient | DeepSeekClient:
     """Return the right LLM client based on LLM_PROVIDER in the config."""
     if config.llm.provider == "gemini":
         return GeminiClient(
@@ -14,6 +15,13 @@ def create_llm_client(config) -> OllamaClient | GeminiClient | OpenAIClient:
         )
     if config.llm.provider == "openai":
         return OpenAIClient(
+            pipeline_model=config.llm.pipeline_model,
+            synthesis_model=config.llm.synthesis_model,
+            temperature=config.llm.temperature,
+            timeout=config.llm.timeout,
+        )
+    if config.llm.provider == "deepseek":
+        return DeepSeekClient(
             pipeline_model=config.llm.pipeline_model,
             synthesis_model=config.llm.synthesis_model,
             temperature=config.llm.temperature,

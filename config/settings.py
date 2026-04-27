@@ -33,6 +33,7 @@ class LLMConfig:
     pipeline_model_ollama: str = field(default_factory=lambda: os.getenv("PIPELINE_MODEL_OLLAMA", "qwen3.5:4b"))
     pipeline_model_gemini: str = field(default_factory=lambda: os.getenv("PIPELINE_MODEL_GEMINI", "gemini-3.1-flash-lite-preview"))
     pipeline_model_openai: str = field(default_factory=lambda: os.getenv("PIPELINE_MODEL_OPENAI", "gpt-5-mini"))
+    pipeline_model_deepseek: str = field(default_factory=lambda: os.getenv("PIPELINE_MODEL_DEEPSEEK", "deepseek-v4-flash"))
 
     report_model: str = field(default_factory=lambda: os.getenv("REPORT_MODEL", "claude-opus-4-6"))
     embed_model: str = "nomic-embed-text"       # local Ollama embedding model
@@ -48,6 +49,7 @@ class LLMConfig:
         model = {
             "gemini": self.pipeline_model_gemini,
             "openai": self.pipeline_model_openai,
+            "deepseek": self.pipeline_model_deepseek,
         }.get(self.provider, self.pipeline_model_ollama)
         self.pipeline_model = model
         self.synthesis_model = model
