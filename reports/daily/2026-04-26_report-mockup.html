@@ -1,0 +1,2447 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Fleet Telematics Mockup · 2026-04-26</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: #070a10; padding: 2rem; font-family: system-ui, -apple-system, sans-serif; }
+h1 { color: #e2e8f0; font-size: 1.5rem; margin-bottom: 0.5rem; }
+.subtitle { color: #64748b; margin-bottom: 2rem; font-size: 0.875rem; }
+.gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(560px, 1fr)); gap: 2rem; }
+.screen-label { font-size: 0.7rem; color: #64748b; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.08em; }
+.browser-shell { background: #0f1117; border-radius: 12px; border: 1px solid #2d3748; overflow: hidden; }
+.browser-bar { background: #161924; padding: 0.5rem 0.75rem; display: flex; align-items: center; gap: 0.5rem; border-bottom: 1px solid #2d3748; }
+.browser-dots { display: flex; gap: 4px; }
+.browser-dot { width: 8px; height: 8px; border-radius: 50%; }
+.dot-r { background: #f87171; } .dot-y { background: #fbbf24; } .dot-g { background: #34d399; }
+.browser-url { flex: 1; background: #0f1117; border: 1px solid #2d3748; border-radius: 6px; padding: 0.2rem 0.6rem; font-size: 0.68rem; color: #64748b; }
+.phone-shell { background: #0f1117; border-radius: 36px; border: 2px solid #2d3748; overflow: hidden; max-width: 360px; margin: 0 auto; }
+.phone-notch { background: #161924; height: 36px; display: flex; align-items: center; justify-content: center; border-bottom: 1px solid #2d3748; }
+.notch-pill { background: #2d3748; width: 80px; height: 10px; border-radius: 5px; }
+.phone-home { background: #161924; height: 24px; display: flex; align-items: center; justify-content: center; border-top: 1px solid #2d3748; }
+.home-bar { background: #4a5568; width: 80px; height: 4px; border-radius: 2px; }
+.phone-content { padding: 0.75rem; background: #0f1117; }
+.screen-inner { padding: 0.875rem; }
+.screen-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.875rem; }
+.screen-title { color: #e2e8f0; font-size: 1rem; font-weight: 700; }
+.screen-sub { color: #64748b; font-size: 0.7rem; margin-top: 0.1rem; }
+.card { background: #1a1d27; border: 1px solid #2d3748; border-radius: 10px; padding: 0.75rem; margin-bottom: 0.625rem; }
+.card-sm { background: #1a1d27; border: 1px solid #2d3748; border-radius: 8px; padding: 0.5rem 0.65rem; }
+.card-xs { background: #1a1d27; border: 1px solid #2d3748; border-radius: 6px; padding: 0.35rem 0.5rem; }
+.text-xs { font-size: 0.65rem; color: #64748b; }
+.text-sm { font-size: 0.75rem; color: #94a3b8; }
+.text-md { font-size: 0.85rem; color: #e2e8f0; }
+.text-lg { font-size: 1.1rem; color: #e2e8f0; font-weight: 700; }
+.label { font-size: 0.65rem; color: #64748b; text-transform: uppercase; letter-spacing: 0.06em; }
+.green { color: #34d399; } .yellow { color: #fbbf24; } .red { color: #f87171; } .blue { color: #6c8fff; } .muted { color: #94a3b8; }
+.badge { display: inline-flex; align-items: center; padding: 0.15rem 0.45rem; border-radius: 999px; font-size: 0.62rem; font-weight: 600; letter-spacing: 0.03em; }
+.badge-green { background: rgba(52,211,153,0.15); color: #34d399; }
+.badge-yellow { background: rgba(251,191,36,0.15); color: #fbbf24; }
+.badge-red { background: rgba(248,113,113,0.15); color: #f87171; }
+.badge-blue { background: rgba(108,143,255,0.15); color: #6c8fff; }
+.badge-gray { background: rgba(148,163,184,0.12); color: #94a3b8; }
+.badge-purple { background: rgba(167,139,250,0.15); color: #a78bfa; }
+.badge-orange { background: rgba(251,146,60,0.15); color: #fb923c; }
+.flex { display: flex; } .flex-col { flex-direction: column; }
+.items-center { align-items: center; } .items-start { align-items: flex-start; }
+.justify-between { justify-content: space-between; } .justify-center { justify-content: center; }
+.gap-1 { gap: 0.35rem; } .gap-2 { gap: 0.625rem; } .gap-3 { gap: 0.875rem; }
+.w-full { width: 100%; }
+.mt-1 { margin-top: 0.35rem; } .mt-2 { margin-top: 0.625rem; }
+.mb-1 { margin-bottom: 0.35rem; } .mb-2 { margin-bottom: 0.625rem; }
+.progress-wrap { margin-bottom: 0.45rem; }
+.progress-label { display: flex; justify-content: space-between; margin-bottom: 0.2rem; }
+.progress-track { background: #2d3748; border-radius: 999px; height: 5px; width: 100%; }
+.progress-fill { height: 5px; border-radius: 999px; }
+.divider { border: none; border-top: 1px solid #2d3748; margin: 0.5rem 0; }
+.nav-item { display: flex; align-items: center; gap: 0.5rem; padding: 0.45rem 0.6rem; border-radius: 7px; font-size: 0.75rem; color: #94a3b8; cursor: pointer; margin-bottom: 0.15rem; }
+.nav-item.active { background: rgba(108,143,255,0.15); color: #6c8fff; font-weight: 600; }
+.nav-icon { font-size: 0.9rem; }
+.stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; }
+.stat-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.5rem; }
+.stat-grid-4 { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 0.5rem; }
+.tier-1 { background: rgba(52,211,153,0.13); color: #34d399; border: 1px solid rgba(52,211,153,0.3); }
+.tier-2 { background: rgba(52,211,153,0.08); color: #6ee7b7; border: 1px solid rgba(52,211,153,0.2); }
+.tier-3 { background: rgba(251,191,36,0.12); color: #fbbf24; border: 1px solid rgba(251,191,36,0.3); }
+.tier-4 { background: rgba(251,191,36,0.08); color: #f59e0b; border: 1px solid rgba(251,191,36,0.2); }
+.tier-5 { background: rgba(248,113,113,0.13); color: #f87171; border: 1px solid rgba(248,113,113,0.3); }
+.sidebar { width: 148px; background: #0d1019; border-right: 1px solid #2d3748; padding: 0.75rem 0.5rem; flex-shrink: 0; }
+.sidebar-logo { color: #6c8fff; font-size: 0.85rem; font-weight: 800; margin-bottom: 1rem; padding: 0 0.25rem; }
+.main-content { flex: 1; padding: 0.875rem; background: #0f1117; overflow: hidden; }
+.phone-nav { display: flex; border-top: 1px solid #2d3748; background: #0d1019; }
+.phone-nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; padding: 0.4rem 0; font-size: 0.55rem; color: #64748b; gap: 0.1rem; }
+.phone-nav-item.active { color: #6c8fff; }
+.phone-nav-icon { font-size: 1rem; }
+</style>
+</head>
+<body>
+<h1>Fleet Telematics — Report &amp; Dashboard Mockups · 2026-04-26</h1>
+<p class="subtitle">Evolving design prototype · updated from daily research · 18 screens · Web dashboard + Mobile app · Composite Safety Score (0–100) · Leading &amp; Lagging Indicator Split Dashboard · Gamified Coaching with Human Escalation · Dynamic weight configuration · Distance-normalized scoring · Shift-timing risk · Eco-decay tracking · RAG safety scoring · Human-in-the-loop coaching checkpoints</p>
+
+<div class="gallery">
+
+<!-- ============================================================
+     SCREEN 1: Fleet Manager Overview — Leading vs Lagging Split
+     NEW: Split-view leading/lagging indicator dashboard per research
+     RAG scoring system, human escalation pipeline visible
+     ============================================================ -->
+<div>
+  <div class="screen-label">📊 Fleet Manager Overview · Leading vs Lagging · web</div>
+  <div class="browser-shell">
+    <div class="browser-bar">
+      <div class="browser-dots"><div class="browser-dot dot-r"></div><div class="browser-dot dot-y"></div><div class="browser-dot dot-g"></div></div>
+      <div class="browser-url">app.fleetlens.io/dashboard</div>
+    </div>
+    <div style="display:flex;min-height:720px;">
+      <div class="sidebar">
+        <div class="sidebar-logo">FleetLens</div>
+        <div class="nav-item active"><span class="nav-icon">📊</span> Overview</div>
+        <div class="nav-item"><span class="nav-icon">👤</span> Drivers</div>
+        <div class="nav-item"><span class="nav-icon">🚛</span> Vehicles</div>
+        <div class="nav-item"><span class="nav-icon">🗺️</span> Heat Map</div>
+        <div class="nav-item"><span class="nav-icon">📋</span> Reports</div>
+        <div class="nav-item"><span class="nav-icon">⚡</span> Alerts</div>
+        <div class="nav-item"><span class="nav-icon">🎯</span> Coaching</div>
+        <div class="nav-item"><span class="nav-icon">🌿</span> Eco</div>
+        <div class="nav-item"><span class="nav-icon">😴</span> Fatigue</div>
+        <div class="nav-item"><span class="nav-icon">⚙️</span> Settings</div>
+        <hr class="divider">
+        <div style="padding:0.3rem 0.25rem;">
+          <div class="label mb-1">Live Status</div>
+          <div class="card-sm mb-1"><div class="label">Active now</div><div style="color:#34d399;font-size:0.95rem;font-weight:700;">23<span style="color:#94a3b8;font-size:0.65rem;"> / 41</span></div></div>
+          <div class="card-sm mb-1"><div class="label">Live alerts</div><div style="color:#f87171;font-size:0.95rem;font-weight:700;">3 <span style="color:#94a3b8;font-size:0.6rem;">active</span></div></div>
+          <div class="card-sm mb-1"><div class="label">Coaching due</div><div style="color:#6c8fff;font-size:0.95rem;font-weight:700;">5 <span style="color:#94a3b8;font-size:0.6rem;">escalated</span></div></div>
+          <div class="card-sm mb-1"><div class="label">RAG — Red</div><div style="color:#f87171;font-size:0.95rem;font-weight:700;">8 <span style="color:#94a3b8;font-size:0.6rem;">drivers</span></div></div>
+          <div class="card-sm"><div class="label">Eco decay risk</div><div style="color:#fb923c;font-size:0.95rem;font-weight:700;">4 <span style="color:#94a3b8;font-size:0.6rem;">drivers</span></div></div>
+        </div>
+      </div>
+      <div class="main-content">
+        <div class="screen-header">
+          <div><div class="screen-title">Fleet Safety Overview</div><div class="screen-sub">Week 14–20 Apr 2026 · 41 drivers · Mixed fleet · Leading &amp; Lagging indicator split · RAG scoring · Human escalation pipeline active</div></div>
+          <div class="flex gap-1 items-center"><span class="badge badge-blue">This Week ▾</span><span class="badge badge-gray">All vehicles ▾</span></div>
+        </div>
+
+        <!-- RAG Fleet Safety Score strip -->
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:0.4rem;margin-bottom:0.5rem;">
+          <div class="card-sm" style="border-color:rgba(52,211,153,0.4);background:rgba(52,211,153,0.07);">
+            <div class="label">Fleet Safety Score</div>
+            <div style="font-size:1.3rem;font-weight:800;color:#34d399;">74<span style="font-size:0.65rem;color:#94a3b8;">/100</span></div>
+            <div class="text-xs green">▲ +3 vs last week · RAG: Amber</div>
+          </div>
+          <div class="card-sm">
+            <div class="label">RAG — Green</div>
+            <div style="font-size:1.3rem;font-weight:800;color:#34d399;">18 <span style="font-size:0.65rem;color:#94a3b8;">drivers</span></div>
+            <div class="text-xs muted">Score ≥75 · no action needed</div>
+          </div>
+          <div class="card-sm">
+            <div class="label">RAG — Amber</div>
+            <div style="font-size:1.3rem;font-weight:800;color:#fbbf24;">15 <span style="font-size:0.65rem;color:#94a3b8;">drivers</span></div>
+            <div class="text-xs yellow">Score 50–74 · monitor closely</div>
+          </div>
+          <div class="card-sm" style="border-color:rgba(248,113,113,0.4);background:rgba(248,113,113,0.07);">
+            <div class="label">RAG — Red</div>
+            <div style="font-size:1.3rem;font-weight:800;color:#f87171;">8 <span style="font-size:0.65rem;color:#94a3b8;">drivers</span></div>
+            <div class="text-xs red">Score &lt;50 · escalate to human coach</div>
+          </div>
+        </div>
+
+        <!-- Human escalation alert — KEY from PubMed RCT finding -->
+        <div style="background:rgba(167,139,250,0.08);border:1px solid rgba(167,139,250,0.4);border-radius:8px;padding:0.4rem 0.6rem;margin-bottom:0.45rem;display:flex;align-items:center;gap:0.75rem;">
+          <span style="font-size:1.1rem;">🧑‍💼</span>
+          <div style="flex:1;">
+            <div class="text-xs" style="color:#a78bfa;font-weight:600;">Human Escalation Required · 5 drivers below threshold for ≥2 consecutive weeks · Automated feedback alone is insufficient</div>
+            <div class="text-xs muted">RCT evidence: in-vehicle &amp; app feedback without human supervisor communication training produces no statistically significant reduction in risky events. Combined intervention reduces risky events (AIRR 0.68). Schedule coaching sessions now.</div>
+          </div>
+          <span class="badge badge-purple" style="white-space:nowrap;">Schedule →</span>
+        </div>
+
+        <!-- SPLIT VIEW: Leading vs Lagging -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;margin-bottom:0.5rem;">
+          <!-- LEADING INDICATORS -->
+          <div class="card" style="margin-bottom:0;border-color:rgba(108,143,255,0.35);background:rgba(108,143,255,0.04);">
+            <div class="flex justify-between items-center mb-1">
+              <div class="text-sm" style="font-weight:700;color:#6c8fff;">⬆ Leading Indicators</div>
+              <span class="badge badge-blue" style="font-size:0.5rem;">Predictive · Act Now</span>
+            </div>
+            <div class="text-xs muted" style="margin-bottom:0.4rem;">Metrics that predict future accidents — intervene before incidents occur</div>
+
+            <div style="display:flex;flex-direction:column;gap:0.25rem;">
+              <div style="background:#1a1d27;border-radius:6px;padding:0.3rem 0.4rem;">
+                <div class="flex justify-between items-center">
+                  <div class="text-xs" style="color:#e2e8f0;">Harsh Events / 1,000 km</div>
+                  <span class="badge badge-yellow" style="font-size:0.5rem;">2.8 · ▼ -0.4</span>
+                </div>
+                <div class="progress-track mt-1"><div class="progress-fill" style="width:56%;background:#fbbf24;"></div></div>
+              </div>
+              <div style="background:#1a1d27;border-radius:6px;padding:0.3rem 0.4rem;">
+                <div class="flex justify-between items-center">
+                  <div class="text-xs" style="color:#e2e8f0;">Fatigue Pattern Detections</div>
+                  <span class="badge badge-red" style="font-size:0.5rem;">6 drivers · ▲ +2</span>
+                </div>
+                <div class="progress-track mt-1"><div class="progress-fill" style="width:65%;background:#f87171;"></div></div>
+              </div>
+              <div style="background:#1a1d27;border-radius:6px;padding:0.3rem 0.4rem;">
+                <div class="flex justify-between items-center">
+                  <div class="text-xs" style="color:#e2e8f0;">Near-Miss Proxy Events</div>
+                  <span class="badge badge-red" style="font-size:0.5rem;">11 this week</span>
+                </div>
+                <div class="progress-track mt-1"><div class="progress-fill" style="width:72%;background:#f87171;"></div></div>
+              </div>
+              <div style="background:#1a1d27;border-radius:6px;padding:0.3rem 0.4rem;">
+                <div class="flex justify-between items-center">
+                  <div class="text-xs" style="color:#e2e8f0;">Coaching Completion Rate</div>
+                  <span class="badge badge-yellow" style="font-size:0.5rem;">61% · target 80%</span>
+                </div>
+                <div class="progress-track mt-1"><div class="progress-fill" style="width:61%;background:#fbbf24;"></div></div>
+              </div>
+              <div style="background:#1a1d27;border-radius:6px;padding:0.3rem 0.4rem;">
+                <div class="flex justify-between items-center">
+                  <div class="text-xs" style="color:#e2e8f0;">Shift-Start Risk Window Active</div>
+                  <span class="badge badge-yellow" style="font-size:0.5rem;">7 drivers · +26% risk</span>
+                </div>
+                <div class="progress-track mt-1"><div class="progress-fill" style="width:42%;background:#fbbf24;"></div></div>
+              </div>
+              <div style="background:#1a1d27;border-radius:6px;padding:0.3rem 0.4rem;">
+                <div class="flex justify-between items-center">
+                  <div class="text-xs" style="color:#e2e8f0;">Driver Engagement Score</div>
+                  <span class="badge badge-green" style="font-size:0.5rem;">73% app active</span>
+                </div>
+                <div class="progress-track mt-1"><div class="progress-fill" style="width:73%;background:#34d399;"></div></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- LAGGING INDICATORS -->
+          <div class="card" style="margin-bottom:0;border-color:rgba(248,113,113,0.3);background:rgba(248,113,113,0.03);">
+            <div class="flex justify-between items-center mb-1">
+              <div class="text-sm" style="font-weight:700;color:#f87171;">⬇ Lagging Indicators</div>
+              <span class="badge badge-red" style="font-size:0.5rem;">Outcome Tracking</span>
+            </div>
+            <div class="text-xs muted" style="margin-bottom:0.4rem;">Historical outcomes — use to validate leading indicator effectiveness</div>
+
+            <div style="display:flex;flex-direction:column;gap:0.25rem;">
+              <div style="background:#1a1d27;border-radius:6px;padding:0.3rem 0.4rem;">
+                <div class="flex justify-between items-center">
+                  <div class="text-xs" style="color:#e2e8f0;">Crash Frequency (rolling 90d)</div>
+                  <span class="badge badge-yellow" style="font-size:0.5rem;">2 incidents · ▼ -1</span>
+                </div>
+                <div class="progress-track mt-1"><div class="progress-fill" style="width:22%;background:#fbbf24;"></div></div>
+              </div>
+              <div style="background:#1a1d27;border-radius:6px;padding:0.3rem 0.4rem;">
+                <div class="flex justify-between items-center">
+                  <div class="text-xs" style="color:#e2e8f0;">Insurance Claim Cost (YTD)</div>
+                  <span class="badge badge-yellow" style="font-size:0.5rem;">€14,200 · target &lt;€10k</span>
+                </div>
+                <div class="progress-track mt-1"><div class="progress-fill" style="width:68%;background:#fbbf24;"></div></div>
+              </div>
+              <div style="background:#1a1d27;border-radius:6px;padding:0.3rem 0.4rem;">
+                <div class="flex justify-between items-center">
+                  <div class="text-xs" style="color:#e2e8f0;">Vehicle Damage Reports</div>
+                  <span class="badge badge-green" style="font-size:0.5rem;">3 this month · ▼ -2</span>
+                </div>
+                <div class="progress-track mt-1"><div class="progress-fill" style="width:30%;background:#34d399;"></div></div>
+              </div>
+              <div style="background:#1a1d27;border-radius:6px;padding:0.3rem 0.4rem;">
+                <div class="flex justify-between items-center">
+                  <div class="text-xs" style="color:#e2e8f0;">OSHA Recordable Incidents</div>
+                  <span class="badge badge-green" style="font-size:0.5rem;">0 this quarter</span>
+                </div>
+                <div class="progress-track mt-1"><div class="progress-fill" style="width:0%;background:#34d399;"></div></div>
+              </div>
+              <div style="background:#1a1d27;border-radius:6px;padding:0.3rem 0.4rem;">
+                <div class="flex justify-between items-center">
+                  <div class="text-xs" style="color:#e2e8f0;">Maintenance-Linked Behaviour Cost</div>
+                  <span class="badge badge-yellow" style="font-size:0.5rem;">€3,840/mo est.</span>
+                </div>
+                <div class="progress-track mt-1"><div class="progress-fill" style="width:52%;background:#fbbf24;"></div></div>
+              </div>
+              <div style="background:#1a1d27;border-radius:6px;padding:0.3rem 0.4rem;">
+                <div class="flex justify-between items-center">
+                  <div class="text-xs" style="color:#e2e8f0;">Tyre Wear Replacement Rate</div>
+                  <span class="badge badge-red" style="font-size:0.5rem;">+18% vs benchmark</span>
+                </div>
+                <div class="progress-track mt-1"><div class="progress-fill" style="width:78%;background:#f87171;"></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- RAG trend + Wincanton benchmark -->
+        <div class="card" style="margin-bottom:0;padding:0.5rem;">
+          <div class="flex justify-between items-center mb-1">
+            <div class="text-sm" style="font-weight:600;">RAG Score Distribution — 12-Week Trend</div>
+            <span class="badge badge-green" style="font-size:0.5rem;">Wincanton benchmark: 84% RAG improvement in 6 months</span>
+          </div>
+          <svg width="100%" height="56" viewBox="0 0 480 56">
+            <text x="0" y="10" fill="#4a5568" font-size="6.5">Red</text>
+            <text x="0" y="28" fill="#4a5568" font-size="6.5">Amber</text>
+            <text x="0" y="46" fill="#4a5568" font-size="6.5">Green</text>
+            <!-- Red line -->
+            <polyline points="30,8 70,9 110,10 150,11 190,11 230,10 270,9 310,10 350,9 390,8 430,7 465,6" fill="none" stroke="#f87171" stroke-width="1.5" stroke-linecap="round"/>
+            <!-- Amber line -->
+            <polyline points="30,26 70,25 110,26 150,25 190,24 230,25 270,24 310,24 350,23 390,23 430,22 465,22" fill="none" stroke="#fbbf24" stroke-width="1.5" stroke-linecap="round"/>
+            <!-- Green line -->
+            <polyline points="30,46 70,46 110,45 150,44 190,43 230,42 270,41 310,40 350,39 390,38 430,36 465,34" fill="none" stroke="#34d399" stroke-width="1.8" stroke-linecap="round"/>
+            <circle cx="465" cy="6" r="2.5" fill="#f87171"/>
+            <circle cx="465" cy="22" r="2.5" fill="#fbbf24"/>
+            <circle cx="465" cy="34" r="2.5" fill="#34d399"/>
+            <text x="468" y="8" fill="#f87171" font-size="6" font-weight="700">8</text>
+            <text x="468" y="24" fill="#fbbf24" font-size="6" font-weight="700">15</text>
+            <text x="468" y="36" fill="#34d399" font-size="6" font-weight="700">18</text>
+            <text x="30" y="54" fill="#4a5568" font-size="5.5">Jan W1</text>
+            <text x="200" y="54" fill="#4a5568" font-size="5.5">Mar W1</text>
+            <text x="440" y="54" fill="#4a5568" font-size="5.5" text-anchor="end">Apr W3</text>
+          </svg>
+          <div class="text-xs muted">Green drivers increasing week-on-week · Target: 80% green by Q3 · Human coaching escalation for persistent red drivers activated</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     SCREEN 2: Driver Leaderboard with Gamification + Escalation
+     Updated: 3-tier segmentation, escalation flags, coaching status
+     Distance-normalised, eco decay, human coaching checkpoints
+     ============================================================ -->
+<div>
+  <div class="screen-label">🏅 Driver Leaderboard · Gamification + Escalation · web</div>
+  <div class="browser-shell">
+    <div class="browser-bar">
+      <div class="browser-dots"><div class="browser-dot dot-r"></div><div class="browser-dot dot-y"></div><div class="browser-dot dot-g"></div></div>
+      <div class="browser-url">app.fleetlens.io/drivers</div>
+    </div>
+    <div style="display:flex;min-height:680px;">
+      <div class="sidebar">
+        <div class="sidebar-logo">FleetLens</div>
+        <div class="nav-item"><span class="nav-icon">📊</span> Overview</div>
+        <div class="nav-item active"><span class="nav-icon">👤</span> Drivers</div>
+        <div class="nav-item"><span class="nav-icon">🚛</span> Vehicles</div>
+        <div class="nav-item"><span class="nav-icon">🗺️</span> Heat Map</div>
+        <div class="nav-item"><span class="nav-icon">📋</span> Reports</div>
+        <div class="nav-item"><span class="nav-icon">⚡</span> Alerts</div>
+        <div class="nav-item"><span class="nav-icon">🎯</span> Coaching</div>
+        <div class="nav-item"><span class="nav-icon">🌿</span> Eco</div>
+        <div class="nav-item"><span class="nav-icon">⚙️</span> Settings</div>
+      </div>
+      <div class="main-content">
+        <div class="screen-header">
+          <div><div class="screen-title">Driver Leaderboard</div><div class="screen-sub">ML composite · distance-normalised · 3-tier risk segment · RAG · gamification active for Balanced tier · human escalation for Red &gt;2wks · 14–20 Apr 2026</div></div>
+          <div class="flex gap-1"><span class="badge badge-gray">All classes ▾</span><span class="badge badge-blue">This week ▾</span><span class="badge badge-purple">Segment: All ▾</span></div>
+        </div>
+
+        <div style="background:rgba(167,139,250,0.07);border:1px solid rgba(167,139,250,0.3);border-radius:7px;padding:0.3rem 0.5rem;margin-bottom:0.4rem;display:flex;align-items:center;gap:0.5rem;">
+          <span>🧑‍💼</span>
+          <div class="text-xs" style="color:#a78bfa;">5 drivers require mandatory human coaching checkpoint · below threshold ≥2 consecutive weeks · automated feedback alone produces no significant improvement (RCT evidence) · sessions must be scheduled this week</div>
+          <span class="badge badge-purple" style="white-space:nowrap;font-size:0.52rem;">Book Sessions →</span>
+        </div>
+
+        <!-- Column headers -->
+        <div style="display:grid;grid-template-columns:18px 1fr 40px 82px 36px 30px 46px 46px 34px 40px 68px;gap:0.18rem;padding:0 0.3rem;margin-bottom:0.22rem;">
+          <div class="label">#</div><div class="label">Driver</div><div class="label" style="text-align:center;">Score</div><div class="label" style="text-align:center;">Segment</div><div class="label" style="text-align:center;">Class</div><div class="label" style="text-align:center;">Trips</div><div class="label" style="text-align:center;color:#f87171;">Brk/1k</div><div class="label" style="text-align:center;color:#fbbf24;">Acc/1k</div><div class="label" style="text-align:center;color:#34d399;">Eco</div><div class="label" style="text-align:center;">Δ4wk</div><div class="label" style="text-align:center;">Coach Status</div>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:0.14rem;">
+          <!-- Green tier -->
+          <div style="padding:0.1rem 0.25rem;"><div class="label" style="color:#34d399;">🟢 RAG Green · Score ≥75 · Gamification — leaderboard + achievements active</div></div>
+
+          <div class="card-sm" style="display:grid;grid-template-columns:18px 1fr 40px 82px 36px 30px 46px 46px 34px 40px 68px;gap:0.18rem;align-items:center;">
+            <div style="color:#fbbf24;font-size:0.75rem;font-weight:700;">1</div>
+            <div><div class="text-sm" style="font-weight:600;color:#e2e8f0;">Elena Fischer 🥇</div><div class="text-xs">HGV · 47 trips ✓</div></div>
+            <div style="text-align:center;color:#34d399;font-weight:800;font-size:0.88rem;">92</div>
+            <div style="text-align:center;"><span class="badge tier-1" style="font-size:0.5rem;">Low-Exp Cautious</span></div>
+            <div style="text-align:center;"><span class="badge badge-gray" style="font-size:0.5rem;">HGV</span></div>
+            <div class="text-xs muted" style="text-align:center;">47</div>
+            <div class="text-xs green" style="text-align:center;">0.3/1k</div>
+            <div class="text-xs green" style="text-align:center;">0.4/1k</div>
+            <div style="text-align:center;color:#34d399;font-weight:700;font-size:0.7rem;">88</div>
+            <div class="text-xs green" style="text-align:center;">▲+4</div>
+            <div style="text-align:center;"><span class="badge badge-green" style="font-size:0.48rem;">✓ No action</span></div>
+          </div>
+
+          <div class="card-sm" style="display:grid;grid-template-columns:18px 1fr 40px 82px 36px 30px 46px 46px 34px 40px 68px;gap:0.18rem;align-items:center;">
+            <div class="text-xs" style="font-weight:600;">2</div>
+            <div><div class="text-sm" style="font-weight:600;color:#e2e8f0;">James Okafor 🥈</div><div class="text-xs">LCV · 39 trips ✓</div></div>
+            <div style="text-align:center;color:#34d399;font-weight:800;font-size:0.88rem;">89</div>
+            <div style="text-align:center;"><span class="badge tier-1" style="font-size:0.5rem;">Low-Exp Cautious</span></div>
+            <div style="text-align:center;"><span class="badge badge-gray" style="font-size:0.5rem;">LCV</span></div>
+            <div class="text-xs muted" style="text-align:center;">39</div>
+            <div class="text-xs green" style="text-align:center;">0.5/1k</div>
+            <div class="text-xs green" style="text-align:center;">0.6/1k</div>
+            <div style="text-align:center;color:#34d399;font-weight:700;font-size:0.7rem;">82</div>
+            <div class="text-xs green" style="text-align:center;">▲+2</div>
+            <div style="text-align:center;"><span class="badge badge-green" style="font-size:0.48rem;">✓ No action</span></div>
+          </div>
+
+          <div class="card-sm" style="display:grid;grid-template-columns:18px 1fr 40px 82px 36px 30px 46px 46px 34px 40px 68px;gap:0.18rem;align-items:center;">
+            <div class="text-xs" style="font-weight:600;">3</div>
+            <div><div class="text-sm" style="font-weight:600;color:#e2e8f0;">Ana Ribeiro 🥉</div><div class="text-xs">Car · 52 trips ✓</div></div>
+            <div style="text-align:center;color:#34d399;font-weight:800;font-size:0.88rem;">85</div>
+            <div style="text-align:center;"><span class="badge tier-2" style="font-size:0.5rem;">Balanced/Avg</span></div>
+            <div style="text-align:center;"><span class="badge badge-gray" style="font-size:0.5rem;">Car</span></div>
+            <div class="text-xs muted" style="text-align:center;">52</div>
+            <div class="text-xs green" style="text-align:center;">0.7/1k</div>
+            <div class="text-xs yellow" style="text-align:center;">1.2/1k</div>
+            <div style="text-align:center;color:#6ee7b7;font-weight:700;font-size:0.7rem;">76</div>
+            <div class="text-xs muted" style="text-align:center;">—0</div>
+            <div style="text-align:center;"><span class="badge badge-blue" style="font-size:0.48rem;">🎮 Challenge sent</span></div>
+          </div>
+
+          <!-- Amber tier -->
+          <div style="padding:0.1rem 0.25rem;margin-top:0.08rem;"><div class="label" style="color:#fbbf24;">🟡 RAG Amber · Score 50–74 · Gamification effective for Balanced drivers · Monitor closely</div></div>
+
+          <div class="card-sm" style="display:grid;grid-template-columns:18px 1fr 40px 82px 36px 30px 46px 46px 34px 40px 68px;gap:0.18rem;align-items:center;border-color:rgba(251,146,60,0.45);">
+            <div class="text-xs" style="font-weight:600;">12</div>
+            <div><div class="text-sm" style="font-weight:600;color:#e2e8f0;">D. Mensah <span style="color:#fb923c;font-size:0.53rem;">📉eco</span></div><div class="text-xs">Car · 34 trips · no eco feedback 11 wks</div></div>
+            <div style="text-align:center;color:#fbbf24;font-weight:800;font-size:0.88rem;">64</div>
+            <div style="text-align:center;"><span class="badge tier-3" style="font-size:0.5rem;">Balanced/Avg</span></div>
+            <div style="text-align:center;"><span class="badge badge-gray" style="font-size:0.5rem;">Car</span></div>
+            <div class="text-xs muted" style="text-align:center;">34</div>
+            <div class="text-xs yellow" style="text-align:center;">1.8/1k</div>
+            <div class="text-xs yellow" style="text-align:center;">2.1/1k</div>
+            <div style="text-align:center;color:#fb923c;font-weight:700;font-size:0.7rem;">48↓</div>
+            <div class="text-xs red" style="text-align:center;">▼−6</div>
+            <div style="text-align:center;"><span class="badge badge-orange" style="font-size:0.48rem;">📉 Eco nudge due</span></div>
+          </div>
+
+          <div class="card-sm" style="display:grid;grid-template-columns:18px 1fr 40px 82px 36px 30px 46px 46px 34px 40px 68px;gap:0.18rem;align-items:center;">
+            <div class="text-xs" style="font-weight:600;">19</div>
+            <div><div class="text-sm" style="font-weight:600;color:#e2e8f0;">T. Brennan</div><div class="text-xs">Car · <span style="color:#fbbf24;">9 trips · provisional~</span></div></div>
+            <div style="text-align:center;color:#fbbf24;font-weight:800;font-size:0.88rem;">67~</div>
+            <div style="text-align:center;"><span class="badge tier-3" style="font-size:0.5rem;">⚠ Provisional</span></div>
+            <div style="text-align:center;"><span class="badge badge-gray" style="font-size:0.5rem;">Car</span></div>
+            <div class="text-xs muted" style="text-align:center;">9</div>
+            <div class="text-xs yellow" style="text-align:center;">2.1/1k</div>
+            <div class="text-xs red" style="text-align:center;">3.4/1k</div>
+            <div style="text-align:center;color:#fbbf24;font-weight:700;font-size:0.7rem;">54~</div>
+            <div class="text-xs red" style="text-align:center;">▼−3</div>
+            <div style="text-align:center;"><span class="badge badge-gray" style="font-size:0.48rem;">Auto nudge sent</span></div>
+          </div>
+
+          <!-- Red tier — escalation required -->
+          <div style="padding:0.1rem 0.25rem;margin-top:0.08rem;"><div class="label" style="color:#f87171;">🔴 RAG Red · Score &lt;50 · Human coaching checkpoint mandatory if ≥2 consecutive weeks</div></div>
+
+          <div class="card-sm" style="display:grid;grid-template-columns:18px 1fr 40px 82px 36px 30px 46px 46px 34px 40px 68px;gap:0.18rem;align-items:center;border-color:rgba(248,113,113,0.45);">
+            <div style="color:#f87171;font-size:0.7rem;font-weight:700;">40</div>
+            <div><div class="text-sm" style="font-weight:600;color:#f87171;">R. Kowalski</div><div class="text-xs">HGV · 31 trips ✓ · ⏱ shift-start risk · wk 3 red</div></div>
+            <div style="text-align:center;color:#f87171;font-weight:800;font-size:0.88rem;">38</div>
+            <div style="text-align:center;"><span class="badge tier-5" style="font-size:0.5rem;">High-Risk</span></div>
+            <div style="text-align:center;"><span class="badge badge-gray" style="font-size:0.5rem;">HGV</span></div>
+            <div class="text-xs muted" style="text-align:center;">31</div>
+            <div class="text-xs red" style="text-align:center;">4.8/1k</div>
+            <div class="text-xs yellow" style="text-align:center;">1.9/1k</div>
+            <div style="text-align:center;color:#f87171;font-weight:700;font-size:0.7rem;">41</div>
+            <div class="text-xs red" style="text-align:center;">▼−7</div>
+            <div style="text-align:center;"><span class="badge badge-purple" style="font-size:0.48rem;">🧑‍💼 Human req.</span></div>
+          </div>
+
+          <div class="card-sm" style="display:grid;grid-template-columns:18px 1fr 40px 82px 36px 30px 46px 46px 34px 40px 68px;gap:0.18rem;align-items:center;border-color:rgba(248,113,113,0.45);">
+            <div style="color:#f87171;font-size:0.7rem;font-weight:700;">41</div>
+            <div><div class="text-sm" style="font-weight:600;color:#f87171;">S. Patel</div><div class="text-xs">LCV · 28 trips · coaching overdue · wk 4 red</div></div>
+            <div style="text-align:center;color:#f87171;font-weight:800;font-size:0.88rem;">31</div>
+            <div style="text-align:center;"><span class="badge tier-5" style="font-size:0.5rem;">High-Risk</span></div>
+            <div style="text-align:center;"><span class="badge badge-gray" style="font-size:0.5rem;">LCV</span></div>
+            <div class="text-xs muted" style="text-align:center;">28</div>
+            <div class="text-xs yellow" style="text-align:center;">1.6/1k</div>
+            <div class="text-xs red" style="text-align:center;">5.2/1k</div>
+            <div style="text-align:center;color:#f87171;font-weight:700;font-size:0.7rem;">33</div>
+            <div class="text-xs red" style="text-align:center;">▼−11</div>
+            <div style="text-align:center;"><span class="badge badge-red" style="font-size:0.48rem;">🚨 Overdue</span></div>
+          </div>
+        </div>
+
+        <div style="margin-top:0.35rem;background:rgba(108,143,255,0.06);border:1px solid rgba(108,143,255,0.18);border-radius:7px;padding:0.28rem 0.45rem;">
+          <div class="text-xs blue">Score = ML composite (speed 25%, harsh braking 28%, harsh accel 22%, cornering 18%, fatigue 7%) · distance-normalised per 1,000 km · ~ = provisional (&lt;30 trips) · Gamification: leaderboard + challenges effective for Balanced segment (speeding 4.8%→3.7% per MDPI study) · High-Risk: intensity-reduction incentives, not gamification · Human coaching mandatory when Red for ≥2 consecutive weeks (RCT: AIRR 0.68 with combined intervention)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     SCREEN 3: Driver Detail — ML Composite Scorecard (web)
+     Composite score breakdown, shift-timing, eco decay, trend
+     ============================================================ -->
+<div>
+  <div class="screen-label">👤 Driver Detail · ML Scorecard · web</div>
+  <div class="browser-shell">
+    <div class="browser-bar">
+      <div class="browser-dots"><div class="browser-dot dot-r"></div><div class="browser-dot dot-y"></div><div class="browser-dot dot-g"></div></div>
+      <div class="browser-url">app.fleetlens.io/drivers/rkowalski</div>
+    </div>
+    <div style="display:flex;min-height:740px;">
+      <div class="sidebar">
+        <div class="sidebar-logo">FleetLens</div>
+        <div class="nav-item active"><span class="nav-icon">👤</span> Drivers</div>
+        <div class="nav-item"><span class="nav-icon">📊</span> Overview</div>
+        <div class="nav-item"><span class="nav-icon">🗺️</span> Heat Map</div>
+        <div class="nav-item"><span class="nav-icon">🎯</span> Coaching</div>
+        <div class="nav-item"><span class="nav-icon">🌿</span> Eco</div>
+        <div class="nav-item"><span class="nav-icon">😴</span> Fatigue</div>
+        <div class="nav-item"><span class="nav-icon">⚙️</span> Settings</div>
+      </div>
+      <div class="main-content" style="overflow-y:auto;">
+        <div class="flex justify-between items-center mb-2">
+          <div class="flex gap-2 items-center">
+            <div style="width:38px;height:38px;border-radius:50%;background:rgba(248,113,113,0.2);border:2px solid #f87171;display:flex;align-items:center;justify-content:center;font-size:0.88rem;font-weight:700;color:#f87171;">RK</div>
+            <div>
+              <div class="screen-title" style="font-size:0.95rem;">Roman Kowalski</div>
+              <div class="screen-sub">HGV · Volvo FH16 · 22t GVW · PL-03 · Poland · 31 trips ✓ converged · 14,200 km · High-Risk segment · 3rd consecutive week RAG Red</div>
+            </div>
+          </div>
+          <div class="flex gap-1 flex-wrap">
+            <span class="badge tier-5">High-Risk</span>
+            <span class="badge badge-red">⚠ Trend Alert</span>
+            <span class="badge badge-purple">🧑‍💼 Coach Required</span>
+          </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:148px 1fr;gap:0.55rem;margin-bottom:0.45rem;">
+          <div class="card" style="display:flex;flex-direction:column;align-items:center;padding:0.6rem 0.7rem;margin-bottom:0;">
+            <svg width="88" height="88" viewBox="0 0 92 92">
+              <circle cx="46" cy="46" r="38" fill="none" stroke="#2d3748" stroke-width="8"/>
+              <circle cx="46" cy="46" r="38" fill="none" stroke="#f87171" stroke-width="8" stroke-dasharray="239" stroke-dashoffset="148" stroke-linecap="round" transform="rotate(-90 46 46)"/>
+              <text x="46" y="52" text-anchor="middle" fill="#f87171" font-size="20" font-weight="800">38</text>
+            </svg>
+            <div class="label" style="text-align:center;margin-top:0.12rem;">Safety Score</div>
+            <div class="text-xs muted" style="text-align:center;font-size:0.55rem;">HGV · fleet-relative</div>
+            <span class="badge badge-green" style="font-size:0.5rem;margin-top:0.15rem;">31 trips ✓ converged</span>
+            <div style="margin-top:0.2rem;width:100%;">
+              <div class="text-xs muted" style="text-align:center;margin-bottom:0.08rem;">Credibility 92%</div>
+              <div style="background:#2d3748;border-radius:4px;height:4px;"><div style="width:92%;background:#34d399;height:4px;border-radius:4px;"></div></div>
+            </div>
+            <hr class="divider" style="width:100%;margin:0.28rem 0;">
+            <div style="text-align:center;">
+              <div class="label">Eco Score</div>
+              <div style="font-size:1rem;font-weight:800;color:#fbbf24;">41</div>
+              <div class="text-xs red" style="font-size:0.55rem;">Decay · feedback req.</div>
+            </div>
+            <hr class="divider" style="width:100%;margin:0.28rem 0;">
+            <div style="text-align:center;width:100%;">
+              <div class="label">4-Week Safety</div>
+              <svg width="68" height="26" viewBox="0 0 68 26">
+                <polyline points="2,6 14,8 26,11 38,14 50,19 66,24" fill="none" stroke="#f87171" stroke-width="1.5" stroke-linecap="round"/>
+                <circle cx="66" cy="24" r="2" fill="#f87171"/>
+              </svg>
+              <div class="text-xs red" style="font-size:0.55rem;">▼ −18 pts</div>
+            </div>
+            <hr class="divider" style="width:100%;margin:0.28rem 0;">
+            <div style="text-align:center;">
+              <div class="label">Shift-Start Events</div>
+              <div style="font-size:0.82rem;font-weight:700;color:#fbbf24;">68%</div>
+              <div class="text-xs muted" style="font-size:0.53rem;">in first shift-decile</div>
+            </div>
+            <hr class="divider" style="width:100%;margin:0.28rem 0;">
+            <div style="text-align:center;">
+              <div class="label">Brake Stress</div>
+              <div style="font-size:0.73rem;font-weight:700;color:#f87171;">HIGH</div>
+              <div class="text-xs muted" style="font-size:0.53rem;">Inspect sooner</div>
+            </div>
+          </div>
+
+          <div style="display:flex;flex-direction:column;gap:0.38rem;">
+            <!-- Human escalation notice -->
+            <div style="background:rgba(167,139,250,0.09);border:1px solid rgba(167,139,250,0.45);border-radius:7px;padding:0.35rem 0.5rem;">
+              <div class="text-xs" style="color:#a78bfa;font-weight:600;">🧑‍💼 Human Coaching Checkpoint Due · Week 3 of RAG Red · Automated feedback has not produced improvement</div>
+              <div class="text-xs muted" style="margin-top:0.12rem;">RCT evidence: feedback-only produces no statistically significant change. Combined human communication training reduces risky events (AIRR 0.68). Schedule a supervisor-led coaching session this week. Automated nudges continue in parallel.</div>
+            </div>
+
+            <!-- Score breakdown -->
+            <div class="card" style="margin-bottom:0;">
+              <div class="label mb-1">4-Metric ML Composite · Dynamic Weights · HGV Thresholds · Fleet-Relative Baseline</div>
+              <div class="progress-wrap">
+                <div class="progress-label"><span class="text-xs">Speed Compliance <span style="color:#64748b;font-size:0.55rem;">wt 25% · GPS-derived · highway-adjusted</span></span><span class="text-xs yellow">51/100</span></div>
+                <div class="progress-track"><div class="progress-fill" style="width:51%;background:#fbbf24;"></div></div>
+              </div>
+              <div class="progress-wrap">
+                <div class="progress-label"><span class="text-xs">Harsh Braking <span style="color:#f87171;font-size:0.55rem;">wt 28% · HGV 0.42g critical · 4.8 events/1k km · dominant</span></span><span class="text-xs red">22/100</span></div>
+                <div class="progress-track"><div class="progress-fill" style="width:22%;background:#f87171;"></div></div>
+              </div>
+              <div class="progress-wrap">
+                <div class="progress-label"><span class="text-xs">Harsh Acceleration <span style="color:#64748b;font-size:0.55rem;">wt 22% · HGV 0.28g · urban context elevated</span></span><span class="text-xs yellow">44/100</span></div>
+                <div class="progress-track"><div class="progress-fill" style="width:44%;background:#fbbf24;"></div></div>
+              </div>
+              <div class="progress-wrap">
+                <div class="progress-label"><span class="text-xs">Cornering Severity <span style="color:#f87171;font-size:0.55rem;">wt 18% · HGV 0.28g lateral · rollover risk active</span></span><span class="text-xs red">31/100</span></div>
+                <div class="progress-track"><div class="progress-fill" style="width:31%;background:#f87171;"></div></div>
+              </div>
+              <div class="progress-wrap" style="margin-bottom:0.2rem;">
+                <div class="progress-label"><span class="text-xs">Fatigue Proxy — SWA Entropy <span style="color:#f87171;font-size:0.55rem;">wt 7%</span></span><span class="text-xs red">28/100</span></div>
+                <div class="progress-track"><div class="progress-fill" style="width:28%;background:#f87171;"></div></div>
+              </div>
+              <div style="background:rgba(248,113,113,0.07);border:1px solid rgba(248,113,113,0.2);border-radius:5px;padding:0.18rem 0.35rem;">
+                <div class="text-xs red">⚠ ML insight: dominated by 4.8 harsh-braking events/1k km on A1 night runs. Fix braking pattern → +18 pts. 68% of events in first shift-decile — pre-shift briefing most impactful. High-Risk segment: intensity-reduction incentives, not gamification.</div>
+              </div>
+            </div>
+
+            <!-- Shift decile chart -->
+            <div class="card" style="margin-bottom:0;">
+              <div class="label mb-1">Harsh Events by Shift Decile</div>
+              <svg width="100%" height="50" viewBox="0 0 300 50">
+                <rect x="0" y="4" width="28" height="38" rx="3" fill="rgba(248,113,113,0.6)"/>
+                <rect x="30" y="18" width="28" height="24" rx="3" fill="rgba(251,191,36,0.4)"/>
+                <rect x="60" y="28" width="28" height="14" rx="3" fill="rgba(52,211,153,0.3)"/>
+                <rect x="90" y="30" width="28" height="12" rx="3" fill="rgba(52,211,153,0.3)"/>
+                <rect x="120" y="32" width="28" height="10" rx="3" fill="rgba(52,211,153,0.3)"/>
+                <rect x="150" y="30" width="28" height="12" rx="3" fill="rgba(52,211,153,0.3)"/>
+                <rect x="180" y="28" width="28" height="14" rx="3" fill="rgba(52,211,153,0.3)"/>
+                <rect x="210" y="22" width="28" height="20" rx="3" fill="rgba(251,191,36,0.35)"/>
+                <rect x="240" y="12" width="28" height="30" rx="3" fill="rgba(248,113,113,0.5)"/>
+                <text x="14" y="48" fill="#f87171" font-size="6" text-anchor="middle">D1</text>
+                <text x="44" y="48" fill="#fbbf24" font-size="6" text-anchor="middle">D2</text>
+                <text x="74" y="48" fill="#34d399" font-size="6" text-anchor="middle">D3</text>
+                <text x="104" y="48" fill="#34d399" font-size="6" text-anchor="middle">D4</text>
+                <text x="134" y="48" fill="#34d399" font-size="6" text-anchor="middle">D5</text>
+                <text x="164" y="48" fill="#34d399" font-size="6" text-anchor="middle">D6</text>
+                <text x="194" y="48" fill="#34d399" font-size="6" text-anchor="middle">D7</text>
+                <text x="224" y="48" fill="#fbbf24" font-size="6" text-anchor="middle">D8</text>
+                <text x="254" y="48" fill="#f87171" font-size="6" text-anchor="middle">D9</text>
+              </svg>
+              <div class="text-xs muted" style="margin-top:0.15rem;">D1 (first 10% of shift) and D9 (last 10%) account for 68% of all harsh events · +26% elevated risk in these windows · alert thresholds auto-tightened</div>
+            </div>
+
+            <!-- Recent trips -->
+            <div class="card" style="margin-bottom:0;">
+              <div class="label mb-1">Recent Trips · Context-Aware Event Classification</div>
+              <div style="display:flex;flex-direction:column;gap:0.16rem;">
+                <div style="display:grid;grid-template-columns:1fr 56px 56px 34px;gap:0.2rem;align-items:center;">
+                  <div><div class="text-xs" style="color:#e2e8f0;">Warsaw → Gdańsk</div><div class="text-xs">Apr 13 · 344 km · A1 HWY · night · 8 events · shift-start dominant</div></div>
+                  <span class="badge badge-red" style="font-size:0.48rem;">0.48g brake</span>
+                  <span class="badge badge-red" style="font-size:0.48rem;">0.41g corner</span>
+                  <div class="text-xs red" style="text-align:right;font-weight:700;">32</div>
+                </div>
+                <hr class="divider" style="margin:0.05rem 0;">
+                <div style="display:grid;grid-template-columns:1fr 56px 56px 34px;gap:0.2rem;align-items:center;">
+                  <div><div class="text-xs" style="color:#e2e8f0;">Gdańsk → Łódź</div><div class="text-xs">Apr 12 · 298 km · rain · 5 events</div></div>
+                  <span class="badge badge-yellow" style="font-size:0.48rem;">0.31g brake</span>
+                  <span class="badge badge-yellow" style="font-size:0.48rem;">0.26g corner</span>
+                  <div class="text-xs yellow" style="text-align:right;font-weight:700;">41</div>
+                </div>
+                <hr class="divider" style="margin:0.05rem 0;">
+                <div style="display:grid;grid-template-columns:1fr 56px 56px 34px;gap:0.2rem;align-items:center;">
+                  <div><div class="text-xs" style="color:#e2e8f0;">Łódź → Poznań</div><div class="text-xs">Apr 11 · 212 km · urban · night · 11 events · shift-end risk</div></div>
+                  <span class="badge badge-red" style="font-size:0.48rem;">0.52g brake</span>
+                  <span class="badge badge-red" style="font-size:0.48rem;">0.38g accel</span>
+                  <div class="text-xs red" style="text-align:right;font-weight:700;">29</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     SCREEN 4: Gamified Coaching Module with Human Escalation (web)
+     NEW SCREEN: Based on MiX Telematics / Tourmo AI gamification
+     + PubMed RCT escalation pathway. Leaderboard, achievements,
+     challenges for Balanced tier. Escalation workflow for Red tier.
+     ============================================================ -->
+<div>
+  <div class="screen-label">🎯 Gamified Coaching + Human Escalation · web</div>
+  <div class="browser-shell">
+    <div class="browser-bar">
+      <div class="browser-dots"><div class="browser-dot dot-r"></div><div class="browser-dot dot-y"></div><div class="browser-dot dot-g"></div></div>
+      <div class="browser-url">app.fleetlens.io/coaching</div>
+    </div>
+    <div style="display:flex;min-height:720px;">
+      <div class="sidebar">
+        <div class="sidebar-logo">FleetLens</div>
+        <div class="nav-item"><span class="nav-icon">📊</span> Overview</div>
+        <div class="nav-item"><span class="nav-icon">👤</span> Drivers</div>
+        <div class="nav-item active"><span class="nav-icon">🎯</span> Coaching</div>
+        <div class="nav-item"><span class="nav-icon">⚡</span> Alerts</div>
+        <div class="nav-item"><span class="nav-icon">🌿</span> Eco</div>
+        <div class="nav-item"><span class="nav-icon">⚙️</span> Settings</div>
+      </div>
+      <div class="main-content">
+        <div class="screen-header">
+          <div><div class="screen-title">Driver Coaching Hub</div><div class="screen-sub">Gamification for Balanced tier · Human escalation for Red tier ≥2wks · Automated + supervised coaching pipeline · Week 14–20 Apr 2026</div></div>
+          <span class="badge badge-blue">41 drivers enrolled</span>
+        </div>
+
+        <!-- Research basis banner -->
+        <div style="background:rgba(167,139,250,0.07);border:1px solid rgba(167,139,250,0.35);border-radius:8px;padding:0.38rem 0.55rem;margin-bottom:0.45rem;">
+          <div class="text-xs" style="color:#a78bfa;font-weight:600;">Design Rationale: Automated feedback alone does not significantly reduce risky driving (PubMed RCT, AIRR not significant feedback-only). Combined intervention (automated + human communication training) achieves AIRR 0.68. This module pairs gamification with mandatory human checkpoints.</div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;margin-bottom:0.5rem;">
+          <!-- LEFT: Gamification panel — Balanced tier -->
+          <div class="card" style="margin-bottom:0;border-color:rgba(108,143,255,0.3);">
+            <div class="flex justify-between items-center mb-1">
+              <div class="text-sm" style="font-weight:700;color:#6c8fff;">🎮 Gamification · Balanced Tier (19 drivers)</div>
+              <span class="badge badge-blue" style="font-size:0.5rem;">Active</span>
+            </div>
+            <div class="text-xs muted" style="margin-bottom:0.4rem;">MDPI study: significant improvement for Average/Balanced drivers (speeding 4.8%→3.7%). Leaderboard + challenge system active.</div>
+
+            <!-- Weekly challenge -->
+            <div style="background:rgba(108,143,255,0.1);border:1px solid rgba(108,143,255,0.3);border-radius:7px;padding:0.35rem 0.45rem;margin-bottom:0.35rem;">
+              <div class="text-xs" style="color:#6c8fff;font-weight:600;">⚡ This Week's Fleet Challenge</div>
+              <div class="text-xs" style="color:#e2e8f0;margin-top:0.1rem;font-weight:600;">Zero harsh accelerations on urban routes</div>
+              <div class="text-xs muted" style="margin-top:0.1rem;">14 / 19 Balanced drivers on track · Ends Sunday · Top 3 earn bonus points</div>
+              <div class="progress-track mt-1"><div class="progress-fill" style="width:74%;background:#6c8fff;"></div></div>
+              <div class="text-xs" style="color:#6c8fff;margin-top:0.1rem;">74% completion · Fleet average accel events: 1.2/1k km ▼ from 1.9</div>
+            </div>
+
+            <!-- Mini leaderboard -->
+            <div class="label mb-1">Challenge Leaderboard · This Week</div>
+            <div style="display:flex;flex-direction:column;gap:0.12rem;">
+              <div style="display:grid;grid-template-columns:20px 1fr 36px 36px;gap:0.2rem;align-items:center;background:#0f1117;border-radius:5px;padding:0.18rem 0.3rem;">
+                <div style="color:#fbbf24;font-size:0.7rem;font-weight:700;">🥇</div>
+                <div class="text-xs" style="color:#e2e8f0;">Ana Ribeiro</div>
+                <div class="text-xs green" style="text-align:right;">0 events</div>
+                <div style="text-align:right;"><span class="badge badge-green" style="font-size:0.48rem;">+120 pts</span></div>
+              </div>
+              <div style="display:grid;grid-template-columns:20px 1fr 36px 36px;gap:0.2rem;align-items:center;background:#0f1117;border-radius:5px;padding:0.18rem 0.3rem;">
+                <div style="color:#94a3b8;font-size:0.7rem;font-weight:700;">🥈</div>
+                <div class="text-xs" style="color:#e2e8f0;">M. Dubois</div>
+                <div class="text-xs green" style="text-align:right;">1 event</div>
+                <div style="text-align:right;"><span class="badge badge-blue" style="font-size:0.48rem;">+95 pts</span></div>
+              </div>
+              <div style="display:grid;grid-template-columns:20px 1fr 36px 36px;gap:0.2rem;align-items:center;background:#0f1117;border-radius:5px;padding:0.18rem 0.3rem;">
+                <div style="color:#fb923c;font-size:0.7rem;font-weight:700;">🥉</div>
+                <div class="text-xs" style="color:#e2e8f0;">K. Johansson</div>
+                <div class="text-xs yellow" style="text-align:right;">2 events</div>
+                <div style="text-align:right;"><span class="badge badge-orange" style="font-size:0.48rem;">+70 pts</span></div>
+              </div>
+              <div style="display:grid;grid-template-columns:20px 1fr 36px 36px;gap:0.2rem;align-items:center;background:#0f1117;border-radius:5px;padding:0.18rem 0.3rem;">
+                <div class="text-xs muted">4</div>
+                <div class="text-xs" style="color:#94a3b8;">D. Mensah</div>
+                <div class="text-xs red" style="text-align:right;">5 events</div>
+                <div style="text-align:right;"><span class="badge badge-gray" style="font-size:0.48rem;">+20 pts</span></div>
+              </div>
+            </div>
+
+            <!-- Achievements -->
+            <div class="label" style="margin-top:0.35rem;margin-bottom:0.2rem;">Recent Achievements</div>
+            <div style="display:flex;gap:0.3rem;flex-wrap:wrap;">
+              <div style="background:rgba(52,211,153,0.1);border:1px solid rgba(52,211,153,0.3);border-radius:6px;padding:0.18rem 0.35rem;">
+                <div class="text-xs green" style="font-size:0.58rem;">🏆 Safe Week Streak · Ana · 4 wks</div>
+              </div>
+              <div style="background:rgba(108,143,255,0.1);border:1px solid rgba(108,143,255,0.3);border-radius:6px;padding:0.18rem 0.35rem;">
+                <div class="text-xs blue" style="font-size:0.58rem;">⚡ Speed Master · M. Dubois</div>
+              </div>
+              <div style="background:rgba(251,191,36,0.1);border:1px solid rgba(251,191,36,0.3);border-radius:6px;padding:0.18rem 0.35rem;">
+                <div class="text-xs yellow" style="font-size:0.58rem;">📈 Most Improved · K. Johansson</div>
+              </div>
+              <div style="background:rgba(52,211,153,0.1);border:1px solid rgba(52,211,153,0.3);border-radius:6px;padding:0.18rem 0.35rem;">
+                <div class="text-xs green" style="font-size:0.58rem;">🌿 Eco Champion · J. Okafor</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- RIGHT: Human Escalation Panel -->
+          <div class="card" style="margin-bottom:0;border-color:rgba(167,139,250,0.4);">
+            <div class="flex justify-between items-center mb-1">
+              <div class="text-sm" style="font-weight:700;color:#a78bfa;">🧑‍💼 Human Escalation Pipeline</div>
+              <span class="badge badge-purple" style="font-size:0.5rem;">5 active cases</span>
+            </div>
+            <div class="text-xs muted" style="margin-bottom:0.35rem;">Drivers below RAG Red threshold for ≥2 consecutive weeks trigger mandatory supervisor coaching session. Automated nudges continue in parallel.</div>
+
+            <div style="display:flex;flex-direction:column;gap:0.22rem;">
+              <!-- Case 1 — overdue -->
+              <div style="background:rgba(248,113,113,0.08);border:1px solid rgba(248,113,113,0.3);border-radius:7px;padding:0.3rem 0.42rem;">
+                <div class="flex justify-between items-center">
+                  <div class="text-xs" style="color:#f87171;font-weight:600;">S. Patel · LCV · Week 4 Red</div>
+                  <span class="badge badge-red" style="font-size:0.48rem;">🚨 OVERDUE</span>
+                </div>
+                <div class="text-xs muted" style="margin-top:0.08rem;">Score: 31 · trend ▼−11 · accel dominant · no session booked</div>
+                <div class="flex gap-1 mt-1">
+                  <div style="padding:0.12rem 0.3rem;background:rgba(167,139,250,0.15);border:1px solid rgba(167,139,250,0.35);border-radius:5px;cursor:pointer;"><div class="text-xs" style="color:#a78bfa;font-size:0.56rem;">📅 Book Session</div></div>
+                  <div style="padding:0.12rem 0.3rem;background:rgba(108,143,255,0.12);border:1px solid rgba(108,143,255,0.3);border-radius:5px;cursor:pointer;"><div class="text-xs blue" style="font-size:0.56rem;">📋 View Profile</div></div>
+                </div>
+              </div>
+
+              <!-- Case 2 — session booked -->
+              <div style="background:rgba(167,139,250,0.07);border:1px solid rgba(167,139,250,0.3);border-radius:7px;padding:0.3rem 0.42rem;">
+                <div class="flex justify-between items-center">
+                  <div class="text-xs" style="color:#a78bfa;font-weight:600;">R. Kowalski · HGV · Week 3 Red</div>
+                  <span class="badge badge-purple" style="font-size:0.48rem;">📅 Booked Fri</span>
+                </div>
+                <div class="text-xs muted" style="margin-top:0.08rem;">Score: 38 · trend ▼−7 · braking dominant · session with J. Manager Apr 18 14:00</div>
+                <div class="flex gap-1 mt-1">
+                  <div style="padding:0.12rem 0.3rem;background:rgba(52,211,153,0.1);border:1px solid rgba(52,211,153,0.25);border-radius:5px;"><div class="text-xs green" style="font-size:0.56rem;">✓ Pre-session report sent</div></div>
+                </div>
+              </div>
+
+              <!-- Case 3 — completed, monitoring -->
+              <div style="background:rgba(52,211,153,0.05);border:1px solid rgba(52,211,153,0.2);border-radius:7px;padding:0.3rem 0.42rem;">
+                <div class="flex justify-between items-center">
+                  <div class="text-xs" style="color:#34d399;font-weight:600;">F. Nguyen · Car · Post-session</div>
+                  <span class="badge badge-green" style="font-size:0.48rem;">✓ Session done Apr 10</span>
+                </div>
+                <div class="text-xs muted" style="margin-top:0.08rem;">Score: 52 ▲+9 post-session · monitoring · next check-in Apr 24</div>
+                <div class="text-xs green" style="margin-top:0.08rem;font-size:0.58rem;">Trend reversing — combined intervention working. 2-week follow-up scheduled.</div>
+              </div>
+
+              <!-- Escalation stats -->
+              <div style="background:#1a1d27;border-radius:6px;padding:0.28rem 0.4rem;">
+                <div class="label mb-1">Escalation Outcomes — Rolling 90 Days</div>
+                <div class="stat-grid">
+                  <div>
+                    <div class="text-xs muted">Sessions completed</div>
+                    <div style="font-size:0.88rem;font-weight:700;color:#34d399;">12</div>
+                  </div>
+                  <div>
+                    <div class="text-xs muted">Avg score lift post-session</div>
+                    <div style="font-size:0.88rem;font-weight:700;color:#34d399;">+14 pts</div>
+                  </div>
+                  <div>
+                    <div class="text-xs muted">Reverted to Red within 4wks</div>
+                    <div style="font-size:0.88rem;font-weight:700;color:#fbbf24;">3</div>
+                  </div>
+                  <div>
+                    <div class="text-xs muted">Progressed to Amber+</div>
+                    <div style="font-size:0.88rem;font-weight:700;color:#34d399;">9</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Segment coaching strategy guide -->
+        <div class="card" style="margin-bottom:0;padding:0.5rem;">
+          <div class="text-sm" style="font-weight:600;margin-bottom:0.35rem;">Coaching Strategy by Driver Segment</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.4rem;">
+            <div style="background:rgba(52,211,153,0.07);border:1px solid rgba(52,211,153,0.25);border-radius:7px;padding:0.3rem 0.4rem;">
+              <div class="text-xs green" style="font-weight:600;">🟢 Low-Exposure Cautious (12)</div>
+              <div class="text-xs muted" style="margin-top:0.1rem;">Gamification ineffective — no improvement detected. Strategy: recognition rewards, maintain engagement, quarterly check-ins. No challenge participation pressure.</div>
+            </div>
+            <div style="background:rgba(108,143,255,0.07);border:1px solid rgba(108,143,255,0.25);border-radius:7px;padding:0.3rem 0.4rem;">
+              <div class="text-xs blue" style="font-weight:600;">🟡 Balanced / Average (19)</div>
+              <div class="text-xs muted" style="margin-top:0.1rem;">Gamification effective (MDPI: speeding −1.1 percentage pts). Strategy: weekly challenges, leaderboard, peer comparison, achievement badges. Escalate if 2wks Red.</div>
+            </div>
+            <div style="background:rgba(248,113,113,0.07);border:1px solid rgba(248,113,113,0.25);border-radius:7px;padding:0.3rem 0.4rem;">
+              <div class="text-xs red" style="font-weight:600;">🔴 High-Risk (10)</div>
+              <div class="text-xs muted" style="margin-top:0.1rem;">Gamification insufficient. Strategy: intensity-reduction incentives, human coaching mandatory after 2wks Red, structured supervisor communication training (RCT: AIRR 0.68 with combined approach).</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     SCREEN 5: Dynamic Score Weight Configuration (web)
+     Fleet managers configure metric weights per fleet type
+     ============================================================ -->
+<div>
+  <div class="screen-label">⚖️ Dynamic Score Weight Configuration · web</div>
+  <div class="browser-shell">
+    <div class="browser-bar">
+      <div class="browser-dots"><div class="browser-dot dot-r"></div><div class="browser-dot dot-y"></div><div class="browser-dot dot-g"></div></div>
+      <div class="browser-url">app.fleetlens.io/settings/score-weights</div>
+    </div>
+    <div style="display:flex;min-height:660px;">
+      <div class="sidebar">
+        <div class="sidebar-logo">FleetLens</div>
+        <div class="nav-item"><span class="nav-icon">📊</span> Overview</div>
+        <div class="nav-item"><span class="nav-icon">👤</span> Drivers</div>
+        <div class="nav-item active"><span class="nav-icon">⚙️</span> Settings</div>
+        <div class="nav-item"><span class="nav-icon">⚡</span> Alerts</div>
+      </div>
+      <div class="main-content">
+        <div class="screen-header">
+          <div><div class="screen-title">Composite Score — Dynamic Weight Configuration</div><div class="screen-sub">Adjust metric emphasis per fleet type · weights must sum to 100% · Geotab ~0.3g baseline threshold · CTS dynamic weighting · ARMOR hybrid on-device + cloud architecture</div></div>
+          <span class="badge badge-blue">Changes apply next daily cycle</span>
+        </div>
+
+        <div style="background:rgba(108,143,255,0.07);border:1px solid rgba(108,143,255,0.2);border-radius:8px;padding:0.38rem 0.55rem;margin-bottom:0.45rem;">
+          <div class="text-xs blue">Default threshold: Geotab ~0.3g (~3 m/s²) for light vehicles. ARMOR hybrid architecture: on-device immediate threshold evaluation for in-cab alerts; cloud-based fleet-normalised scoring for league tables. CTS principle: highway fleets prioritise speeding; urban delivery fleets prioritise acceleration. <strong>Vehicle-category-specific thresholds deferred</strong> — deploying without validated sensitivity/specificity risks systematic misclassification.</div>
+        </div>
+
+        <!-- Preset fleet profiles -->
+        <div class="card" style="margin-bottom:0.45rem;">
+          <div class="label mb-1">Quick Presets</div>
+          <div style="display:flex;gap:0.35rem;flex-wrap:wrap;">
+            <div style="padding:0.3rem 0.55rem;border-radius:7px;border:1px solid #6c8fff;background:rgba(108,143,255,0.12);cursor:pointer;">
+              <div class="text-xs" style="color:#6c8fff;font-weight:600;">🚛 Highway HGV</div>
+              <div class="text-xs muted">Spd 35 · Brk 30 · Acc 18 · Corn 12 · Fat 5</div>
+            </div>
+            <div style="padding:0.3rem 0.55rem;border-radius:7px;border:1px solid #2d3748;background:#1a1d27;cursor:pointer;">
+              <div class="text-xs" style="color:#e2e8f0;font-weight:600;">🚐 Urban Delivery LCV</div>
+              <div class="text-xs muted">Spd 20 · Brk 25 · Acc 30 · Corn 20 · Fat 5</div>
+            </div>
+            <div style="padding:0.3rem 0.55rem;border-radius:7px;border:1px solid rgba(52,211,153,0.4);background:rgba(52,211,153,0.07);cursor:pointer;">
+              <div class="text-xs" style="color:#34d399;font-weight:600;">🚗 Mixed Fleet ✓ Active</div>
+              <div class="text-xs muted">Spd 25 · Brk 28 · Acc 22 · Corn 18 · Fat 7</div>
+            </div>
+            <div style="padding:0.3rem 0.55rem;border-radius:7px;border:1px solid #2d3748;background:#1a1d27;cursor:pointer;">
+              <div class="text-xs" style="color:#e2e8f0;font-weight:600;">🚌 Passenger Coach</div>
+              <div class="text-xs muted">Spd 22 · Brk 30 · Acc 18 · Corn 25 · Fat 5</div>
+            </div>
+            <div style="padding:0.3rem 0.55rem;border-radius:7px;border:1px solid #2d3748;background:#1a1d27;cursor:pointer;">
+              <div class="text-xs" style="color:#e2e8f0;font-weight:600;">✏️ Custom</div>
+              <div class="text-xs muted">Define your own</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Active weight editor -->
+        <div class="card" style="margin-bottom:0.45rem;">
+          <div class="flex justify-between items-center mb-2">
+            <div class="text-sm" style="font-weight:600;">Active: Mixed Fleet · Weight Editor</div>
+            <span class="badge badge-green" style="font-size:0.55rem;">Total: 100% ✓</span>
+          </div>
+
+          <div style="display:flex;flex-direction:column;gap:0.45rem;">
+            <div>
+              <div class="flex justify-between mb-1">
+                <div>
+                  <div class="text-xs" style="color:#e2e8f0;font-weight:600;">Speed Compliance</div>
+                  <div class="text-xs muted">GPS-derived · penalises time above posted limit · highway-adjusted</div>
+                </div>
+                <div style="display:flex;align-items:center;gap:0.3rem;">
+                  <div style="background:#2d3748;border-radius:4px;padding:0.1rem 0.35rem;font-size:0.75rem;color:#fbbf24;font-weight:700;">25%</div>
+                  <div style="width:60px;height:6px;background:#2d3748;border-radius:3px;"><div style="width:50%;height:6px;background:#fbbf24;border-radius:3px;"></div></div>
+                </div>
+              </div>
+              <div style="background:rgba(251,191,36,0.08);border-radius:4px;height:8px;"><div style="width:25%;height:8px;background:linear-gradient(90deg,#fbbf24,#f59e0b);border-radius:4px;"></div></div>
+            </div>
+
+            <div>
+              <div class="flex justify-between mb-1">
+                <div>
+                  <div class="text-xs" style="color:#e2e8f0;font-weight:600;">Harsh Braking</div>
+                  <div class="text-xs muted">Default threshold: 0.3g light vehicle · 0.42g HGV critical · context-adaptive</div>
+                </div>
+                <div style="display:flex;align-items:center;gap:0.3rem;">
+                  <div style="background:#2d3748;border-radius:4px;padding:0.1rem 0.35rem;font-size:0.75rem;color:#f87171;font-weight:700;">28%</div>
+                  <div style="width:60px;height:6px;background:#2d3748;border-radius:3px;"><div style="width:56%;height:6px;background:#f87171;border-radius:3px;"></div></div>
+                </div>
+              </div>
+              <div style="background:rgba(248,113,113,0.08);border-radius:4px;height:8px;"><div style="width:28%;height:8px;background:linear-gradient(90deg,#f87171,#ef4444);border-radius:4px;"></div></div>
+            </div>
+
+            <div>
+              <div class="flex justify-between mb-1">
+                <div>
+                  <div class="text-xs" style="color:#e2e8f0;font-weight:600;">Harsh Acceleration</div>
+                  <div class="text-xs muted">Most considerable tyre wear impact · jerk metric active · urban context elevated</div>
+                </div>
+                <div style="display:flex;align-items:center;gap:0.3rem;">
+                  <div style="background:#2d3748;border-radius:4px;padding:0.1rem 0.35rem;font-size:0.75rem;color:#fbbf24;font-weight:700;">22%</div>
+                  <div style="width:60px;height:6px;background:#2d3748;border-radius:3px;"><div style="width:44%;height:6px;background:#fbbf24;border-radius:3px;"></div></div>
+                </div>
+              </div>
+              <div style="background:rgba(251,191,36,0.08);border-radius:4px;height:8px;"><div style="width:22%;height:8px;background:linear-gradient(90deg,#fbbf24,#f59e0b);border-radius:4px;"></div></div>
+            </div>
+
+            <div>
+              <div class="flex justify-between mb-1">
+                <div>
+                  <div class="text-xs" style="color:#e2e8f0;font-weight:600;">Cornering Severity</div>
+                  <div class="text-xs muted">Lateral G · HGV conservative 0.28g · rollover risk even at legal speeds</div>
+                </div>
+                <div style="display:flex;align-items:center;gap:0.3rem;">
+                  <div style="background:#2d3748;border-radius:4px;padding:0.1rem 0.35rem;font-size:0.75rem;color:#6c8fff;font-weight:700;">18%</div>
+                  <div style="width:60px;height:6px;background:#2d3748;border-radius:3px;"><div style="width:36%;height:6px;background:#6c8fff;border-radius:3px;"></div></div>
+                </div>
+              </div>
+              <div style="background:rgba(108,143,255,0.08);border-radius:4px;height:8px;"><div style="width:18%;height:8px;background:linear-gradient(90deg,#6c8fff,#4f6dff);border-radius:4px;"></div></div>
+            </div>
+
+            <div>
+              <div class="flex justify-between mb-1">
+                <div>
+                  <div class="text-xs" style="color:#e2e8f0;font-weight:600;">Fatigue Proxy (SWA Entropy)</div>
+                  <div class="text-xs muted">Steering wheel angle entropy · optional · disable for &lt;4h shift fleets</div>
+                </div>
+                <div style="display:flex;align-items:center;gap:0.3rem;">
+                  <div style="background:#2d3748;border-radius:4px;padding:0.1rem 0.35rem;font-size:0.75rem;color:#94a3b8;font-weight:700;">7%</div>
+                  <div style="width:60px;height:6px;background:#2d3748;border-radius:3px;"><div style="width:14%;height:6px;background:#94a3b8;border-radius:3px;"></div></div>
+                </div>
+              </div>
+              <div style="background:rgba(148,163,184,0.08);border-radius:4px;height:8px;"><div style="width:7%;height:8px;background:#64748b;border-radius:4px;"></div></div>
+            </div>
+          </div>
+
+          <!-- Visual weight donut summary -->
+          <hr class="divider">
+          <div class="flex justify-between items-center">
+            <div>
+              <div class="label mb-1">Scoring Architecture</div>
+              <div class="text-xs muted">On-device: immediate threshold alerts (ARMOR pattern) · Cloud: fleet-normalised composite score · Both run in parallel · Distance-normalisation: events per 1,000 km with sub-linear correction</div>
+            </div>
+            <svg width="64" height="64" viewBox="0 0 64 64">
+              <circle cx="32" cy="32" r="26" fill="none" stroke="#fbbf24" stroke-width="8" stroke-dasharray="163" stroke-dashoffset="0" transform="rotate(-90 32 32)"/>
+              <circle cx="32" cy="32" r="26" fill="none" stroke="#f87171" stroke-width="8" stroke-dasharray="163" stroke-dashoffset="122" transform="rotate(-90 32 32)"/>
+              <circle cx="32" cy="32" r="26" fill="none" stroke="#fbbf24" stroke-width="8" stroke-dasharray="163" stroke-dashoffset="122" transform="rotate(15 32 32)"/>
+              <text x="32" y="36" text-anchor="middle" fill="#e2e8f0" font-size="7.5" font-weight="700">100%</text>
+            </svg>
+          </div>
+        </div>
+
+        <!-- Threshold reference table -->
+        <div class="card" style="margin-bottom:0;">
+          <div class="text-sm" style="font-weight:600;margin-bottom:0.3rem;">Default G-Force Thresholds (Light Vehicle · Geotab baseline)</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:0.3rem;">
+            <div style="background:#0f1117;border-radius:6px;padding:0.3rem 0.4rem;text-align:center;">
+              <div class="label">Braking</div>
+              <div style="font-size:0.9rem;font-weight:700;color:#f87171;">0.3g</div>
+              <div class="text-xs muted">~3 m/s²</div>
+              <div class="text-xs muted">HGV: 0.42g</div>
+            </div>
+            <div style="background:#0f1117;border-radius:6px;padding:0.3rem 0.4rem;text-align:center;">
+              <div class="label">Acceleration</div>
+              <div style="font-size:0.9rem;font-weight:700;color:#fbbf24;">0.3g</div>
+              <div class="text-xs muted">~3 m/s²</div>
+              <div class="text-xs muted">HGV: 0.28g</div>
+            </div>
+            <div style="background:#0f1117;border-radius:6px;padding:0.3rem 0.4rem;text-align:center;">
+              <div class="label">Cornering</div>
+              <div style="font-size:0.9rem;font-weight:700;color:#6c8fff;">0.3g</div>
+              <div class="text-xs muted">lateral</div>
+              <div class="text-xs muted">HGV: 0.28g</div>
+            </div>
+            <div style="background:rgba(251,191,36,0.07);border:1px solid rgba(251,191,36,0.3);border-radius:6px;padding:0.3rem 0.4rem;text-align:center;">
+              <div class="label" style="color:#fbbf24;">⚠ Deferred</div>
+              <div class="text-xs yellow" style="margin-top:0.1rem;">Per-category calibration</div>
+              <div class="text-xs muted">Awaiting sensitivity/specificity validation across SUV, LCV, rigid truck, bus</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     SCREEN 6: Eco-Driving Report (web)
+     Decay tracking, continuous feedback pipeline, fuel waste
+     ============================================================ -->
+<div>
+  <div class="screen-label">🌿 Eco-Driving Report · web</div>
+  <div class="browser-shell">
+    <div class="browser-bar">
+      <div class="browser-dots"><div class="browser-dot dot-r"></div><div class="browser-dot dot-y"></div><div class="browser-dot dot-g"></div></div>
+      <div class="browser-url">app.fleetlens.io/reports/eco-driving</div>
+    </div>
+    <div style="display:flex;min-height:680px;">
+      <div class="sidebar">
+        <div class="sidebar-logo">FleetLens</div>
+        <div class="nav-item"><span class="nav-icon">📊</span> Overview</div>
+        <div class="nav-item"><span class="nav-icon">📋</span> Reports</div>
+        <div class="nav-item active"><span class="nav-icon">🌿</span> Eco</div>
+        <div class="nav-item"><span class="nav-icon">⚙️</span> Settings</div>
+      </div>
+      <div class="main-content">
+        <div class="screen-header">
+          <div><div class="screen-title">Eco-Driving Report</div><div class="screen-sub">Continuous feedback pipeline · Decay tracking · Fuel waste estimation · Tyre wear hierarchy · Apr 2026</div></div>
+          <div class="flex gap-1"><span class="badge badge-blue">Apr 2026 ▾</span><span class="badge badge-gray">All drivers ▾</span></div>
+        </div>
+
+        <div class="stat-grid-4" style="margin-bottom:0.45rem;">
+          <div class="card-sm"><div class="label">Fleet Eco Score</div><div style="font-size:1.2rem;font-weight:800;color:#34d399;">71<span style="font-size:0.6rem;color:#94a3b8;">/100</span></div><div class="text-xs green">▲ +5 vs Mar</div></div>
+          <div class="card-sm"><div class="label">Est. Fuel Waste / Week</div><div style="font-size:1.2rem;font-weight:800;color:#f87171;">312L</div><div class="text-xs red">≈ €468 avoidable</div></div>
+          <div class="card-sm"><div class="label">Drivers — Decay Risk</div><div style="font-size:1.2rem;font-weight:800;color:#fb923c;">4</div><div class="text-xs" style="color:#fb923c;">No feedback &gt;8 weeks</div></div>
+          <div class="card-sm"><div class="label">CO₂ Reduction Est.</div><div style="font-size:1.2rem;font-weight:800;color:#34d399;">−8.4t</div><div class="text-xs green">YTD vs baseline</div></div>
+        </div>
+
+        <!-- Decay warning -->
+        <div style="background:rgba(251,146,60,0.08);border:1px solid rgba(251,146,60,0.4);border-radius:8px;padding:0.38rem 0.55rem;margin-bottom:0.45rem;display:flex;align-items:center;gap:0.65rem;">
+          <span style="font-size:1.1rem;">📉</span>
+          <div style="flex:1;">
+            <div class="text-xs" style="color:#fb923c;font-weight:600;">Eco-Training Decay Alert · Research: eco improvements decay within ~4 months without continuous feedback</div>
+            <div class="text-xs muted">4 drivers have not received eco feedback in &gt;8 weeks. Full decay to pre-training baseline expected by week 16. These drivers need persistent nudges — one-off training is insufficient. Dispatch eco feedback push now.</div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:0.2rem;align-items:flex-end;">
+            <span class="badge badge-orange">Push Eco Nudge</span>
+            <span class="badge badge-gray" style="font-size:0.5rem;">4 drivers selected</span>
+          </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1.4fr 1fr;gap:0.5rem;margin-bottom:0.45rem;">
+          <!-- Eco trend chart -->
+          <div class="card" style="margin-bottom:0;">
+            <div class="text-sm" style="font-weight:600;margin-bottom:0.35rem;">Fleet Eco Score — 16-Week Trend with Decay Projections</div>
+            <svg width="100%" height="90" viewBox="0 0 320 90">
+              <defs>
+                <linearGradient id="ecoG" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#34d399" stop-opacity="0.18"/>
+                  <stop offset="100%" stop-color="#34d399" stop-opacity="0"/>
+                </linearGradient>
+              </defs>
+              <line x1="28" y1="10" x2="315" y2="10" stroke="#2d3748" stroke-width="0.5"/>
+              <line x1="28" y1="32" x2="315" y2="32" stroke="#2d3748" stroke-width="0.5"/>
+              <line x1="28" y1="54" x2="315" y2="54" stroke="#2d3748" stroke-width="0.5"/>
+              <line x1="28" y1="76" x2="315" y2="76" stroke="#2d3748" stroke-width="0.5"/>
+              <text x="26" y="13" fill="#4a5568" font-size="6.5" text-anchor="end">90</text>
+              <text x="26" y="35" fill="#4a5568" font-size="6.5" text-anchor="end">70</text>
+              <text x="26" y="57" fill="#4a5568" font-size="6.5" text-anchor="end">50</text>
+              <text x="26" y="79" fill="#4a5568" font-size="6.5" text-anchor="end">30</text>
+              <!-- Actual eco score line -->
+              <path d="M30,68 L50,64 L70,58 L90,52 L110,46 L130,42 L150,40 L170,38 L190,36 L210,35 L220,35 L220,76 L30,76 Z" fill="url(#ecoG)"/>
+              <polyline points="30,68 50,64 70,58 90,52 110,46 130,42 150,40 170,38 190,36 210,35" fill="none" stroke="#34d399" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <circle cx="210" cy="35" r="3" fill="#34d399"/>
+              <!-- Decay projection (dashed) -->
+              <polyline points="210,35 240,40 265,48 290,58 315,72" fill="none" stroke="#fb923c" stroke-width="1.5" stroke-dasharray="4,3" stroke-linecap="round"/>
+              <text x="250" y="36" fill="#fb923c" font-size="6">decay if no feedback</text>
+              <!-- Continuous feedback line -->
+              <polyline points="210,35 240,33 265,32 290,31 315,30" fill="none" stroke="#6c8fff" stroke-width="1.5" stroke-dasharray="4,3" stroke-linecap="round"/>
+              <text x="240" y="27" fill="#6c8fff" font-size="6">with continuous feedback</text>
+              <!-- Now marker -->
+              <line x1="210" y1="8" x2="210" y2="78" stroke="#4a5568" stroke-width="0.8" stroke-dasharray="2,2"/>
+              <text x="211" y="15" fill="#4a5568" font-size="6">Now</text>
+              <text x="30" y="88" fill="#4a5568" font-size="5.5">Jan</text>
+              <text x="110" y="88" fill="#4a5568" font-size="5.5">Mar</text>
+              <text x="200" y="88" fill="#4a5568" font-size="5.5">Apr</text>
+              <text x="295" y="88" fill="#4a5568" font-size="5.5">Aug</text>
+            </svg>
+          </div>
+
+          <!-- Tyre wear hierarchy -->
+          <div class="card" style="margin-bottom:0;">
+            <div class="text-sm" style="font-weight:600;margin-bottom:0.3rem;">Tyre Wear Behaviour Hierarchy</div>
+            <div class="text-xs muted" style="margin-bottom:0.3rem;">ResearchGate study: behaviours ranked by tyre wear impact</div>
+            <div style="display:flex;flex-direction:column;gap:0.22rem;">
+              <div style="background:#1a1d27;border-radius:6px;padding:0.28rem 0.4rem;display:flex;justify-content:space-between;align-items:center;border-left:3px solid #f87171;">
+                <div>
+                  <div class="text-xs" style="color:#f87171;font-weight:600;">1. Braking + Acceleration Events</div>
+                  <div class="text-xs muted">"Most considerable" wear impact</div>
+                </div>
+                <span class="badge badge-red" style="font-size:0.5rem;">Highest</span>
+              </div>
+              <div style="background:#1a1d27;border-radius:6px;padding:0.28rem 0.4rem;display:flex;justify-content:space-between;align-items:center;border-left:3px solid #fbbf24;">
+                <div>
+                  <div class="text-xs" style="color:#fbbf24;font-weight:600;">2. Cornering Manoeuvres</div>
+                  <div class="text-xs muted">Lateral scrub, second highest</div>
+                </div>
+                <span class="badge badge-yellow" style="font-size:0.5rem;">High</span>
+              </div>
+              <div style="background:#1a1d27;border-radius:6px;padding:0.28rem 0.4rem;display:flex;justify-content:space-between;align-items:center;border-left:3px solid #6c8fff;">
+                <div>
+                  <div class="text-xs" style="color:#6c8fff;font-weight:600;">3. Driving Speed</div>
+                  <div class="text-xs muted">Continuous rolling resistance</div>
+                </div>
+                <span class="badge badge-blue" style="font-size:0.5rem;">Moderate</span>
+              </div>
+              <div style="background:rgba(251,146,60,0.07);border:1px solid rgba(251,146,60,0.25);border-radius:6px;padding:0.25rem 0.4rem;">
+                <div class="text-xs" style="color:#fb923c;">Fleet tyre replacement rate: +18% vs benchmark. Primary driver: R. Kowalski (4.8 braking events/1k km). Estimated avoidable cost: €2,100/year for this vehicle.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Per-driver eco table -->
+        <div class="card" style="margin-bottom:0;">
+          <div class="text-sm" style="font-weight:600;margin-bottom:0.3rem;">Driver Eco Scores · Decay Status · Fuel Waste Estimate</div>
+          <div style="display:grid;grid-template-columns:1fr 44px 44px 60px 80px 90px;gap:0.2rem;padding:0 0.2rem;margin-bottom:0.2rem;">
+            <div class="label">Driver</div><div class="label" style="text-align:center;">Eco</div><div class="label" style="text-align:center;">Δ4wk</div><div class="label" style="text-align:center;">Idle%</div><div class="label" style="text-align:center;">Fuel Waste/wk</div><div class="label" style="text-align:center;">Feedback Status</div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:0.12rem;">
+            <div style="display:grid;grid-template-columns:1fr 44px 44px 60px 80px 90px;gap:0.2rem;align-items:center;background:#1a1d27;border-radius:6px;padding:0.22rem 0.3rem;">
+              <div class="text-xs" style="color:#e2e8f0;">Elena Fischer</div>
+              <div class="text-xs green" style="text-align:center;font-weight:700;">88</div>
+              <div class="text-xs green" style="text-align:center;">▲+3</div>
+              <div class="text-xs green" style="text-align:center;">4.1%</div>
+              <div class="text-xs green" style="text-align:center;">~8L · €12</div>
+              <div style="text-align:center;"><span class="badge badge-green" style="font-size:0.48rem;">Weekly ✓</span></div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 44px 44px 60px 80px 90px;gap:0.2rem;align-items:center;background:#1a1d27;border-radius:6px;padding:0.22rem 0.3rem;">
+              <div class="text-xs" style="color:#e2e8f0;">James Okafor</div>
+              <div class="text-xs green" style="text-align:center;font-weight:700;">82</div>
+              <div class="text-xs green" style="text-align:center;">▲+1</div>
+              <div class="text-xs green" style="text-align:center;">5.3%</div>
+              <div class="text-xs green" style="text-align:center;">~14L · €21</div>
+              <div style="text-align:center;"><span class="badge badge-green" style="font-size:0.48rem;">Weekly ✓</span></div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 44px 44px 60px 80px 90px;gap:0.2rem;align-items:center;background:#1a1d27;border-radius:6px;padding:0.22rem 0.3rem;border:1px solid rgba(251,146,60,0.35);">
+              <div class="text-xs" style="color:#fb923c;">D. Mensah ⚠ decay</div>
+              <div class="text-xs" style="text-align:center;font-weight:700;color:#fb923c;">48</div>
+              <div class="text-xs red" style="text-align:center;">▼−6</div>
+              <div class="text-xs yellow" style="text-align:center;">11.2%</div>
+              <div class="text-xs red" style="text-align:center;">~42L · €63</div>
+              <div style="text-align:center;"><span class="badge badge-orange" style="font-size:0.48rem;">11 wks · push now</span></div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 44px 44px 60px 80px 90px;gap:0.2rem;align-items:center;background:#1a1d27;border-radius:6px;padding:0.22rem 0.3rem;border:1px solid rgba(248,113,113,0.3);">
+              <div class="text-xs" style="color:#f87171;">R. Kowalski ⚠ high waste</div>
+              <div class="text-xs red" style="text-align:center;font-weight:700;">41</div>
+              <div class="text-xs red" style="text-align:center;">▼−4</div>
+              <div class="text-xs red" style="text-align:center;">14.8%</div>
+              <div class="text-xs red" style="text-align:center;">~68L · €102</div>
+              <div style="text-align:center;"><span class="badge badge-red" style="font-size:0.48rem;">9 wks · critical</span></div>
+            </div>
+          </div>
+          <div class="text-xs muted" style="margin-top:0.3rem;">Eco score accounts for ~33% of MPG variance. Fuel waste estimate based on fleet benchmark MPG delta. Idle% threshold: &gt;8% flagged. Continuous feedback shown to maintain eco gains — one-off training insufficient (Vilnius decay study).</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     SCREEN 7: Fatigue Risk Report (web)
+     SWA entropy, HOS pattern, shift-timing correlation
+     ============================================================ -->
+<div>
+  <div class="screen-label">😴 Fatigue Risk Report · web</div>
+  <div class="browser-shell">
+    <div class="browser-bar">
+      <div class="browser-dots"><div class="browser-dot dot-r"></div><div class="browser-dot dot-y"></div><div class="browser-dot dot-g"></div></div>
+      <div class="browser-url">app.fleetlens.io/reports/fatigue</div>
+    </div>
+    <div style="display:flex;min-height:640px;">
+      <div class="sidebar">
+        <div class="sidebar-logo">FleetLens</div>
+        <div class="nav-item"><span class="nav-icon">📊</span> Overview</div>
+        <div class="nav-item"><span class="nav-icon">📋</span> Reports</div>
+        <div class="nav-item active"><span class="nav-icon">😴</span> Fatigue</div>
+        <div class="nav-item"><span class="nav-icon">⚙️</span> Settings</div>
+      </div>
+      <div class="main-content">
+        <div class="screen-header">
+          <div><div class="screen-title">Fatigue Risk Report</div><div class="screen-sub">SWA entropy proxy · HOS pattern analysis · Shift-timing correlation · Apr 2026</div></div>
+          <div class="flex gap-1"><span class="badge badge-blue">Apr 2026 ▾</span><span class="badge badge-red">6 active flags</span></div>
+        </div>
+
+        <div class="stat-grid-4" style="margin-bottom:0.45rem;">
+          <div class="card-sm"><div class="label">Fatigue-Flagged Drivers</div><div style="font-size:1.2rem;font-weight:800;color:#f87171;">6</div><div class="text-xs red">▲ +2 vs last week</div></div>
+          <div class="card-sm"><div class="label">High SWA Entropy Events</div><div style="font-size:1.2rem;font-weight:800;color:#fbbf24;">23</div><div class="text-xs muted">This week · 7% of all events</div></div>
+          <div class="card-sm"><div class="label">Night-Shift Events %</div><div style="font-size:1.2rem;font-weight:800;color:#f87171;">38%</div><div class="text-xs red">22:00–05:00 window</div></div>
+          <div class="card-sm"><div class="label">Shift-End Events (last 10%)</div><div style="font-size:1.2rem;font-weight:800;color:#fbbf24;">31%</div><div class="text-xs yellow">Elevated vs mid-shift</div></div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;margin-bottom:0.45rem;">
+          <!-- Fatigue heatmap by hour -->
+          <div class="card" style="margin-bottom:0;">
+            <div class="text-sm" style="font-weight:600;margin-bottom:0.3rem;">Harsh Events by Hour of Day — All Drivers</div>
+            <svg width="100%" height="80" viewBox="0 0 300 80">
+              <!-- Hours 0–23 -->
+              <rect x="0" y="20" width="10" height="40" rx="2" fill="rgba(248,113,113,0.7)"/>
+              <rect x="11" y="26" width="10" height="34" rx="2" fill="rgba(248,113,113,0.55)"/>
+              <rect x="22" y="38" width="10" height="22" rx="2" fill="rgba(251,191,36,0.45)"/>
+              <rect x="33" y="46" width="10" height="14" rx="2" fill="rgba(52,211,153,0.35)"/>
+              <rect x="44" y="50" width="10" height="10" rx="2" fill="rgba(52,211,153,0.3)"/>
+              <rect x="55" y="46" width="10" height="14" rx="2" fill="rgba(52,211,153,0.35)"/>
+              <rect x="66" y="44" width="10" height="16" rx="2" fill="rgba(52,211,153,0.35)"/>
+              <rect x="77" y="34" width="10" height="26" rx="2" fill="rgba(251,191,36,0.4)"/>
+              <rect x="88" y="28" width="10" height="32" rx="2" fill="rgba(251,191,36,0.55)"/>
+              <rect x="99" y="24" width="10" height="36" rx="2" fill="rgba(248,113,113,0.5)"/>
+              <rect x="110" y="30" width="10" height="30" rx="2" fill="rgba(251,191,36,0.45)"/>
+              <rect x="121" y="34" width="10" height="26" rx="2" fill="rgba(52,211,153,0.4)"/>
+              <rect x="132" y="38" width="10" height="22" rx="2" fill="rgba(52,211,153,0.35)"/>
+              <rect x="143" y="40" width="10" height="20" rx="2" fill="rgba(52,211,153,0.3)"/>
+              <rect x="154" y="36" width="10" height="24" rx="2" fill="rgba(52,211,153,0.35)"/>
+              <rect x="165" y="32" width="10" height="28" rx="2" fill="rgba(251,191,36,0.42)"/>
+              <rect x="176" y="28" width="10" height="32" rx="2" fill="rgba(251,191,36,0.5)"/>
+              <rect x="187" y="24" width="10" height="36" rx="2" fill="rgba(248,113,113,0.45)"/>
+              <rect x="198" y="28" width="10" height="32" rx="2" fill="rgba(251,191,36,0.45)"/>
+              <rect x="209" y="32" width="10" height="28" rx="2" fill="rgba(52,211,153,0.4)"/>
+              <rect x="220" y="36" width="10" height="24" rx="2" fill="rgba(52,211,153,0.35)"/>
+              <rect x="231" y="24" width="10" height="36" rx="2" fill="rgba(248,113,113,0.5)"/>
+              <rect x="242" y="16" width="10" height="44" rx="2" fill="rgba(248,113,113,0.65)"/>
+              <rect x="253" y="8" width="10" height="52" rx="2" fill="rgba(248,113,113,0.8)"/>
+              <!-- X axis labels (every 4h) -->
+              <text x="5" y="78" fill="#4a5568" font-size="5.5" text-anchor="middle">00</text>
+              <text x="49" y="78" fill="#4a5568" font-size="5.5" text-anchor="middle">04</text>
+              <text x="94" y="78" fill="#4a5568" font-size="5.5" text-anchor="middle">08</text>
+              <text x="138" y="78" fill="#4a5568" font-size="5.5" text-anchor="middle">12</text>
+              <text x="182" y="78" fill="#4a5568" font-size="5.5" text-anchor="middle">16</text>
+              <text x="225" y="78" fill="#4a5568" font-size="5.5" text-anchor="middle">20</text>
+              <text x="258" y="78" fill="#f87171" font-size="5.5" text-anchor="middle">23</text>
+              <!-- Night zone shading -->
+              <rect x="0" y="0" width="44" height="60" rx="2" fill="rgba(248,113,113,0.06)" stroke="rgba(248,113,113,0.2)" stroke-width="0.5"/>
+              <rect x="231" y="0" width="40" height="60" rx="2" fill="rgba(248,113,113,0.06)" stroke="rgba(248,113,113,0.2)" stroke-width="0.5"/>
+              <text x="22" y="9" fill="rgba(248,113,113,0.6)" font-size="5">Night risk</text>
+              <text x="238" y="9" fill="rgba(248,113,113,0.6)" font-size="5">Late risk</text>
+            </svg>
+            <div class="text-xs muted" style="margin-top:0.15rem;">Peaks at 22:00–02:00 and 06:00–08:00 (shift-start) · Risk elevation: +38% at night · +26% at shift-start · Alert thresholds auto-raised in red zones</div>
+          </div>
+
+          <!-- Driver fatigue flags -->
+          <div class="card" style="margin-bottom:0;">
+            <div class="text-sm" style="font-weight:600;margin-bottom:0.3rem;">Active Fatigue Flags · This Week</div>
+            <div style="display:flex;flex-direction:column;gap:0.2rem;">
+              <div style="background:rgba(248,113,113,0.07);border:1px solid rgba(248,113,113,0.3);border-radius:6px;padding:0.25rem 0.38rem;">
+                <div class="flex justify-between items-center">
+                  <div class="text-xs" style="color:#f87171;font-weight:600;">R. Kowalski · HGV</div>
+                  <span class="badge badge-red" style="font-size:0.48rem;">HIGH</span>
+                </div>
+                <div class="text-xs muted">SWA entropy: 0.82 (threshold 0.75) · 4 night runs this week · 68% events in D1</div>
+              </div>
+              <div style="background:rgba(248,113,113,0.07);border:1px solid rgba(248,113,113,0.3);border-radius:6px;padding:0.25rem 0.38rem;">
+                <div class="flex justify-between items-center">
+                  <div class="text-xs" style="color:#f87171;font-weight:600;">S. Patel · LCV</div>
+                  <span class="badge badge-red" style="font-size:0.48rem;">HIGH</span>
+                </div>
+                <div class="text-xs muted">SWA entropy: 0.79 · 2 late-shift runs · consecutive-day pattern · review HOS</div>
+              </div>
+              <div style="background:rgba(251,191,36,0.07);border:1px solid rgba(251,191,36,0.3);border-radius:6px;padding:0.25rem 0.38rem;">
+                <div class="flex justify-between items-center">
+                  <div class="text-xs" style="color:#fbbf24;font-weight:600;">T. Brennan · Car</div>
+                  <span class="badge badge-yellow" style="font-size:0.48rem;">MODERATE</span>
+                </div>
+                <div class="text-xs muted">SWA entropy: 0.77 · early start pattern · 06:00 trips flagged</div>
+              </div>
+              <div style="background:rgba(251,191,36,0.07);border:1px solid rgba(251,191,36,0.3);border-radius:6px;padding:0.25rem 0.38rem;">
+                <div class="flex justify-between items-center">
+                  <div class="text-xs" style="color:#fbbf24;font-weight:600;">M. Dubois · Car</div>
+                  <span class="badge badge-yellow" style="font-size:0.48rem;">MODERATE</span>
+                </div>
+                <div class="text-xs muted">SWA entropy: 0.76 · marginal · monitor next 2 trips</div>
+              </div>
+              <div style="background:#1a1d27;border-radius:6px;padding:0.22rem 0.35rem;">
+                <div class="text-xs muted">SWA Entropy: steering wheel angle variance proxy for microsleep/attention loss. Threshold 0.75 = elevated risk. CAN bus required for direct measurement; GPS-derived approximation available as fallback.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- HOS pattern table -->
+        <div class="card" style="margin-bottom:0;">
+          <div class="text-sm" style="font-weight:600;margin-bottom:0.3rem;">Hours-of-Service Pattern Analysis · Risk Correlation</div>
+          <div style="display:grid;grid-template-columns:1fr 56px 56px 56px 68px 80px;gap:0.2rem;margin-bottom:0.18rem;padding:0 0.2rem;">
+            <div class="label">Driver</div><div class="label" style="text-align:center;">Hrs/day</div><div class="label" style="text-align:center;">Night runs</div><div class="label" style="text-align:center;">Rest &lt;9h</div><div class="label" style="text-align:center;">HOS compliance</div><div class="label" style="text-align:center;">Fatigue risk score</div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:0.1rem;">
+            <div style="display:grid;grid-template-columns:1fr 56px 56px 56px 68px 80px;gap:0.2rem;align-items:center;background:#1a1d27;border-radius:5px;padding:0.18rem 0.25rem;border-left:3px solid #f87171;">
+              <div class="text-xs" style="color:#e2e8f0;">R. Kowalski</div>
+              <div class="text-xs red" style="text-align:center;">9.8h</div>
+              <div class="text-xs red" style="text-align:center;">4/7 days</div>
+              <div class="text-xs red" style="text-align:center;">3 instances</div>
+              <div style="text-align:center;"><span class="badge badge-red" style="font-size:0.48rem;">⚠ Review</span></div>
+              <div class="text-xs red" style="text-align:center;font-weight:700;">HIGH · 0.82</div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 56px 56px 56px 68px 80px;gap:0.2rem;align-items:center;background:#1a1d27;border-radius:5px;padding:0.18rem 0.25rem;border-left:3px solid #fbbf24;">
+              <div class="text-xs" style="color:#e2e8f0;">S. Patel</div>
+              <div class="text-xs yellow" style="text-align:center;">8.4h</div>
+              <div class="text-xs red" style="text-align:center;">2/7 days</div>
+              <div class="text-xs yellow" style="text-align:center;">1 instance</div>
+              <div style="text-align:center;"><span class="badge badge-yellow" style="font-size:0.48rem;">Marginal</span></div>
+              <div class="text-xs red" style="text-align:center;font-weight:700;">HIGH · 0.79</div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 56px 56px 56px 68px 80px;gap:0.2rem;align-items:center;background:#1a1d27;border-radius:5px;padding:0.18rem 0.25rem;border-left:3px solid #34d399;">
+              <div class="text-xs" style="color:#e2e8f0;">Elena Fischer</div>
+              <div class="text-xs green" style="text-align:center;">7.2h</div>
+              <div class="text-xs green" style="text-align:center;">0/7 days</div>
+              <div class="text-xs green" style="text-align:center;">0 instances</div>
+              <div style="text-align:center;"><span class="badge badge-green" style="font-size:0.48rem;">✓ Compliant</span></div>
+              <div class="text-xs green" style="text-align:center;font-weight:700;">LOW · 0.41</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     SCREEN 8: Near-Miss & Alert Feed (web)
+     Near-miss proxy events, ML-classified alerts, false-positive info
+     ============================================================ -->
+<div>
+  <div class="screen-label">⚡ Alert Feed · Near-Miss Events · web</div>
+  <div class="browser-shell">
+    <div class="browser-bar">
+      <div class="browser-dots"><div class="browser-dot dot-r"></div><div class="browser-dot dot-y"></div><div class="browser-dot dot-g"></div></div>
+      <div class="browser-url">app.fleetlens.io/alerts</div>
+    </div>
+    <div style="display:flex;min-height:680px;">
+      <div class="sidebar">
+        <div class="sidebar-logo">FleetLens</div>
+        <div class="nav-item"><span class="nav-icon">📊</span> Overview</div>
+        <div class="nav-item active"><span class="nav-icon">⚡</span> Alerts</div>
+        <div class="nav-item"><span class="nav-icon">👤</span> Drivers</div>
+        <div class="nav-item"><span class="nav-icon">🗺️</span> Heat Map</div>
+        <div class="nav-item"><span class="nav-icon">⚙️</span> Settings</div>
+      </div>
+      <div class="main-content">
+        <div class="screen-header">
+          <div><div class="screen-title">Alert Feed · ML-Classified</div><div class="screen-sub">Near-miss proxy events · real-time harsh event alerts · on-device (immediate) + cloud (normalised) · 14–20 Apr 2026</div></div>
+          <div class="flex gap-1"><span class="badge badge-red">● LIVE</span><span class="badge badge-gray">Severity: All ▾</span></div>
+        </div>
+
+        <div style="background:rgba(108,143,255,0.07);border:1px solid rgba(108,143,255,0.2);border-radius:8px;padding:0.35rem 0.55rem;margin-bottom:0.4rem;">
+          <div class="text-xs blue">Near-miss events provide far richer behavioural signals than claims-only models (SSRN 5917802). Architecture: on-device immediate threshold alerts for in-cab response; cloud-based ML classification for false-positive reduction (~30% fewer false positives vs rule-based). All alerts paired with structured human escalation pathway for persistent patterns.</div>
+        </div>
+
+        <div class="stat-grid-4" style="margin-bottom:0.4rem;">
+          <div class="card-sm" style="border-color:rgba(248,113,113,0.4);"><div class="label">Critical Alerts Today</div><div style="font-size:1.2rem;font-weight:800;color:#f87171;">7</div><div class="text-xs red">≥0.42g · immediate escalation</div></div>
+          <div class="card-sm"><div class="label">Near-Miss Proxies</div><div style="font-size:1.2rem;font-weight:800;color:#fbbf24;">11</div><div class="text-xs yellow">This week · richer signal</div></div>
+          <div class="card-sm"><div class="label">Auto Nudges Sent</div><div style="font-size:1.2rem;font-weight:800;color:#6c8fff;">34</div><div class="text-xs muted">Today · in-cab + app</div></div>
+          <div class="card-sm"><div class="label">False Positives Filtered</div><div style="font-size:1.2rem;font-weight:800;color:#34d399;">~30%</div><div class="text-xs green">ML vs rule-based</div></div>
+        </div>
+
+        <!-- Live alert list -->
+        <div class="card" style="margin-bottom:0.4rem;">
+          <div class="flex justify-between items-center mb-1">
+            <div class="text-sm" style="font-weight:600;">Live Alerts · Today</div>
+            <div class="flex gap-1">
+              <span class="badge badge-gray" style="font-size:0.5rem;">All types ▾</span>
+              <span class="badge badge-gray" style="font-size:0.5rem;">All drivers ▾</span>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:0.22rem;">
+            <div style="background:rgba(248,113,113,0.08);border:1px solid rgba(248,113,113,0.4);border-radius:7px;padding:0.3rem 0.45rem;">
+              <div class="flex justify-between items-center">
+                <div class="flex gap-1 items-center">
+                  <span class="badge badge-red">🔴 CRITICAL</span>
+                  <div class="text-xs" style="color:#f87171;font-weight:600;">Hard Brake · 0.48g · R. Kowalski</div>
+                </div>
+                <div class="text-xs muted">09:14 · A1 HWY km 228</div>
+              </div>
+              <div class="flex gap-1 mt-1 items-center">
+                <span class="badge badge-gray" style="font-size:0.5rem;">HGV · Volvo FH16</span>
+                <span class="badge badge-yellow" style="font-size:0.5rem;">⏱ shift-start D1</span>
+                <span class="badge badge-gray" style="font-size:0.5rem;">in-cab audio ✓</span>
+                <span class="badge badge-purple" style="font-size:0.5rem;">🧑‍💼 escalation open</span>
+              </div>
+            </div>
+
+            <div style="background:rgba(248,113,113,0.07);border:1px solid rgba(248,113,113,0.35);border-radius:7px;padding:0.3rem 0.45rem;">
+              <div class="flex justify-between items-center">
+                <div class="flex gap-1 items-center">
+                  <span class="badge badge-red">🔴 CRITICAL</span>
+                  <div class="text-xs" style="color:#f87171;font-weight:600;">Near-Miss Proxy · 0.51g braking + 114 km/h</div>
+                </div>
+                <div class="text-xs muted">08:52 · M25 J12</div>
+              </div>
+              <div class="text-xs muted" style="margin-top:0.1rem;">S. Patel · LCV · Combined speed + braking signature matches near-miss profile. Richer risk signal than single event. Fleet manager notified.</div>
+              <div class="flex gap-1 mt-1">
+                <span class="badge badge-red" style="font-size:0.5rem;">near-miss proxy</span>
+                <span class="badge badge-gray" style="font-size:0.5rem;">app nudge ✓</span>
+                <span class="badge badge-purple" style="font-size:0.5rem;">4th event this shift</span>
+              </div>
+            </div>
+
+            <div style="background:rgba(251,191,36,0.07);border:1px solid rgba(251,191,36,0.35);border-radius:7px;padding:0.3rem 0.45rem;">
+              <div class="flex justify-between items-center">
+                <div class="flex gap-1 items-center">
+                  <span class="badge badge-yellow">🟡 MODERATE</span>
+                  <div class="text-xs" style="color:#fbbf24;font-weight:600;">Hard Accel · 0.34g · S. Patel</div>
+                </div>
+                <div class="text-xs muted">09:08 · Urban ring</div>
+              </div>
+              <div class="flex gap-1 mt-1">
+                <span class="badge badge-gray" style="font-size:0.5rem;">LCV · Ford Transit</span>
+                <span class="badge badge-gray" style="font-size:0.5rem;">nudge sent ✓</span>
+                <span class="badge badge-blue" style="font-size:0.5rem;">ML: urban context flag</span>
+              </div>
+            </div>
+
+            <div style="background:rgba(251,191,36,0.07);border:1px solid rgba(251,191,36,0.3);border-radius:7px;padding:0.3rem 0.45rem;">
+              <div class="flex justify-between items-center">
+                <div class="flex gap-1 items-center">
+                  <span class="badge badge-yellow">🟡 MODERATE</span>
+                  <div class="text-xs" style="color:#fbbf24;font-weight:600;">Speeding · 114 km/h · 100 limit</div>
+                </div>
+                <div class="text-xs muted">09:02 · M25 · S. Patel</div>
+              </div>
+              <div class="flex gap-1 mt-1">
+                <span class="badge badge-gray" style="font-size:0.5rem;">GPS speed lock ✓</span>
+                <span class="badge badge-gray" style="font-size:0.5rem;">audio alert sent</span>
+              </div>
+            </div>
+
+            <div style="background:rgba(52,211,153,0.05);border:1px solid rgba(52,211,153,0.2);border-radius:7px;padding:0.3rem 0.45rem;">
+              <div class="flex justify-between items-center">
+                <div class="flex gap-1 items-center">
+                  <span class="badge badge-green">🟢 LOW</span>
+                  <div class="text-xs" style="color:#34d399;font-weight:600;">Hard Corner · 0.32g · T. Brennan</div>
+                </div>
+                <div class="text-xs muted">08:44 · B-road roundabout</div>
+              </div>
+              <div class="flex gap-1 mt-1">
+                <span class="badge badge-gray" style="font-size:0.5rem;">Car · isolated event</span>
+                <span class="badge badge-green" style="font-size:0.5rem;">no escalation required</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Alert config reminder -->
+        <div class="card" style="margin-bottom:0;background:rgba(108,143,255,0.05);">
+          <div class="text-sm" style="font-weight:600;margin-bottom:0.3rem;">Alert Architecture</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.4rem;">
+            <div style="background:#1a1d27;border-radius:7px;padding:0.3rem 0.4rem;">
+              <div class="text-xs blue" style="font-weight:600;">📱 On-Device (Immediate)</div>
+              <div class="text-xs muted" style="margin-top:0.1rem;">Threshold evaluated in-vehicle for instant in-cab audio alert. No cloud round-trip. &lt;200ms response. ARMOR pattern.</div>
+            </div>
+            <div style="background:#1a1d27;border-radius:7px;padding:0.3rem 0.4rem;">
+              <div class="text-xs" style="color:#a78bfa;font-weight:600;">☁️ Cloud (Fleet-Normalised)</div>
+              <div class="text-xs muted" style="margin-top:0.1rem;">ML composite scoring, false-positive filtering, fleet baseline comparison, near-miss pattern detection, escalation triggers.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     SCREEN 9: Driver Mobile App — Personal Score & Today's Trip
+     ============================================================ -->
+<div>
+  <div class="screen-label">📱 Driver App · Personal Score · Today's Trip · mobile</div>
+  <div style="max-width:360px;margin:0 auto;">
+    <div class="phone-shell">
+      <div class="phone-notch"><div class="notch-pill"></div></div>
+      <div class="phone-content">
+        <!-- Header -->
+        <div class="flex justify-between items-center mb-2">
+          <div>
+            <div style="color:#e2e8f0;font-size:0.85rem;font-weight:700;">Good morning, Sam 👋</div>
+            <div class="text-xs">Monday 14 Apr · Today's shift not started</div>
+          </div>
+          <div style="background:rgba(248,113,113,0.15);border:1px solid rgba(248,113,113,0.35);border-radius:20px;padding:0.2rem 0.5rem;">
+            <div class="text-xs red" style="font-size:0.6rem;">RAG 🔴 Red</div>
+          </div>
+        </div>
+
+        <!-- Composite score ring -->
+        <div style="display:flex;align-items:center;justify-content:center;flex-direction:column;margin-bottom:0.65rem;">
+          <svg width="110" height="110" viewBox="0 0 120 120">
+            <circle cx="60" cy="60" r="50" fill="none" stroke="#2d3748" stroke-width="10"/>
+            <circle cx="60" cy="60" r="50" fill="none" stroke="#f87171" stroke-width="10" stroke-dasharray="314" stroke-dashoffset="194" stroke-linecap="round" transform="rotate(-90 60 60)"/>
+            <circle cx="60" cy="60" r="42" fill="none" stroke="rgba(108,143,255,0.15)" stroke-width="6"/>
+            <circle cx="60" cy="60" r="42" fill="none" stroke="#6c8fff" stroke-width="6" stroke-dasharray="264" stroke-dashoffset="187" stroke-linecap="round" transform="rotate(-90 60 60)"/>
+            <text x="60" y="58" text-anchor="middle" fill="#f87171" font-size="22" font-weight="800">31</text>
+            <text x="60" y="70" text-anchor="middle" fill="#94a3b8" font-size="7.5">/100 Safety</text>
+            <text x="60" y="82" text-anchor="middle" fill="#6c8fff" font-size="6.5">33 Eco</text>
+          </svg>
+          <div class="text-xs muted" style="text-align:center;margin-top:0.1rem;">ML composite · 28 trips · distance-normalised</div>
+          <div class="flex gap-1 mt-1">
+            <span class="badge badge-red" style="font-size:0.5rem;">▼ −11 pts this week</span>
+            <span class="badge badge-purple" style="font-size:0.5rem;">🧑‍💼 Coaching session booked</span>
+          </div>
+        </div>
+
+        <!-- Human coaching notice -->
+        <div style="background:rgba(167,139,250,0.1);border:1px solid rgba(167,139,250,0.4);border-radius:8px;padding:0.35rem 0.45rem;margin-bottom:0.45rem;">
+          <div class="text-xs" style="color:#a78bfa;font-weight:600;">🧑‍💼 Coaching Session — Tue Apr 15 · 10:00 with J. Manager</div>
+          <div class="text-xs muted" style="margin-top:0.08rem;">Your score has been below target for 4 weeks. Today's session focuses on braking technique. Your pre-session report is ready to review.</div>
+          <div style="margin-top:0.22rem;display:flex;gap:0.3rem;">
+            <div style="padding:0.15rem 0.4rem;background:rgba(167,139,250,0.18);border-radius:5px;border:1px solid rgba(167,139,250,0.35);cursor:pointer;"><div class="text-xs" style="color:#a78bfa;font-size:0.58rem;">View Pre-Session Report</div></div>
+            <div style="padding:0.15rem 0.4rem;background:rgba(108,143,255,0.12);border-radius:5px;border:1px solid rgba(108,143,255,0.3);cursor:pointer;"><div class="text-xs blue" style="font-size:0.58rem;">Add to Calendar</div></div>
+          </div>
+        </div>
+
+        <!-- Today's trip summary -->
+        <div class="card" style="margin-bottom:0.45rem;">
+          <div class="flex justify-between items-center mb-1">
+            <div class="text-sm" style="font-weight:600;color:#e2e8f0;">Last Trip</div>
+            <span class="badge badge-red" style="font-size:0.5rem;">Score 29</span>
+          </div>
+          <div class="text-xs muted">Łódź → Poznań · Apr 13 · 212 km · 3h 18m</div>
+          <hr class="divider">
+          <div class="stat-grid" style="margin-bottom:0.3rem;">
+            <div>
+              <div class="label">Harsh Braking</div>
+              <div style="color:#f87171;font-weight:700;font-size:0.82rem;">6 events</div>
+              <div class="text-xs muted">0.52g max · A1 night</div>
+            </div>
+            <div>
+              <div class="label">Harsh Accel</div>
+              <div style="color:#fbbf24;font-weight:700;font-size:0.82rem;">3 events</div>
+              <div class="text-xs muted">0.38g max</div>
+            </div>
+            <div>
+              <div class="label">Cornering</div>
+              <div style="color:#fbbf24;font-weight:700;font-size:0.82rem;">2 events</div>
+              <div class="text-xs muted">0.31g max</div>
+            </div>
+            <div>
+              <div class="label">Max Speed</div>
+              <div style="color:#fbbf24;font-weight:700;font-size:0.82rem;">108 km/h</div>
+              <div class="text-xs muted">100 zone · brief</div>
+            </div>
+          </div>
+          <!-- Mini event timeline -->
+          <div class="label mb-1">Trip Event Timeline</div>
+          <div style="position:relative;height:12px;background:#2d3748;border-radius:6px;overflow:hidden;">
+            <div style="position:absolute;left:5%;top:2px;width:4px;height:8px;background:#f87171;border-radius:2px;" title="Harsh brake"></div>
+            <div style="position:absolute;left:12%;top:2px;width:4px;height:8px;background:#f87171;border-radius:2px;"></div>
+            <div style="position:absolute;left:28%;top:2px;width:4px;height:8px;background:#fbbf24;border-radius:2px;"></div>
+            <div style="position:absolute;left:45%;top:2px;width:4px;height:8px;background:#fbbf24;border-radius:2px;"></div>
+            <div style="position:absolute;left:62%;top:2px;width:4px;height:8px;background:#f87171;border-radius:2px;"></div>
+            <div style="position:absolute;left:75%;top:2px;width:4px;height:8px;background:#f87171;border-radius:2px;"></div>
+            <div style="position:absolute;left:88%;top:2px;width:4px;height:8px;background:#f87171;border-radius:2px;"></div>
+          </div>
+          <div class="flex justify-between text-xs muted" style="margin-top:0.15rem;font-size:0.55rem;">
+            <span>Start 21:30</span><span>End 00:48</span>
+          </div>
+        </div>
+
+        <!-- Score breakdown mini -->
+        <div class="card" style="margin-bottom:0.45rem;">
+          <div class="text-sm" style="font-weight:600;color:#e2e8f0;margin-bottom:0.3rem;">Your Score Breakdown</div>
+          <div class="progress-wrap">
+            <div class="progress-label"><span class="text-xs">Speed Compliance</span><span class="text-xs yellow">51/100</span></div>
+            <div class="progress-track"><div class="progress-fill" style="width:51%;background:#fbbf24;"></div></div>
+          </div>
+          <div class="progress-wrap">
+            <div class="progress-label"><span class="text-xs">Harsh Braking</span><span class="text-xs red">22/100</span></div>
+            <div class="progress-track"><div class="progress-fill" style="width:22%;background:#f87171;"></div></div>
+          </div>
+          <div class="progress-wrap">
+            <div class="progress-label"><span class="text-xs">Harsh Acceleration</span><span class="text-xs red">28/100</span></div>
+            <div class="progress-track"><div class="progress-fill" style="width:28%;background:#f87171;"></div></div>
+          </div>
+          <div class="progress-wrap" style="margin-bottom:0;">
+            <div class="progress-label"><span class="text-xs">Cornering</span><span class="text-xs yellow">44/100</span></div>
+            <div class="progress-track"><div class="progress-fill" style="width:44%;background:#fbbf24;"></div></div>
+          </div>
+        </div>
+
+        <!-- Fleet rank -->
+        <div style="background:rgba(108,143,255,0.08);border:1px solid rgba(108,143,255,0.25);border-radius:8px;padding:0.3rem 0.45rem;margin-bottom:0.1rem;">
+          <div class="text-xs blue" style="font-weight:600;">Fleet Rank · #41 of 41 · Bottom of leaderboard</div>
+          <div class="text-xs muted" style="margin-top:0.08rem;">Fleet average: 74. Your biggest gap: braking (22/100). If you reduce braking events by 50%, your score rises to ~49. Focus area for Tuesday's coaching session.</div>
+        </div>
+      </div>
+      <div class="phone-nav">
+        <div class="phone-nav-item"><div class="phone-nav-icon">🏠</div>Home</div>
+        <div class="phone-nav-item active"><div class="phone-nav-icon">📊</div>Score</div>
+        <div class="phone-nav-item"><div class="phone-nav-icon">🗺️</div>Trips</div>
+        <div class="phone-nav-item"><div class="phone-nav-icon">🎯</div>Coach</div>
+        <div class="phone-nav-item"><div class="phone-nav-icon">⚙️</div>Settings</div>
+      </div>
+      <div class="phone-home"><div class="home-bar"></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     SCREEN 10: Driver Mobile App — Gamified Coaching & Challenges
+     ============================================================ -->
+<div>
+  <div class="screen-label">📱 Driver App · Coaching & Gamification · mobile</div>
+  <div style="max-width:360px;margin:0 auto;">
+    <div class="phone-shell">
+      <div class="phone-notch"><div class="notch-pill"></div></div>
+      <div class="phone-content">
+        <div class="flex justify-between items-center mb-2">
+          <div class="screen-title" style="font-size:0.9rem;">Coaching &amp; Challenges</div>
+          <span class="badge badge-blue" style="font-size:0.55rem;">Week 16</span>
+        </div>
+
+        <!-- Active challenge card -->
+        <div style="background:linear-gradient(135deg,rgba(108,143,255,0.18) 0%,rgba(52,211,153,0.1) 100%);border:1px solid rgba(108,143,255,0.4);border-radius:10px;padding:0.5rem 0.6rem;margin-bottom:0.45rem;">
+          <div class="flex justify-between items-center mb-1">
+            <div class="text-xs" style="color:#6c8fff;font-weight:700;">⚡ ACTIVE CHALLENGE</div>
+            <span class="badge badge-blue" style="font-size:0.5rem;">Ends Sun</span>
+          </div>
+          <div style="color:#e2e8f0;font-size:0.82rem;font-weight:700;margin-bottom:0.1rem;">Zero harsh accelerations on urban routes</div>
+          <div class="text-xs muted">Your progress: 2 events this week · Fleet best: 0 events (Ana R.)</div>
+          <div class="progress-track mt-1" style="height:6px;"><div class="progress-fill" style="width:65%;background:linear-gradient(90deg,#f87171,#fbbf24);height:6px;"></div></div>
+          <div class="flex justify-between mt-1">
+            <div class="text-xs yellow">2 events · target: 0</div>
+            <div class="text-xs blue">Potential: +70 pts</div>
+          </div>
+        </div>
+
+        <!-- Coaching tip -->
+        <div style="background:rgba(251,191,36,0.08);border:1px solid rgba(251,191,36,0.35);border-radius:9px;padding:0.4rem 0.5rem;margin-bottom:0.4rem;">
+          <div class="text-xs yellow" style="font-weight:600;">💡 Personalised Coaching Tip</div>
+          <div style="color:#e2e8f0;font-size:0.75rem;font-weight:600;margin-top:0.12rem;">Your braking pattern: 68% of events in first 10% of shift</div>
+          <div class="text-xs muted" style="margin-top:0.1rem;">This is a shift-start warming-up pattern. Try these: (1) Start 5 min earlier and drive slowly for first 3km. (2) Increase following distance in first 30 min. (3) Check mirrors at every gear change for the first 20 min of any shift.</div>
+          <div style="margin-top:0.2rem;display:flex;gap:0.25rem;flex-wrap:wrap;">
+            <span class="badge badge-yellow" style="font-size:0.5rem;">👍 Helpful</span>
+            <span class="badge badge-gray" style="font-size:0.5rem;">👎 Not relevant</span>
+            <span class="badge badge-blue" style="font-size:0.5rem;">🔖 Save tip</span>
+          </div>
+        </div>
+
+        <!-- Leaderboard snippet -->
+        <div class="card" style="margin-bottom:0.4rem;">
+          <div class="flex justify-between items-center mb-1">
+            <div class="text-sm" style="font-weight:600;color:#e2e8f0;">Fleet Leaderboard</div>
+            <span class="badge badge-gray" style="font-size:0.5rem;">This Week</span>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:0.1rem;">
+            <div style="display:grid;grid-template-columns:22px 1fr 36px 36px;gap:0.2rem;align-items:center;background:#0f1117;border-radius:5px;padding:0.16rem 0.25rem;">
+              <div style="color:#fbbf24;font-size:0.68rem;font-weight:700;">🥇</div>
+              <div class="text-xs" style="color:#e2e8f0;">Elena Fischer</div>
+              <div class="text-xs green" style="text-align:right;font-weight:700;">92</div>
+              <div class="text-xs green" style="text-align:right;">+4▲</div>
+            </div>
+            <div style="display:grid;grid-template-columns:22px 1fr 36px 36px;gap:0.2rem;align-items:center;background:#0f1117;border-radius:5px;padding:0.16rem 0.25rem;">
+              <div class="text-xs muted">🥈</div>
+              <div class="text-xs" style="color:#e2e8f0;">James Okafor</div>
+              <div class="text-xs green" style="text-align:right;font-weight:700;">89</div>
+              <div class="text-xs green" style="text-align:right;">+2▲</div>
+            </div>
+            <div style="display:grid;grid-template-columns:22px 1fr 36px 36px;gap:0.2rem;align-items:center;background:#0f1117;border-radius:5px;padding:0.16rem 0.25rem;">
+              <div class="text-xs muted">🥉</div>
+              <div class="text-xs" style="color:#94a3b8;">Ana Ribeiro</div>
+              <div class="text-xs yellow" style="text-align:right;font-weight:700;">85</div>
+              <div class="text-xs muted" style="text-align:right;">—0</div>
+            </div>
+            <div style="height:1px;background:#2d3748;margin:0.08rem 0;"></div>
+            <div style="display:grid;grid-template-columns:22px 1fr 36px 36px;gap:0.2rem;align-items:center;background:rgba(108,143,255,0.08);border-radius:5px;padding:0.16rem 0.25rem;border:1px solid rgba(108,143,255,0.2);">
+              <div class="text-xs blue" style="font-weight:700;">#41</div>
+              <div class="text-xs blue">You (S. Patel)</div>
+              <div class="text-xs red" style="text-align:right;font-weight:700;">31</div>
+              <div class="text-xs red" style="text-align:right;">−11▼</div>
+            </div>
+          </div>
+          <div class="text-xs muted" style="margin-top:0.2rem;text-align:center;">+43 pts needed to reach fleet average (74)</div>
+        </div>
+
+        <!-- Achievements -->
+        <div class="card" style="margin-bottom:0.1rem;">
+          <div class="text-sm" style="font-weight:600;color:#e2e8f0;margin-bottom:0.25rem;">Achievements</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.25rem;">
+            <div style="background:rgba(52,211,153,0.08);border:1px solid rgba(52,211,153,0.25);border-radius:7px;padding:0.25rem 0.35rem;text-align:center;">
+              <div style="font-size:1.2rem;">🚗</div>
+              <div class="text-xs green" style="font-size:0.58rem;font-weight:600;">First 30 Trips</div>
+              <div class="text-xs muted" style="font-size:0.53rem;">Score converged</div>
+            </div>
+            <div style="background:rgba(108,143,255,0.07);border:1px dashed rgba(108,143,255,0.3);border-radius:7px;padding:0.25rem 0.35rem;text-align:center;opacity:0.6;">
+              <div style="font-size:1.2rem;">⭐</div>
+              <div class="text-xs muted" style="font-size:0.58rem;">Safe Week Streak</div>
+              <div class="text-xs muted" style="font-size:0.53rem;">0 / 1 weeks · locked</div>
+            </div>
+            <div style="background:rgba(108,143,255,0.07);border:1px dashed rgba(108,143,255,0.3);border-radius:7px;padding:0.25rem 0.35rem;text-align:center;opacity:0.6;">
+              <div style="font-size:1.2rem;">🌿</div>
+              <div class="text-xs muted" style="font-size:0.58rem;">Eco Improver</div>
+              <div class="text-xs muted" style="font-size:0.53rem;">+10 eco pts needed</div>
+            </div>
+            <div style="background:rgba(251,191,36,0.07);border:1px dashed rgba(251,191,36,0.3);border-radius:7px;padding:0.25rem 0.35rem;text-align:center;opacity:0.6;">
+              <div style="font-size:1.2rem;">🏆</div>
+              <div class="text-xs muted" style="font-size:0.58rem;">Top 20 Fleet</div>
+              <div class="text-xs muted" style="font-size:0.53rem;">Score 50+ needed</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="phone-nav">
+        <div class="phone-nav-item"><div class="phone-nav-icon">🏠</div>Home</div>
+        <div class="phone-nav-item"><div class="phone-nav-icon">📊</div>Score</div>
+        <div class="phone-nav-item"><div class="phone-nav-icon">🗺️</div>Trips</div>
+        <div class="phone-nav-item active"><div class="phone-nav-icon">🎯</div>Coach</div>
+        <div class="phone-nav-item"><div class="phone-nav-icon">⚙️</div>Settings</div>
+      </div>
+      <div class="phone-home"><div class="home-bar"></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     SCREEN 11: Driver Mobile App — Live Trip Feedback
+     Real-time in-trip coaching, event replay, nudge history
+     ============================================================ -->
+<div>
+  <div class="screen-label">📱 Driver App · Live Trip Feedback · mobile</div>
+  <div style="max-width:360px;margin:0 auto;">
+    <div class="phone-shell">
+      <div class="phone-notch"><div class="notch-pill"></div></div>
+      <div class="phone-content">
+        <div class="flex justify-between items-center mb-2">
+          <div>
+            <div style="color:#34d399;font-size:0.82rem;font-weight:700;">● LIVE TRIP</div>
+            <div class="text-xs muted">Warsaw → Gdańsk · 82 km driven · 262 km remaining</div>
+          </div>
+          <div style="background:rgba(52,211,153,0.12);border:1px solid rgba(52,211,153,0.35);border-radius:20px;padding:0.18rem 0.45rem;">
+            <div style="font-size:0.75rem;font-weight:800;color:#34d399;">76</div>
+          </div>
+        </div>
+
+        <!-- Current trip score ring -->
+        <div style="display:flex;align-items:center;gap:0.6rem;margin-bottom:0.45rem;background:#1a1d27;border-radius:10px;padding:0.4rem 0.5rem;">
+          <svg width="60" height="60" viewBox="0 0 70 70">
+            <circle cx="35" cy="35" r="28" fill="none" stroke="#2d3748" stroke-width="7"/>
+            <circle cx="35" cy="35" r="28" fill="none" stroke="#34d399" stroke-width="7" stroke-dasharray="176" stroke-dashoffset="42" stroke-linecap="round" transform="rotate(-90 35 35)"/>
+            <text x="35" y="40" text-anchor="middle" fill="#34d399" font-size="15" font-weight="800">76</text>
+          </svg>
+          <div style="flex:1;">
+            <div style="color:#e2e8f0;font-size:0.8rem;font-weight:700;">This Trip Score</div>
+            <div class="text-xs muted">0 harsh events so far · Excellent start!</div>
+            <div class="text-xs green" style="margin-top:0.1rem;">↑ above your 7-day average (31)</div>
+            <div class="progress-track mt-1" style="height:4px;"><div class="progress-fill" style="width:76%;background:#34d399;height:4px;"></div></div>
+          </div>
+        </div>
+
+        <!-- Live metrics grid -->
+        <div class="stat-grid-4" style="margin-bottom:0.4rem;gap:0.3rem;">
+          <div class="card-sm" style="padding:0.3rem 0.35rem;border-color:rgba(52,211,153,0.3);">
+            <div class="label" style="font-size:0.52rem;">Speed</div>
+            <div style="font-size:0.82rem;font-weight:700;color:#34d399;">92</div>
+            <div class="text-xs muted" style="font-size:0.53rem;">km/h · 100 limit ✓</div>
+          </div>
+          <div class="card-sm" style="padding:0.3rem 0.35rem;">
+            <div class="label" style="font-size:0.52rem;">Last G-Force</div>
+            <div style="font-size:0.82rem;font-weight:700;color:#34d399;">0.08g</div>
+            <div class="text-xs muted" style="font-size:0.53rem;">smooth ✓</div>
+          </div>
+          <div class="card-sm" style="padding:0.3rem 0.35rem;">
+            <div class="label" style="font-size:0.52rem;">Idling</div>
+            <div style="font-size:0.82rem;font-weight:700;color:#34d399;">3.2%</div>
+            <div class="text-xs muted" style="font-size:0.53rem;">target &lt;8% ✓</div>
+          </div>
+          <div class="card-sm" style="padding:0.3rem 0.35rem;">
+            <div class="label" style="font-size:0.52rem;">Shift Decile</div>
+            <div style="font-size:0.82rem;font-weight:700;color:#fbbf24;">D2</div>
+            <div class="text-xs muted" style="font-size:0.53rem;">settling period</div>
+          </div>
+        </div>
+
+        <!-- Shift-timing awareness -->
+        <div style="background:rgba(52,211,153,0.06);border:1px solid rgba(52,211,153,0.25);border-radius:8px;padding:0.3rem 0.42rem;margin-bottom:0.4rem;">
+          <div class="text-xs green" style="font-weight:600;">✓ Past the high-risk shift-start window</div>
+          <div class="text-xs muted" style="margin-top:0.07rem;">You're in shift decile 2 — settling period over soon. Your braking events usually spike in D1. You've cleared it cleanly today. Keep this up!</div>
+          <div style="margin-top:0.15rem;height:5px;background:#2d3748;border-radius:3px;overflow:hidden;">
+            <div style="height:5px;background:linear-gradient(90deg,rgba(248,113,113,0.5) 0%,rgba(52,211,153,0.6) 18%,rgba(52,211,153,0.4) 100%);border-radius:3px;width:21%;"></div>
+          </div>
+          <div class="text-xs muted" style="margin-top:0.08rem;font-size:0.53rem;">Shift progress: 21% complete</div>
+        </div>
+
+        <!-- Live G-force mini chart -->
+        <div class="card" style="margin-bottom:0.4rem;">
+          <div class="text-sm" style="font-weight:600;color:#e2e8f0;margin-bottom:0.25rem;">G-Force — Last 10 minutes</div>
+          <svg width="100%" height="40" viewBox="0 0 300 40">
+            <line x1="0" y1="10" x2="300" y2="10" stroke="#2d3748" stroke-width="0.5" stroke-dasharray="3,3"/>
+            <text x="295" y="9" fill="#4a5568" font-size="5.5" text-anchor="end">0.3g ⚠</text>
+            <polyline points="0,32 20,30 40,28 60,29 80,28 100,27 120,26 140,28 160,25 180,27 200,26 220,24 240,26 260,25 280,24 300,23" fill="none" stroke="#34d399" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="300" cy="23" r="2.5" fill="#34d399"/>
+          </svg>
+          <div class="text-xs muted">Max: 0.18g · Well within safe threshold · No alerts triggered</div>
+        </div>
+
+        <!-- Nudge history -->
+        <div class="card-sm" style="margin-bottom:0.1rem;">
+          <div class="text-xs" style="color:#e2e8f0;font-weight:600;margin-bottom:0.2rem;">Nudge History — This Trip</div>
+          <div class="flex items-center gap-1" style="padding:0.15rem 0;">
+            <span style="font-size:0.7rem;">✅</span>
+            <div class="text-xs muted">09:12 — Smooth braking detected after A1 on-ramp. Well done!</div>
+          </div>
+          <div class="flex items-center gap-1" style="padding:0.15rem 0;">
+            <span style="font-size:0.7rem;">✅</span>
+            <div class="text-xs muted">09:00 — Shift started smoothly. No D1 events. On track.</div>
+          </div>
+          <div class="text-xs muted" style="margin-top:0.1rem;font-size:0.55rem;">No warning nudges this trip · Best start in 4 weeks</div>
+        </div>
+      </div>
+      <div class="phone-nav">
+        <div class="phone-nav-item"><div class="phone-nav-icon">🏠</div>Home</div>
+        <div class="phone-nav-item"><div class="phone-nav-icon">📊</div>Score</div>
+        <div class="phone-nav-item active"><div class="phone-nav-icon">🗺️</div>Live</div>
+        <div class="phone-nav-item"><div class="phone-nav-icon">🎯</div>Coach</div>
+        <div class="phone-nav-item"><div class="phone-nav-icon">⚙️</div>Settings</div>
+      </div>
+      <div class="phone-home"><div class="home-bar"></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     SCREEN 12: Tyre & Maintenance Cost Impact Report (web)
+     Behaviour-driven tyre wear hierarchy, 18% repair cost reduction
+     ============================================================ -->
+<div>
+  <div class="screen-label">🔧 Maintenance Cost Impact Report · web</div>
+  <div class="browser-shell">
+    <div class="browser-bar">
+      <div class="browser-dots"><div class="browser-dot dot-r"></div><div class="browser-dot dot-y"></div><div class="browser-dot dot-g"></div></div>
+      <div class="browser-url">app.fleetlens.io/reports/maintenance-cost</div>
+    </div>
+    <div style="display:flex;min-height:660px;">
+      <div class="sidebar">
+        <div class="sidebar-logo">FleetLens</div>
+        <div class="nav-item"><span class="nav-icon">📊</span> Overview</div>
+        <div class="nav-item active"><span class="nav-icon">📋</span> Reports</div>
+        <div class="nav-item"><span class="nav-icon">🔧</span> Maintenance</div>
+        <div class="nav-item"><span class="nav-icon">⚙️</span> Settings</div>
+      </div>
+      <div class="main-content">
+        <div class="screen-header">
+          <div><div class="screen-title">Maintenance Cost Impact</div><div class="screen-sub">Behaviour-driven tyre wear · Brake stress · Proactive maintenance savings · Apr 2026</div></div>
+          <div class="flex gap-1"><span class="badge badge-blue">Apr 2026 ▾</span><span class="badge badge-yellow">⚠ Deferred: per-behaviour brake-wear rates</span></div>
+        </div>
+
+        <!-- Key metrics -->
+        <div class="stat-grid-4" style="margin-bottom:0.45rem;">
+          <div class="card-sm"><div class="label">Est. Behaviour-Driven Cost/mo</div><div style="font-size:1.15rem;font-weight:800;color:#f87171;">€3,840</div><div class="text-xs muted">Tyre + brake wear + fuel</div></div>
+          <div class="card-sm"><div class="label">Tyre Replacement Rate vs Benchmark</div><div style="font-size:1.15rem;font-weight:800;color:#f87171;">+18%</div><div class="text-xs red">Above fleet benchmark</div></div>
+          <div class="card-sm"><div class="label">Proactive Maintenance Saving</div><div style="font-size:1.15rem;font-weight:800;color:#34d399;">−18%</div><div class="text-xs green">Repair cost reduction (2025 Benchmark)</div></div>
+          <div class="card-sm"><div class="label">High Brake Stress Vehicles</div><div style="font-size:1.15rem;font-weight:800;color:#fbbf24;">4</div><div class="text-xs yellow">Inspection recommended</div></div>
+        </div>
+
+        <!-- Scope notice -->
+        <div style="background:rgba(251,191,36,0.07);border:1px solid rgba(251,191,36,0.3);border-radius:8px;padding:0.35rem 0.55rem;margin-bottom:0.45rem;">
+          <div class="text-xs yellow" style="font-weight:600;">⚠ Model Scope Notice · Displaying behaviour-correlated estimates only</div>
+          <div class="text-xs muted" style="margin-top:0.08rem;">Per-behaviour brake-pad wear rates and cargo-damage dose-response models are not yet available. Cost estimates use tyre-wear hierarchy (ResearchGate study) + proactive maintenance benchmark (18% reduction, 2025 Fleet Benchmark). Controlled isolation of behaviour-driven vs vehicle-age costs is deferred. Do not use these figures for insurance or contract pricing.</div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;margin-bottom:0.45rem;">
+          <!-- Tyre wear by driver -->
+          <div class="card" style="margin-bottom:0;">
+            <div class="text-sm" style="font-weight:600;margin-bottom:0.3rem;">Estimated Tyre Wear Contribution by Driver</div>
+            <div class="text-xs muted" style="margin-bottom:0.3rem;">Based on braking + acceleration events (most considerable impact) · cornering second · speed third</div>
+            <svg width="100%" height="100" viewBox="0 0 240 100">
+              <!-- Horizontal bar chart -->
+              <text x="0" y="12" fill="#94a3b8" font-size="7">R. Kowalski</text>
+              <rect x="70" y="4" width="148" height="10" rx="3" fill="rgba(248,113,113,0.35)"/>
+              <rect x="70" y="4" width="148" height="10" rx="3" fill="rgba(248,113,113,0.7)"/>
+              <text x="222" y="12" fill="#f87171" font-size="6.5" font-weight="700">€820/mo</text>
+
+              <text x="0" y="28" fill="#94a3b8" font-size="7">S. Patel</text>
+              <rect x="70" y="20" width="118" height="10" rx="3" fill="rgba(248,113,113,0.5)"/>
+              <text x="192" y="28" fill="#f87171" font-size="6.5" font-weight="700">€640/mo</text>
+
+              <text x="0" y="44" fill="#94a3b8" font-size="7">D. Mensah</text>
+              <rect x="70" y="36" width="80" height="10" rx="3" fill="rgba(251,191,36,0.5)"/>
+              <text x="154" y="44" fill="#fbbf24" font-size="6.5" font-weight="700">€440/mo</text>
+
+              <text x="0" y="60" fill="#94a3b8" font-size="7">T. Brennan</text>
+              <rect x="70" y="52" width="55" height="10" rx="3" fill="rgba(251,191,36,0.4)"/>
+              <text x="129" y="60" fill="#fbbf24" font-size="6.5" font-weight="700">€300/mo</text>
+
+              <text x="0" y="76" fill="#94a3b8" font-size="7">Ana Ribeiro</text>
+              <rect x="70" y="68" width="22" height="10" rx="3" fill="rgba(52,211,153,0.4)"/>
+              <text x="96" y="76" fill="#34d399" font-size="6.5" font-weight="700">€120/mo</text>
+
+              <text x="0" y="92" fill="#94a3b8" font-size="7">Elena Fischer</text>
+              <rect x="70" y="84" width="10" height="10" rx="3" fill="rgba(52,211,153,0.35)"/>
+              <text x="84" y="92" fill="#34d399" font-size="6.5" font-weight="700">€55/mo</text>
+            </svg>
+          </div>
+
+          <!-- Behaviour wear factor chart -->
+          <div class="card" style="margin-bottom:0;">
+            <div class="text-sm" style="font-weight:600;margin-bottom:0.3rem;">Tyre Wear Factor Breakdown</div>
+            <div class="text-xs muted" style="margin-bottom:0.3rem;">Proportion of wear attributed to each behaviour type (ResearchGate hierarchy)</div>
+            <svg width="100%" height="100" viewBox="0 0 200 100">
+              <defs>
+                <linearGradient id="wG" x1="0" y1="0" x2="1" y2="0">
+                  <stop offset="0%" stop-color="#f87171"/>
+                  <stop offset="45%" stop-color="#f87171"/>
+                  <stop offset="45%" stop-color="#fbbf24"/>
+                  <stop offset="75%" stop-color="#fbbf24"/>
+                  <stop offset="75%" stop-color="#6c8fff"/>
+                  <stop offset="100%" stop-color="#6c8fff"/>
+                </linearGradient>
+              </defs>
+              <!-- Stacked bar -->
+              <rect x="10" y="30" width="180" height="22" rx="4" fill="url(#wG)"/>
+              <text x="40" y="24" fill="#f87171" font-size="6.5" text-anchor="middle">Braking &amp; Accel</text>
+              <text x="40" y="62" fill="#f87171" font-size="7" text-anchor="middle" font-weight="700">45%</text>
+              <text x="117" y="24" fill="#fbbf24" font-size="6.5" text-anchor="middle">Cornering</text>
+              <text x="117" y="62" fill="#fbbf24" font-size="7" text-anchor="middle" font-weight="700">30%</text>
+              <text x="162" y="24" fill="#6c8fff" font-size="6.5" text-anchor="middle">Speed</text>
+              <text x="162" y="62" fill="#6c8fff" font-size="7" text-anchor="middle" font-weight="700">25%</text>
+              <!-- Legend -->
+              <rect x="10" y="78" width="8" height="8" rx="2" fill="#f87171"/>
+              <text x="22" y="86" fill="#94a3b8" font-size="6.5">Braking/Accel — most considerable</text>
+              <rect x="10" y="90" width="8" height="8" rx="2" fill="#fbbf24"/>
+              <text x="22" y="98" fill="#94a3b8" font-size="6.5">Cornering — secondary</text>
+            </svg>
+          </div>
+        </div>
+
+        <!-- Brake stress table -->
+        <div class="card" style="margin-bottom:0;">
+          <div class="text-sm" style="font-weight:600;margin-bottom:0.3rem;">Brake Stress Assessment · Inspection Priority Queue</div>
+          <div style="display:grid;grid-template-columns:1fr 60px 70px 70px 80px 90px;gap:0.2rem;margin-bottom:0.18rem;padding:0 0.2rem;">
+            <div class="label">Vehicle / Driver</div><div class="label" style="text-align:center;">Brk/1k</div><div class="label" style="text-align:center;">Max G</div><div class="label" style="text-align:center;">Stress</div><div class="label" style="text-align:center;">Est km rem.</div><div class="label" style="text-align:center;">Action</div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:0.1rem;">
+            <div style="display:grid;grid-template-columns:1fr 60px 70px 70px 80px 90px;gap:0.2rem;align-items:center;background:#1a1d27;border-radius:5px;padding:0.2rem 0.25rem;border-left:3px solid #f87171;">
+              <div><div class="text-xs" style="color:#e2e8f0;">VF 16 · Kowalski</div><div class="text-xs muted">HGV · 14,200 km total</div></div>
+              <div class="text-xs red" style="text-align:center;font-weight:700;">4.8</div>
+              <div class="text-xs red" style="text-align:center;">0.52g</div>
+              <div style="text-align:center;"><span class="badge badge-red" style="font-size:0.48rem;">HIGH</span></div>
+              <div class="text-xs yellow" style="text-align:center;">~8,000 km</div>
+              <div style="text-align:center;"><span class="badge badge-red" style="font-size:0.48rem;">🔧 Inspect now</span></div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 60px 70px 70px 80px 90px;gap:0.2rem;align-items:center;background:#1a1d27;border-radius:5px;padding:0.2rem 0.25rem;border-left:3px solid #fbbf24;">
+              <div><div class="text-xs" style="color:#e2e8f0;">FT 2.2 · S. Patel</div><div class="text-xs muted">LCV · 9,800 km total</div></div>
+              <div class="text-xs yellow" style="text-align:center;font-weight:700;">1.6</div>
+              <div class="text-xs yellow" style="text-align:center;">0.38g</div>
+              <div style="text-align:center;"><span class="badge badge-yellow" style="font-size:0.48rem;">MODERATE</span></div>
+              <div class="text-xs yellow" style="text-align:center;">~14,000 km</div>
+              <div style="text-align:center;"><span class="badge badge-yellow" style="font-size:0.48rem;">⚠ Schedule 4wks</span></div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 60px 70px 70px 80px 90px;gap:0.2rem;align-items:center;background:#1a1d27;border-radius:5px;padding:0.2rem 0.25rem;border-left:3px solid #34d399;">
+              <div><div class="text-xs" style="color:#e2e8f0;">VW T6 · Fischer</div><div class="text-xs muted">HGV · 18,600 km</div></div>
+              <div class="text-xs green" style="text-align:center;font-weight:700;">0.3</div>
+              <div class="text-xs green" style="text-align:center;">0.22g</div>
+              <div style="text-align:center;"><span class="badge badge-green" style="font-size:0.48rem;">LOW</span></div>
+              <div class="text-xs green" style="text-align:center;">~28,000 km</div>
+              <div style="text-align:center;"><span class="badge badge-green" style="font-size:0.48rem;">✓ Normal cycle</span></div>
+            </div>
+          </div>
+          <div class="text-xs muted" style="margin-top:0.28rem;">Proactive telematics-based maintenance reduces repair costs by ~18% vs reactive approach (2025 Fleet Management Benchmark). Est. km remaining uses braking events/km as primary wear proxy. Brake-pad dose-response model deferred — estimate range ±25%.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     SCREEN 13: Fleet Heat Map (web)
+     Harsh event clustering, high-risk corridor identification
+     ============================================================ -->
+<div>
+  <div class="screen-label">🗺️ Fleet Heat Map · Harsh Event Density · web</div>
+  <div class="browser-shell">
+    <div class="browser-bar">
+      <div class="browser-dots"><div class="browser-dot dot-r"></div><div class="browser-dot dot-y"></div><div class="browser-dot dot-g"></div></div>
+      <div class="browser-url">app.fleetlens.io/heatmap</div>
+    </div>
+    <div style="display:flex;min-height:620px;">
+      <div class="sidebar">
+        <div class="sidebar-logo">FleetLens</div>
+        <div class="nav-item"><span class="nav-icon">📊</span> Overview</div>
+        <div class="nav-item"><span class="nav-icon">👤</span> Drivers</div>
+        <div class="nav-item active"><span class="nav-icon">🗺️</span> Heat Map</div>
+        <div class="nav-item"><span class="nav-icon">📋</span> Reports</div>
+        <div class="nav-item"><span class="nav-icon">⚙️</span> Settings</div>
+      </div>
+      <div class="main-content">
+        <div class="screen-header">
+          <div><div class="screen-title">Harsh Event Heat Map</div><div class="screen-sub">Route-level event density · High-risk corridor identification · 14–20 Apr 2026 · Poland / UK routes</div></div>
+          <div class="flex gap-1"><span class="badge badge-gray">Event type: All ▾</span><span class="badge badge-blue">This week ▾</span></div>
+        </div>
+
+        <!-- Simulated map with SVG overlays -->
+        <div style="background:#0d1219;border:1px solid #2d3748;border-radius:10px;overflow:hidden;position:relative;margin-bottom:0.45rem;">
+          <svg width="100%" height="300" viewBox="0 0 540 300">
+            <!-- Background grid -->
+            <rect width="540" height="300" fill="#0d1219"/>
+            <!-- Grid lines -->
+            <line x1="0" y1="50" x2="540" y2="50" stroke="#161924" stroke-width="0.8"/>
+            <line x1="0" y1="100" x2="540" y2="100" stroke="#161924" stroke-width="0.8"/>
+            <line x1="0" y1="150" x2="540" y2="150" stroke="#161924" stroke-width="0.8"/>
+            <line x1="0" y1="200" x2="540" y2="200" stroke="#161924" stroke-width="0.8"/>
+            <line x1="0" y1="250" x2="540" y2="250" stroke="#161924" stroke-width="0.8"/>
+            <line x1="90" y1="0" x2="90" y2="300" stroke="#161924" stroke-width="0.8"/>
+            <line x1="180" y1="0" x2="180" y2="300" stroke="#161924" stroke-width="0.8"/>
+            <line x1="270" y1="0" x2="270" y2="300" stroke="#161924" stroke-width="0.8"/>
+            <line x1="360" y1="0" x2="360" y2="300" stroke="#161924" stroke-width="0.8"/>
+            <line x1="450" y1="0" x2="450" y2="300" stroke="#161924" stroke-width="0.8"/>
+            <!-- Road corridors (stylised) -->
+            <!-- A1 Poland (Warsaw-Gdańsk) -->
+            <path d="M280,50 C270,80 260,110 255,150 C250,190 248,230 245,270" fill="none" stroke="#2d4a6e" stroke-width="3.5"/>
+            <text x="290" y="85" fill="#4a6fa0" font-size="7" font-weight="600">A1 PL</text>
+            <!-- M25 UK -->
+            <ellipse cx="120" cy="160" rx="80" ry="55" fill="none" stroke="#2d4a6e" stroke-width="3.5"/>
+            <text x="125" y="108" fill="#4a6fa0" font-size="7" font-weight="600">M25</text>
+            <!-- Urban ring Warsaw -->
+            <ellipse cx="275" cy="110" rx="30" ry="20" fill="none" stroke="#3d5a80" stroke-width="2"/>
+            <text x="300" y="115" fill="#4a6fa0" font-size="6">Warsaw ring</text>
+            <!-- Route Gdańsk-Łódź -->
+            <path d="M247,270 C260,240 265,200 270,170 C275,140 285,120 292,95" fill="none" stroke="#2d4a6e" stroke-width="2.5"/>
+
+            <!-- Harsh event clusters (heat blobs) -->
+            <!-- A1 night run cluster — CRITICAL -->
+            <circle cx="254" cy="152" r="28" fill="rgba(248,113,113,0.18)"/>
+            <circle cx="254" cy="152" r="18" fill="rgba(248,113,113,0.28)"/>
+            <circle cx="254" cy="152" r="10" fill="rgba(248,113,113,0.5)"/>
+            <text x="254" y="135" fill="#f87171" font-size="6.5" text-anchor="middle" font-weight="700">8 events</text>
+            <text x="254" y="143" fill="#f87171" font-size="5.5" text-anchor="middle">A1 km228</text>
+
+            <!-- M25 J12 cluster — HIGH -->
+            <circle cx="108" cy="130" r="22" fill="rgba(248,113,113,0.15)"/>
+            <circle cx="108" cy="130" r="14" fill="rgba(248,113,113,0.25)"/>
+            <circle cx="108" cy="130" r="7" fill="rgba(248,113,113,0.45)"/>
+            <text x="108" y="115" fill="#f87171" font-size="6.5" text-anchor="middle" font-weight="700">6 events</text>
+            <text x="108" y="123" fill="#f87171" font-size="5.5" text-anchor="middle">M25 J12</text>
+
+            <!-- Urban Warsaw cluster — MODERATE -->
+            <circle cx="275" cy="110" r="20" fill="rgba(251,191,36,0.15)"/>
+            <circle cx="275" cy="110" r="11" fill="rgba(251,191,36,0.25)"/>
+            <text x="275" y="97" fill="#fbbf24" font-size="6.5" text-anchor="middle">4 events</text>
+
+            <!-- M25 J4 mild -->
+            <circle cx="152" cy="183" r="14" fill="rgba(251,191,36,0.12)"/>
+            <circle cx="152" cy="183" r="8" fill="rgba(251,191,36,0.22)"/>
+            <text x="152" y="173" fill="#fbbf24" font-size="6.5" text-anchor="middle">3 events</text>
+
+            <!-- Urban delivery cluster London -->
+            <circle cx="78" cy="158" r="18" fill="rgba(251,191,36,0.12)"/>
+            <circle cx="78" cy="158" r="10" fill="rgba(251,191,36,0.2)"/>
+            <text x="78" y="148" fill="#fbbf24" font-size="6.5" text-anchor="middle">5 events</text>
+            <text x="78" y="156" fill="#4a6fa0" font-size="5.5" text-anchor="middle">Urban ring</text>
+
+            <!-- Low-density spots (green) -->
+            <circle cx="290" cy="220" r="8" fill="rgba(52,211,153,0.15)"/>
+            <circle cx="385" cy="180" r="6" fill="rgba(52,211,153,0.12)"/>
+            <circle cx="430" cy="240" r="7" fill="rgba(52,211,153,0.15)"/>
+            <text x="290" y="236" fill="#34d399" font-size="5.5" text-anchor="middle">1 event</text>
+
+            <!-- Legend -->
+            <rect x="8" y="272" width="8" height="8" rx="2" fill="rgba(248,113,113,0.6)"/>
+            <text x="20" y="279" fill="#94a3b8" font-size="6.5">Critical ≥6 events</text>
+            <rect x="100" y="272" width="8" height="8" rx="2" fill="rgba(251,191,36,0.5)"/>
+            <text x="112" y="279" fill="#94a3b8" font-size="6.5">Moderate 3–5</text>
+            <rect x="190" y="272" width="8" height="8" rx="2" fill="rgba(52,211,153,0.45)"/>
+            <text x="202" y="279" fill="#94a3b8" font-size="6.5">Low 1–2</text>
+
+            <!-- Scale bar -->
+            <line x1="460" y1="278" x2="530" y2="278" stroke="#4a5568" stroke-width="1.5"/>
+            <line x1="460" y1="274" x2="460" y2="282" stroke="#4a5568" stroke-width="1.5"/>
+            <line x1="530" y1="274" x2="530" y2="282" stroke="#4a5568" stroke-width="1.5"/>
+            <text x="495" y="272" fill="#4a5568" font-size="6.5" text-anchor="middle">100 km</text>
+          </svg>
+        </div>
+
+        <!-- Corridor risk table -->
+        <div class="card" style="margin-bottom:0;padding:0.5rem;">
+          <div class="text-sm" style="font-weight:600;margin-bottom:0.3rem;">High-Risk Corridor Summary</div>
+          <div style="display:grid;grid-template-columns:1fr 60px 60px 68px 80px;gap:0.2rem;margin-bottom:0.15rem;padding:0 0.2rem;">
+            <div class="label">Location</div><div class="label" style="text-align:center;">Events</div><div class="label" style="text-align:center;">Max G</div><div class="label" style="text-align:center;">Context</div><div class="label" style="text-align:center;">Action</div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:0.1rem;">
+            <div style="display:grid;grid-template-columns:1fr 60px 60px 68px 80px;gap:0.2rem;align-items:center;background:#1a1d27;border-radius:5px;padding:0.2rem 0.25rem;border-left:3px solid #f87171;">
+              <div><div class="text-xs" style="color:#e2e8f0;">A1 Poland · km 220–235</div><div class="text-xs muted">Night · HGV · 3 drivers</div></div>
+              <div class="text-xs red" style="text-align:center;font-weight:700;">8</div>
+              <div class="text-xs red" style="text-align:center;">0.52g</div>
+              <div style="text-align:center;"><span class="badge badge-yellow" style="font-size:0.48rem;">Night shift-start</span></div>
+              <div style="text-align:center;"><span class="badge badge-red" style="font-size:0.48rem;">🚨 Corridor brief</span></div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 60px 60px 68px 80px;gap:0.2rem;align-items:center;background:#1a1d27;border-radius:5px;padding:0.2rem 0.25rem;border-left:3px solid #f87171;">
+              <div><div class="text-xs" style="color:#e2e8f0;">M25 · Junction 12</div><div class="text-xs muted">Urban · LCV · speed + brake</div></div>
+              <div class="text-xs red" style="text-align:center;font-weight:700;">6</div>
+              <div class="text-xs red" style="text-align:center;">0.51g</div>
+              <div style="text-align:center;"><span class="badge badge-blue" style="font-size:0.48rem;">Near-miss proxy</span></div>
+              <div style="text-align:center;"><span class="badge badge-red" style="font-size:0.48rem;">🚨 Reroute eval.</span></div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 60px 60px 68px 80px;gap:0.2rem;align-items:center;background:#1a1d27;border-radius:5px;padding:0.2rem 0.25rem;border-left:3px solid #fbbf24;">
+              <div><div class="text-xs" style="color:#e2e8f0;">Warsaw Urban Ring</div><div class="text-xs muted">Peak traffic · acceleration dominant</div></div>
+              <div class="text-xs yellow" style="text-align:center;font-weight:700;">4</div>
+              <div class="text-xs yellow" style="text-align:center;">0.38g</div>
+              <div style="text-align:center;"><span class="badge badge-gray" style="font-size:0.48rem;">High traffic density</span></div>
+              <div style="text-align:center;"><span class="badge badge-yellow" style="font-size:0.48rem;">⚠ Route coaching</span></div>
+            </div>
+          </div>
+          <div class="text-xs muted" style="margin-top:0.25rem;">Research: aggressive events 40% more frequent in high-density urban corridors. Context-aware scoring applies urban flag — threshold sensitivity adjusted for traffic conditions. Nonlinear relationship confirmed: static thresholds produce excess false positives in high-traffic zones.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     SCREEN 14: Alert Threshold Configuration (web)
+     ARMOR hybrid architecture, per-event-type thresholds
+     ============================================================ -->
+<div>
+  <div class="screen-label">⚙️ Alert Threshold Configuration · web</div>
+  <div class="browser-shell">
+    <div class="browser-bar">
+      <div class="browser-dots"><div class="browser-dot dot-r"></div><div class="browser-dot dot-y"></div><div class="browser-dot dot-g"></div></div>
+      <div class="browser-url">app.fleetlens.io/settings/thresholds</div>
+    </div>
+    <div style="display:flex;min-height:640px;">
+      <div class="sidebar">
+        <div class="sidebar-logo">FleetLens</div>
+        <div class="nav-item"><span class="nav-icon">📊</span> Overview</div>
+        <div class="nav-item active"><span class="nav-icon">⚙️</span> Settings</div>
+        <div class="nav-item"><span class="nav-icon">⚡</span> Alerts</div>
+      </div>
+      <div class="main-content">
+        <div class="screen-header">
+          <div><div class="screen-title">Alert Threshold Configuration</div><div class="screen-sub">On-device immediate + cloud fleet-normalised · Geotab baseline · ARMOR hybrid architecture · context modifiers</div></div>
+          <span class="badge badge-green" style="font-size:0.55rem;">Changes apply immediately to on-device · next cycle for cloud</span>
+        </div>
+
+        <div style="background:rgba(108,143,255,0.07);border:1px solid rgba(108,143,255,0.2);border-radius:8px;padding:0.35rem 0.55rem;margin-bottom:0.45rem;">
+          <div class="text-xs blue">Architecture: On-device thresholds trigger immediate in-cab audio alert (&lt;200ms, no connectivity required). Cloud threshold + ML context classification determines severity scoring, false-positive filtering, and escalation triggers. Modify both independently. Geotab baseline: ~0.3g (~3 m/s²) for all event types on light vehicles.</div>
+        </div>
+
+        <!-- Threshold table -->
+        <div class="card" style="margin-bottom:0.45rem;">
+          <div class="text-sm" style="font-weight:600;margin-bottom:0.3rem;">Per-Event Threshold Settings · Light Vehicle Defaults</div>
+
+          <div style="display:grid;grid-template-columns:1fr 70px 70px 70px 70px 80px;gap:0.2rem;margin-bottom:0.18rem;padding:0 0.2rem;">
+            <div class="label">Event Type</div>
+            <div class="label" style="text-align:center;">Warning</div>
+            <div class="label" style="text-align:center;">Severe</div>
+            <div class="label" style="text-align:center;">Critical</div>
+            <div class="label" style="text-align:center;">On-device</div>
+            <div class="label" style="text-align:center;">Cloud ML</div>
+          </div>
+
+          <div style="display:flex;flex-direction:column;gap:0.18rem;">
+            <div style="display:grid;grid-template-columns:1fr 70px 70px 70px 70px 80px;gap:0.2rem;align-items:center;background:#1a1d27;border-radius:6px;padding:0.22rem 0.3rem;">
+              <div><div class="text-xs" style="color:#e2e8f0;">Harsh Braking</div><div class="text-xs muted">Longitudinal deceleration</div></div>
+              <div class="text-xs yellow" style="text-align:center;font-weight:600;">0.30g</div>
+              <div class="text-xs" style="text-align:center;color:#fb923c;font-weight:600;">0.40g</div>
+              <div class="text-xs red" style="text-align:center;font-weight:600;">0.50g+</div>
+              <div style="text-align:center;"><span class="badge badge-green" style="font-size:0.48rem;">✓ Active</span></div>
+              <div style="text-align:center;"><span class="badge badge-blue" style="font-size:0.48rem;">ML context</span></div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 70px 70px 70px 70px 80px;gap:0.2rem;align-items:center;background:#1a1d27;border-radius:6px;padding:0.22rem 0.3rem;">
+              <div><div class="text-xs" style="color:#e2e8f0;">Harsh Acceleration</div><div class="text-xs muted">Longitudinal acceleration</div></div>
+              <div class="text-xs yellow" style="text-align:center;font-weight:600;">0.30g</div>
+              <div class="text-xs" style="text-align:center;color:#fb923c;font-weight:600;">0.38g</div>
+              <div class="text-xs red" style="text-align:center;font-weight:600;">0.48g+</div>
+              <div style="text-align:center;"><span class="badge badge-green" style="font-size:0.48rem;">✓ Active</span></div>
+              <div style="text-align:center;"><span class="badge badge-blue" style="font-size:0.48rem;">ML context</span></div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 70px 70px 70px 70px 80px;gap:0.2rem;align-items:center;background:#1a1d27;border-radius:6px;padding:0.22rem 0.3rem;">
+              <div><div class="text-xs" style="color:#e2e8f0;">Harsh Cornering</div><div class="text-xs muted">Lateral acceleration</div></div>
+              <div class="text-xs yellow" style="text-align:center;font-weight:600;">0.30g</div>
+              <div class="text-xs" style="text-align:center;color:#fb923c;font-weight:600;">0.38g</div>
+              <div class="text-xs red" style="text-align:center;font-weight:600;">0.45g+</div>
+              <div style="text-align:center;"><span class="badge badge-green" style="font-size:0.48rem;">✓ Active</span></div>
+              <div style="text-align:center;"><span class="badge badge-blue" style="font-size:0.48rem;">ML context</span></div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 70px 70px 70px 70px 80px;gap:0.2rem;align-items:center;background:#1a1d27;border-radius:6px;padding:0.22rem 0.3rem;">
+              <div><div class="text-xs" style="color:#e2e8f0;">Speeding</div><div class="text-xs muted">GPS speed vs posted limit</div></div>
+              <div class="text-xs yellow" style="text-align:center;font-weight:600;">+5 km/h</div>
+              <div class="text-xs" style="text-align:center;color:#fb923c;font-weight:600;">+15 km/h</div>
+              <div class="text-xs red" style="text-align:center;font-weight:600;">+25 km/h</div>
+              <div style="text-align:center;"><span class="badge badge-green" style="font-size:0.48rem;">✓ Active</span></div>
+              <div style="text-align:center;"><span class="badge badge-blue" style="font-size:0.48rem;">GPS lock</span></div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 70px 70px 70px 70px 80px;gap:0.2rem;align-items:center;background:#1a1d27;border-radius:6px;padding:0.22rem 0.3rem;">
+              <div><div class="text-xs" style="color:#e2e8f0;">Fatigue Proxy (SWA)</div><div class="text-xs muted">CAN bus required · optional</div></div>
+              <div class="text-xs yellow" style="text-align:center;font-weight:600;">0.75 ent.</div>
+              <div class="text-xs" style="text-align:center;color:#fb923c;font-weight:600;">0.82 ent.</div>
+              <div class="text-xs red" style="text-align:center;font-weight:600;">0.90+</div>
+              <div style="text-align:center;"><span class="badge badge-gray" style="font-size:0.48rem;">CAN req.</span></div>
+              <div style="text-align:center;"><span class="badge badge-blue" style="font-size:0.48rem;">Cloud only</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Context modifiers -->
+        <div class="card" style="margin-bottom:0.45rem;">
+          <div class="text-sm" style="font-weight:600;margin-bottom:0.3rem;">Context Modifiers · Applied by ML Classification Layer</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.35rem;">
+            <div style="background:#1a1d27;border-radius:7px;padding:0.3rem 0.4rem;">
+              <div class="text-xs" style="color:#fbbf24;font-weight:600;">⏱ Shift-Start / End Window (first/last 10%)</div>
+              <div class="text-xs muted" style="margin-top:0.08rem;">Alert sensitivity raised · +26% risk probability · scores adjusted for settling period · provisional labelling active</div>
+            </div>
+            <div style="background:#1a1d27;border-radius:7px;padding:0.3rem 0.4rem;">
+              <div class="text-xs" style="color:#6c8fff;font-weight:600;">🌆 Urban High-Density Traffic</div>
+              <div class="text-xs muted" style="margin-top:0.08rem;">Nonlinear harsh-event relationship confirmed · static thresholds over-flag in dense traffic · ML urban flag reduces false positives</div>
+            </div>
+            <div style="background:#1a1d27;border-radius:7px;padding:0.3rem 0.4rem;">
+              <div class="text-xs" style="color:#f87171;font-weight:600;">🌙 Night Driving (22:00–05:00)</div>
+              <div class="text-xs muted" style="margin-top:0.08rem;">+38% harsh event rate · fatigue correlation · severity rating elevated · manager notification triggered for HGV</div>
+            </div>
+            <div style="background:#1a1d27;border-radius:7px;padding:0.3rem 0.4rem;">
+              <div class="text-xs" style="color:#fb923c;font-weight:600;">🚛 HGV / Heavy Vehicle Mode</div>
+              <div class="text-xs muted" style="margin-top:0.08rem;">Conservative cornering threshold 0.28g (rollover risk at legal speeds). Braking threshold lowered. Tyre wear scoring elevated.</div>
+            </div>
+          </div>
+          <div style="margin-top:0.3rem;background:rgba(251,191,36,0.06);border:1px solid rgba(251,191,36,0.2);border-radius:6px;padding:0.22rem 0.38rem;">
+            <div class="text-xs yellow">⚠ Deferred: road-surface-adjusted thresholds (IRI-to-G-force mapping not yet available) · Per-category calibration for SUV/LCV/rigid truck/bus pending sensitivity/specificity validation · Do not adjust HGV thresholds without validated data</div>
+          </div>
+        </div>
+
+        <!-- Escalation rules -->
+        <div class="card" style="margin-bottom:0;">
+          <div class="text-sm" style="font-weight:600;margin-bottom:0.3rem;">Escalation Rules · Human Coaching Triggers</div>
+          <div style="display:flex;flex-direction:column;gap:0.18rem;">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.3rem;align-items:center;background:#1a1d27;border-radius:6px;padding:0.22rem 0.3rem;">
+              <div class="text-xs" style="color:#e2e8f0;">RAG Red for ≥2 consecutive weeks</div>
+              <div style="text-align:right;"><span class="badge badge-purple" style="font-size:0.5rem;">🧑‍💼 Human coaching mandatory</span></div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.3rem;align-items:center;background:#1a1d27;border-radius:6px;padding:0.22rem 0.3rem;">
+              <div class="text-xs" style="color:#e2e8f0;">Score decline &gt;15 pts in 4 weeks</div>
+              <div style="text-align:right;"><span class="badge badge-yellow" style="font-size:0.5rem;">⚠ Manager notification</span></div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.3rem;align-items:center;background:#1a1d27;border-radius:6px;padding:0.22rem 0.3rem;">
+              <div class="text-xs" style="color:#e2e8f0;">Critical event (≥0.50g) on any trip</div>
+              <div style="text-align:right;"><span class="badge badge-red" style="font-size:0.5rem;">🚨 Immediate manager alert</span></div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.3rem;align-items:center;background:#1a1d27;border-radius:6px;padding:0.22rem 0.3rem;">
+              <div class="text-xs" style="color:#e2e8f0;">No eco feedback &gt;8 weeks</div>
+              <div style="text-align:right;"><span class="badge badge-orange" style="font-size:0.5rem;">📉 Eco decay nudge triggered</span></div>
+            </div>
+          </div>
+          <div class="text-xs muted" style="margin-top:0.25rem;">Evidence basis: RCT (PubMed 42030047) — combined automated feedback + human communication training achieves AIRR 0.68 reduction in risky events. Feedback-only not statistically significant. Escalation rules enforce human-in-the-loop pathway for persistent at-risk drivers.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     SCREEN 15: Driving Style Report (web)
+     Full trip-level breakdown, event replay, ML context insight
+     Dynamic driving style note from Nature 2026 paper
+     ============================================================ -->
+<div>
+  <div class="screen-label">📋 Driving Style Report · Trip Detail · web</div>
+  <div class="browser-shell">
+    <div class="browser-bar">
+      <div class="browser-dots"><div class="browser-dot dot-r"></div><div class="browser-dot dot-y"></div><div class="browser-dot dot-g"></div></div>
+      <div class="browser-url">app.fleetlens.io/reports/trip/20260413-rk-001</div>
+    </div>
+    <div style="display:flex;min-height:660px;">
+      <div class="sidebar">
+        <div class="sidebar-logo">FleetLens</div>
+        <div class="nav-item"><span class="nav-icon">📊</span> Overview</div>
+        <div class="nav-item active"><span class="nav-icon">📋</span> Reports</div>
+        <div class="nav-item"><span class="nav-icon">👤</span> Drivers</div>
+        <div class="nav-item"><span class="nav-icon">🗺️</span> Heat Map</div>
+      </div>
+      <div class="main-content">
+        <div class="screen-header">
+          <div><div class="screen-title">Trip Report · Warsaw → Gdańsk</div><div class="screen-sub">R. Kowalski · HGV · Apr 13 2026 · 344 km · 4h 28m · A1 Highway · Night shift</div></div>
+          <div class="flex gap-1"><span class="badge badge-red">Score: 32</span><span class="badge badge-yellow">8 events</span></div>
+        </div>
+
+        <!-- Dynamic driving style notice -->
+        <div style="background:rgba(108,143,255,0.07);border:1px solid rgba(108,143,255,0.25);border-radius:8px;padding:0.35rem 0.55rem;margin-bottom:0.4rem;">
+          <div class="text-xs blue" style="font-weight:600;">🧠 Dynamic Style Analysis · Nature 2026 framework</div>
+          <div class="text-xs muted" style="margin-top:0.08rem;">Driving styles are not static — they evolve based on context and driver intent (Nature Scientific Reports 2026). This trip shows R. Kowalski operating in "fatigued urgent" style in D1 (first 10%), shifting to "cautious highway" in D3–D7, then reverting to "fatigued" in D9. Coaching should address contextual triggers, not just behaviour counts.</div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;margin-bottom:0.45rem;">
+          <!-- Trip score breakdown -->
+          <div class="card" style="margin-bottom:0;">
+            <div class="text-sm" style="font-weight:600;margin-bottom:0.3rem;">Trip Score Breakdown</div>
+            <div class="progress-wrap">
+              <div class="progress-label"><span class="text-xs">Speed Compliance</span><span class="text-xs yellow">54/100</span></div>
+              <div class="progress-track"><div class="progress-fill" style="width:54%;background:#fbbf24;"></div></div>
+            </div>
+            <div class="progress-wrap">
+              <div class="progress-label"><span class="text-xs">Harsh Braking · dominant</span><span class="text-xs red">18/100</span></div>
+              <div class="progress-track"><div class="progress-fill" style="width:18%;background:#f87171;"></div></div>
+            </div>
+            <div class="progress-wrap">
+              <div class="progress-label"><span class="text-xs">Harsh Acceleration</span><span class="text-xs yellow">46/100</span></div>
+              <div class="progress-track"><div class="progress-fill" style="width:46%;background:#fbbf24;"></div></div>
+            </div>
+            <div class="progress-wrap" style="margin-bottom:0.3rem;">
+              <div class="progress-label"><span class="text-xs">Cornering Severity</span><span class="text-xs red">28/100</span></div>
+              <div class="progress-track"><div class="progress-fill" style="width:28%;background:#f87171;"></div></div>
+            </div>
+            <hr class="divider">
+            <div class="stat-grid">
+              <div><div class="label">Distance</div><div style="font-size:0.88rem;font-weight:700;color:#e2e8f0;">344 km</div></div>
+              <div><div class="label">Duration</div><div style="font-size:0.88rem;font-weight:700;color:#e2e8f0;">4h 28m</div></div>
+              <div><div class="label">Avg Speed</div><div style="font-size:0.88rem;font-weight:700;color:#e2e8f0;">77 km/h</div></div>
+              <div><div class="label">Max Speed</div><div style="font-size:0.88rem;font-weight:700;color:#fbbf24;">112 km/h</div></div>
+              <div><div class="label">Idle Time</div><div style="font-size:0.88rem;font-weight:700;color:#fbbf24;">14.8%</div></div>
+              <div><div class="label">Night Driving</div><div style="font-size:0.88rem;font-weight:700;color:#f87171;">100%</div></div>
+            </div>
+          </div>
+
+          <!-- Event timeline SVG -->
+          <div class="card" style="margin-bottom:0;">
+            <div class="text-sm" style="font-weight:600;margin-bottom:0.3rem;">Full Trip Event Timeline · 344 km</div>
+            <svg width="100%" height="70" viewBox="0 0 280 70">
+              <!-- Route line -->
+              <line x1="10" y1="40" x2="270" y2="40" stroke="#2d3748" stroke-width="2"/>
+              <!-- Shift decile markers -->
+              <line x1="37" y1="30" x2="37" y2="50" stroke="#f87171" stroke-width="0.8" stroke-dasharray="2,2"/>
+              <text x="37" y="28" fill="#4a5568" font-size="5.5" text-anchor="middle">D1</text>
+              <line x1="243" y1="30" x2="243" y2="50" stroke="#fbbf24" stroke-width="0.8" stroke-dasharray="2,2"/>
+              <text x="243" y="28" fill="#4a5568" font-size="5.5" text-anchor="middle">D9</text>
+              <!-- Events -->
+              <circle cx="18" cy="40" r="6" fill="rgba(248,113,113,0.7)" stroke="#f87171" stroke-width="1"/>
+              <text x="18" y="58" fill="#f87171" font-size="5" text-anchor="middle">0.48g</text>
+              <text x="18" y="64" fill="#4a5568" font-size="4.5" text-anchor="middle">brake</text>
+              <circle cx="32" cy="40" r="5" fill="rgba(248,113,113,0.6)" stroke="#f87171" stroke-width="1"/>
+              <text x="32" y="58" fill="#f87171" font-size="5" text-anchor="middle">0.41g</text>
+              <text x="32" y="64" fill="#4a5568" font-size="4.5" text-anchor="middle">corner</text>
+              <circle cx="88" cy="40" r="4" fill="rgba(251,191,36,0.6)" stroke="#fbbf24" stroke-width="1"/>
+              <text x="88" y="58" fill="#fbbf24" font-size="5" text-anchor="middle">0.34g</text>
+              <text x="88" y="64" fill="#4a5568" font-size="4.5" text-anchor="middle">brake</text>
+              <circle cx="143" cy="40" r="3.5" fill="rgba(251,191,36,0.5)" stroke="#fbbf24" stroke-width="1"/>
+              <text x="143" y="58" fill="#fbbf24" font-size="5" text-anchor="middle">0.31g</text>
+              <circle cx="192" cy="40" r="3.5" fill="rgba(52,211,153,0.5)" stroke="#34d399" stroke-width="1"/>
+              <text x="192" y="58" fill="#34d399" font-size="5" text-anchor="middle">0.22g</text>
+              <circle cx="252" cy="40" r="5.5" fill="rgba(248,113,113,0.65)" stroke="#f87171" stroke-width="1"/>
+              <text x="252" y="58" fill="#f87171" font-size="5" text-anchor="middle">0.45g</text>
+              <text x="252" y="64" fill="#4a5568" font-size="4.5" text-anchor="middle">brake</text>
+              <circle cx="263" cy="40" r="4.5" fill="rgba(248,113,113,0.55)" stroke="#f87171" stroke-width="1"/>
+              <!-- Start / End -->
+              <text x="10" y="20" fill="#34d399" font-size="6" text-anchor="middle">Warsaw</text>
+              <text x="270" y="20" fill="#34d399" font-size="6" text-anchor="middle">Gdańsk</text>
+              <text x="10" y="12" fill="#64748b" font-size="5.5" text-anchor="middle">21:30</text>
+              <text x="270" y="12" fill="#64748b" font-size="5.5" text-anchor="middle">01:58</text>
+            </svg>
+            <div class="text-xs muted" style="margin-top:0.1rem;">Circle size = G-force magnitude · Red = harsh · Yellow = moderate · Green = normal · Cluster at D1 and D9 confirms shift-start/end pattern</div>
+
+            <!-- Dynamic style segments -->
+            <hr class="divider">
+            <div class="label mb-1">Dynamic Style Phases · This Trip</div>
+            <div style="display:flex;flex-direction:column;gap:0.15rem;">
+              <div style="display:flex;justify-content:space-between;align-items:center;background:rgba(248,113,113,0.07);border-radius:5px;padding:0.18rem 0.3rem;border-left:2px solid #f87171;">
+                <div class="text-xs" style="color:#f87171;">D1 · 0–34 km · "Fatigued Urgent"</div>
+                <div class="text-xs muted">3 events · 0.41–0.48g</div>
+              </div>
+              <div style="display:flex;justify-content:space-between;align-items:center;background:rgba(52,211,153,0.05);border-radius:5px;padding:0.18rem 0.3rem;border-left:2px solid #34d399;">
+                <div class="text-xs green">D3–D7 · 69–241 km · "Cautious Highway"</div>
+                <div class="text-xs muted">2 events · 0.22–0.34g</div>
+              </div>
+              <div style="display:flex;justify-content:space-between;align-items:center;background:rgba(248,113,113,0.07);border-radius:5px;padding:0.18rem 0.3rem;border-left:2px solid #f87171;">
+                <div class="text-xs" style="color:#f87171;">D9 · 310–344 km · "Fatigue-reverted"</div>
+                <div class="text-xs muted">3 events · 0.45–0.51g</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Event log -->
+        <div class="card" style="margin-bottom:0;">
+          <div class="text-sm" style="font-weight:600;margin-bottom:0.3rem;">Event Log · ML Context Classification</div>
+          <div style="display:grid;grid-template-columns:46px 1fr 60px 60px 60px 70px;gap:0.18rem;margin-bottom:0.15rem;padding:0 0.2rem;">
+            <div class="label">Time</div><div class="label">Location / Context</div><div class="label" style="text-align:center;">Type</div><div class="label" style="text-align:center;">G-Force</div><div class="label" style="text-align:center;">Severity</div><div class="label" style="text-align:center;">Driver Phase</div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:0.1rem;">
+            <div style="display:grid;grid-template-columns:46px 1fr 60px 60px 60px 70px;gap:0.18rem;align-items:center;background:#1a1d27;border-radius:5px;padding:0.18rem 0.25rem;border-left:2px solid #f87171;">
+              <div class="text-xs muted">21:32</div>
+              <div><div class="text-xs" style="color:#e2e8f0;">A1 on-ramp · km 2 · night</div><div class="text-xs muted">Shift D1 · settling period</div></div>
+              <div style="text-align:center;"><span class="badge badge-red" style="font-size:0.48rem;">Braking</span></div>
+              <div class="text-xs red" style="text-align:center;font-weight:700;">0.48g</div>
+              <div style="text-align:center;"><span class="badge badge-red" style="font-size:0.48rem;">SEVERE</span></div>
+              <div style="text-align:center;"><span class="badge badge-red" style="font-size:0.48rem;">Fatigued Urgent</span></div>
+            </div>
+            <div style="display:grid;grid-template-columns:46px 1fr 60px 60px 60px 70px;gap:0.18rem;align-items:center;background:#1a1d27;border-radius:5px;padding:0.18rem 0.25rem;border-left:2px solid #f87171;">
+              <div class="text-xs muted">21:38</div>
+              <div><div class="text-xs" style="color:#e2e8f0;">A1 km 8 · bend</div><div class="text-xs muted">Night · HGV rollover context</div></div>
+              <div style="text-align:center;"><span class="badge badge-red" style="font-size:0.48rem;">Cornering</span></div>
+              <div class="text-xs red" style="text-align:center;font-weight:700;">0.41g</div>
+              <div style="text-align:center;"><span class="badge badge-red" style="font-size:0.48rem;">SEVERE</span></div>
+              <div style="text-align:center;"><span class="badge badge-red" style="font-size:0.48rem;">Fatigued Urgent</span></div>
+            </div>
+            <div style="display:grid;grid-template-columns:46px 1fr 60px 60px 60px 70px;gap:0.18rem;align-items:center;background:#1a1d27;border-radius:5px;padding:0.18rem 0.25rem;border-left:2px solid #fbbf24;">
+              <div class="text-xs muted">22:54</div>
+              <div><div class="text-xs" style="color:#e2e8f0;">A1 km 88 · minor merge</div><div class="text-xs muted">Traffic merge · moderate</div></div>
+              <div style="text-align:center;"><span class="badge badge-yellow" style="font-size:0.48rem;">Braking</span></div>
+              <div class="text-xs yellow" style="text-align:center;font-weight:700;">0.34g</div>
+              <div style="text-align:center;"><span class="badge badge-yellow" style="font-size:0.48rem;">MODERATE</span></div>
+              <div style="text-align:center;"><span class="badge badge-gray" style="font-size:0.48rem;">Cautious HWY</span></div>
+            </div>
+            <div style="display:grid;grid-template-columns:46px 1fr 60px 60px 60px 70px;gap:0.18rem;align-items:center;background:#1a1d27;border-radius:5px;padding:0.18rem 0.25rem;border-left:2px solid #f87171;">
+              <div class="text-xs muted">01:42</div>
+              <div><div class="text-xs" style="color:#e2e8f0;">A1 km 320 · urban approach</div><div class="text-xs muted">Shift D9 · fatigue-reverted</div></div>
+              <div style="text-align:center;"><span class="badge badge-red" style="font-size:0.48rem;">Braking</span></div>
+              <div class="text-xs red" style="text-align:center;font-weight:700;">0.45g</div>
+              <div style="text-align:center;"><span class="badge badge-red" style="font-size:0.48rem;">SEVERE</span></div>
+              <div style="text-align:center;"><span class="badge badge-red" style="font-size:0.48rem;">Fatigue reverted</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     SCREEN 16: Comparative View — Driver vs Fleet Average (web)
+     Fleet benchmark, percentile, segment comparison
+     ============================================================ -->
+<div>
+  <div class="screen-label">📊 Comparative View · Driver vs Fleet Average · web</div>
+  <div class="browser-shell">
+    <div class="browser-bar">
+      <div class="browser-dots"><div class="browser-dot dot-r"></div><div class="browser-dot dot-y"></div><div class="browser-dot dot-g"></div></div>
+      <div class="browser-url">app.fleetlens.io/reports/compare</div>
+    </div>
+    <div style="display:flex;min-height:640px;">
+      <div class="sidebar">
+        <div class="sidebar-logo">FleetLens</div>
+        <div class="nav-item"><span class="nav-icon">📊</span> Overview</div>
+        <div class="nav-item active"><span class="nav-icon">📋</span> Reports</div>
+        <div class="nav-item"><span class="nav-icon">👤</span> Drivers</div>
+        <div class="nav-item"><span class="nav-icon">⚙️</span> Settings</div>
+      </div>
+      <div class="main-content">
+        <div class="screen-header">
+          <div><div class="screen-title">

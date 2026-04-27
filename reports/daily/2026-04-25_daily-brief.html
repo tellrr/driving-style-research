@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Driving Style Research — Daily Brief</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: #0f1117;
+    color: #e2e8f0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+    min-height: 100vh;
+    padding: 0 0 48px 0;
+  }
+  a { color: #6c8fff; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  /* HEADER */
+  .site-header {
+    background: linear-gradient(135deg, #141824 0%, #1a2035 100%);
+    border-bottom: 2px solid #6c8fff33;
+    padding: 32px 40px 28px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .site-header h1 {
+    font-size: 1.7rem;
+    font-weight: 700;
+    color: #e2e8f0;
+    letter-spacing: -0.3px;
+  }
+  .site-header h1 span {
+    color: #6c8fff;
+  }
+  .date-badge {
+    background: #6c8fff22;
+    border: 1px solid #6c8fff55;
+    color: #6c8fff;
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 0.8px;
+    padding: 5px 14px;
+    border-radius: 20px;
+    white-space: nowrap;
+  }
+
+  /* LAYOUT */
+  .content {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 36px 24px 0;
+  }
+
+  /* SECTION LABEL */
+  .section-label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 1.4px;
+    text-transform: uppercase;
+    color: #6c8fff;
+    margin-bottom: 12px;
+  }
+
+  /* EXECUTIVE SUMMARY */
+  .exec-summary {
+    background: #141824;
+    border: 1px solid #6c8fff44;
+    border-left: 4px solid #6c8fff;
+    border-radius: 10px;
+    padding: 22px 26px;
+    margin-bottom: 36px;
+  }
+  .exec-summary p {
+    color: #cbd5e1;
+    font-size: 0.97rem;
+    line-height: 1.75;
+  }
+  .exec-summary p + p {
+    margin-top: 10px;
+  }
+
+  /* PILLAR SECTION */
+  .pillars-section {
+    margin-bottom: 36px;
+  }
+  .pillars-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .pillar-row {
+    background: #141824;
+    border: 1px solid #1e2840;
+    border-radius: 10px;
+    padding: 16px 20px;
+  }
+  .pillar-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 9px;
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+  .pillar-name {
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: #e2e8f0;
+  }
+  .pillar-pct {
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: #6c8fff;
+    white-space: nowrap;
+  }
+  .bar-track {
+    background: #0f1117;
+    border-radius: 6px;
+    height: 10px;
+    width: 100%;
+    overflow: hidden;
+    border: 1px solid #1e2840;
+  }
+  .bar-fill {
+    height: 100%;
+    border-radius: 6px;
+    background: linear-gradient(90deg, #4a6fd4 0%, #6c8fff 100%);
+    transition: width 0.3s ease;
+  }
+  .bar-fill.saturated {
+    background: linear-gradient(90deg, #3d8a6e 0%, #52c49c 100%);
+  }
+  .bar-fill.mid {
+    background: linear-gradient(90deg, #7a5c2e 0%, #c9923a 100%);
+  }
+  .bar-fill.low {
+    background: linear-gradient(90deg, #7a3535 0%, #c95a5a 100%);
+  }
+  .pillar-note {
+    font-size: 0.75rem;
+    color: #64748b;
+    margin-top: 6px;
+  }
+
+  /* LEADS SECTION */
+  .leads-section {
+    margin-bottom: 36px;
+  }
+  .leads-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 16px;
+  }
+  .lead-card {
+    background: #141824;
+    border: 1px solid #1e2840;
+    border-radius: 12px;
+    padding: 22px 20px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    transition: border-color 0.2s;
+  }
+  .lead-card:hover {
+    border-color: #6c8fff66;
+  }
+  .lead-number {
+    width: 26px;
+    height: 26px;
+    background: #6c8fff22;
+    border: 1px solid #6c8fff55;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #6c8fff;
+    flex-shrink: 0;
+  }
+  .lead-title {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #e2e8f0;
+    line-height: 1.4;
+  }
+  .lead-source {
+    font-size: 0.75rem;
+    color: #6c8fff;
+    font-weight: 500;
+  }
+  .lead-why {
+    font-size: 0.82rem;
+    color: #94a3b8;
+    line-height: 1.6;
+    flex-grow: 1;
+  }
+  .lead-tag {
+    display: inline-block;
+    background: #6c8fff18;
+    border: 1px solid #6c8fff33;
+    color: #6c8fff;
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.6px;
+    padding: 3px 9px;
+    border-radius: 12px;
+    text-transform: uppercase;
+    align-self: flex-start;
+  }
+
+  /* STRATEGIC POSITION */
+  .strategy-box {
+    background: linear-gradient(135deg, #141824 0%, #12192e 100%);
+    border: 1px solid #6c8fff55;
+    border-radius: 12px;
+    padding: 26px 28px;
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 0;
+  }
+  .strategy-box::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #4a6fd4, #6c8fff, #52c49c);
+  }
+  .strategy-box h3 {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 1.4px;
+    text-transform: uppercase;
+    color: #6c8fff;
+    margin-bottom: 14px;
+  }
+  .strategy-box p {
+    color: #cbd5e1;
+    font-size: 0.95rem;
+    line-height: 1.75;
+  }
+  .strategy-box p + p {
+    margin-top: 10px;
+  }
+  .blocker-pill {
+    display: inline-block;
+    background: #c95a5a22;
+    border: 1px solid #c95a5a55;
+    color: #f87171;
+    font-size: 0.72rem;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 10px;
+    vertical-align: middle;
+    margin-right: 2px;
+  }
+
+  /* DIVIDER */
+  .section-divider {
+    height: 1px;
+    background: #1e2840;
+    margin: 32px 0;
+  }
+
+  /* FOOTER */
+  .footer {
+    text-align: center;
+    font-size: 0.73rem;
+    color: #334155;
+    margin-top: 48px;
+    padding-top: 20px;
+    border-top: 1px solid #1e2840;
+  }
+
+  @media (max-width: 600px) {
+    .site-header { padding: 24px 20px 20px; }
+    .site-header h1 { font-size: 1.3rem; }
+    .content { padding: 24px 16px 0; }
+    .leads-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="site-header">
+  <h1>Driving Style Research — <span>Daily Brief</span></h1>
+  <div class="date-badge">2026-04-25</div>
+</header>
+
+<main class="content">
+
+  <!-- EXECUTIVE SUMMARY -->
+  <div class="section-label">Executive Summary</div>
+  <div class="exec-summary">
+    <p>
+      This cycle's 80-article sweep raises the Cost &amp; Maintenance pillar from 66% to 72%, delivering the first converging quantitative range for tire-wear impact (27–30% reduction under aggressive driving) and an urgent commercial signal that brake wear on trucks 2–4 years old is accelerating faster than component improvements can offset — pointing to driver behavior as the dominant variable.
+    </p>
+    <p>
+      The Service &amp; Report Design pillar jumps from 68% to 75%, anchored by a controlled finding that eco-driving gains decay within four months without continuous feedback and by a 75%-reduction case study, together proving that persistent, always-on alerting loops are architecturally non-negotiable rather than optional enhancements.
+    </p>
+    <p>
+      Behavior Metrics &amp; Scoring remains saturated at 99% with 22+ independent platform validations; the sole production blockers are a unified per-vehicle-category g-force threshold table and quantified dose-response data linking harsh-event counts to component wear costs.
+    </p>
+  </div>
+
+  <div class="section-divider"></div>
+
+  <!-- PILLAR PROGRESS -->
+  <section class="pillars-section">
+    <div class="section-label">Pillar Progress</div>
+    <div class="pillars-grid">
+
+      <div class="pillar-row">
+        <div class="pillar-meta">
+          <span class="pillar-name">Behavior Metrics &amp; Scoring</span>
+          <span class="pillar-pct">99%</span>
+        </div>
+        <div class="bar-track">
+          <div class="bar-fill saturated" style="width:99%;"></div>
+        </div>
+        <div class="pillar-note">Saturated — 22+ commercial platform validations; canonical four-metric composite confirmed. Residual gaps: cold-start ramp calibration, per-category sensitivity/specificity, formal FP rate analysis.</div>
+      </div>
+
+      <div class="pillar-row">
+        <div class="pillar-meta">
+          <span class="pillar-name">Safety &amp; Force Thresholds</span>
+          <span class="pillar-pct">97%</span>
+        </div>
+        <div class="bar-track">
+          <div class="bar-fill saturated" style="width:97%;"></div>
+        </div>
+        <div class="pillar-note">Stable — confirmatory device-level encoding evidence added (Teltonika g×100 format, Smartrak 10-sample temporal filter). Remaining gap: unified peer-reviewed threshold table by vehicle category with validated FP rates.</div>
+      </div>
+
+      <div class="pillar-row">
+        <div class="pillar-meta">
+          <span class="pillar-name">Service &amp; Report Design</span>
+          <span class="pillar-pct">75%</span>
+        </div>
+        <div class="bar-track">
+          <div class="bar-fill" style="width:75%;"></div>
+        </div>
+        <div class="pillar-note">↑ from 68% — eco-driving decay finding and 75%-reduction case study are decisive design inputs. Key gap: no formal A/B test comparing dashboard layouts on manager decision quality or driver compliance.</div>
+      </div>
+
+      <div class="pillar-row">
+        <div class="pillar-meta">
+          <span class="pillar-name">Cost &amp; Maintenance Impact</span>
+          <span class="pillar-pct">72%</span>
+        </div>
+        <div class="bar-track">
+          <div class="bar-fill mid" style="width:72%;"></div>
+        </div>
+        <div class="pillar-note">↑ from 66% — first quantified tire-wear range (27–30%) and accelerating truck brake-wear signal added. Critical gap: no controlled study isolating brake pad/disc wear rate vs. harsh-braking event count per 1,000 km by vehicle category.</div>
+      </div>
+
+      <div class="pillar-row">
+        <div class="pillar-meta">
+          <span class="pillar-name">Driver &amp; Route Context</span>
+          <span class="pillar-pct">57%</span>
+        </div>
+        <div class="bar-track">
+          <div class="bar-fill low" style="width:57%;"></div>
+        </div>
+        <div class="pillar-note">↑ from 52% — shift-timing risk peaks (+26% in first shift-tenth) and cross-cultural baseline variation confirmed. Gaps: road-surface noise-floor effects, nationality-stratified harsh-event baselines, altitude/gradient threshold calibration.</div>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- PROMISING LEADS -->
+  <section class="leads-section">
+    <div class="section-label">Top Promising Leads</div>
+    <div class="leads-grid">
+
+      <div class="lead-card">
+        <div class="lead-number">1</div>
+        <div class="lead-tag">Intervention Design</div>
+        <div class="lead-title">Incentive-Based Telematics and Driver Safety</div>
+        <div class="lead-source">
+          <a href="https://www.mdpi.com/1424-8220/25/24/7433/pdf" target="_blank">MDPI Sensors 25/24/7433</a>
+        </div>
+        <div class="lead-why">
+          Gamified challenges demonstrably reduce speeding frequency in average-risk drivers (4.8% → 3.7%) but produce no change in already-cautious drivers, meaning fleet products must segment alert and reward strategies by risk tier rather than applying a single incentive scheme fleet-wide.
+        </div>
+      </div>
+
+      <div class="lead-card">
+        <div class="lead-number">2</div>
+        <div class="lead-tag">Maintenance ROI</div>
+        <div class="lead-title">Truck Brake Wear Is Rising — Even on Newer Vehicles</div>
+        <div class="lead-source">
+          <a href="https://www.semitrailernews.com/share/rising-truck-brake-wear.php" target="_blank">semitrailernews.com</a>
+        </div>
+        <div class="lead-why">
+          Accelerated brake wear on 2–4 year-old trucks across Europe, Africa, and the Middle East indicates that driving behavior is outpacing improvements in component engineering, making a brake-health report directly tied to harsh-braking event rates one of the most commercially defensible features to prioritize.
+        </div>
+      </div>
+
+      <div class="lead-card">
+        <div class="lead-number">3</div>
+        <div class="lead-tag">Alerting Logic</div>
+        <div class="lead-title">Samsara: Peaks in Risky Driving Behavior</div>
+        <div class="lead-source">
+          <a href="https://www.samsara.com/blog/samsara-data-shows-peaks-in-risky-driving-behavior" target="_blank">samsara.com</a>
+        </div>
+        <div class="lead-why">
+          Risky driving behaviors are 26% more likely to occur in the first tenth of a shift, providing a direct, data-backed justification for implementing time-of-shift-aware alerting that temporarily raises sensitivity and coaching prompts at shift start and end transitions.
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- STRATEGIC POSITION -->
+  <section>
+    <div class="strategy-box">
+      <h3>Today's Strategic Position</h3>
+      <p>
+        The core product — behavior scoring, real-time alerting, and fleet reporting — is architecturally ready for build: the four-metric composite (speeding, harsh acceleration, harsh braking, harsh cornering) is validated across 22+ independent commercial platforms and multiple peer-reviewed studies, and dashboard and intervention patterns are now well-specified.
+      </p>
+      <p>
+        Two blockers prevent full production confidence: <span class="blocker-pill">BLOCKER 1</span> the absence of a unified, vehicle-category-specific g-force threshold table with validated false-positive rates forces conservative defaults and empirical iteration at launch; <span class="blocker-pill">BLOCKER 2</span> insufficient dose-response data linking driving behavior to component wear costs caps ROI claims at fuel savings, limiting upsell into maintenance budget conversations.
+      </p>
+      <p>
+        The single highest-leverage next research action is sourcing or commissioning a controlled study that maps harsh-braking event frequency (per 1,000 km) to brake pad wear rate by vehicle category — it would simultaneously close the threshold calibration gap and deliver the quantified cost narrative needed to justify the product to fleet finance stakeholders.
+      </p>
+    </div>
+  </section>
+
+  <div class="footer">
+    Fleet Telematics Product Research · Automated Daily Brief · 2026-04-25 · For internal use only
+  </div>
+
+</main>
+
+</body>
+</html>

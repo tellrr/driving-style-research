@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Driving Style Research — Daily Brief</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: #0f1117;
+    color: #e2e8f0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+    padding: 0 0 60px 0;
+  }
+  a { color: #6c8fff; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  /* HEADER */
+  .site-header {
+    background: linear-gradient(135deg, #13161f 0%, #1a1f2e 100%);
+    border-bottom: 2px solid #6c8fff;
+    padding: 32px 40px 28px 40px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .site-header h1 {
+    font-size: 1.65rem;
+    font-weight: 700;
+    letter-spacing: -0.3px;
+    color: #f0f4ff;
+  }
+  .site-header h1 span {
+    color: #6c8fff;
+  }
+  .date-badge {
+    background: #6c8fff22;
+    border: 1px solid #6c8fff55;
+    color: #6c8fff;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 5px 14px;
+    border-radius: 20px;
+    white-space: nowrap;
+  }
+
+  /* LAYOUT */
+  .container {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  /* SECTION TITLES */
+  .section-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 40px 0 18px 0;
+  }
+  .section-label h2 {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 1.8px;
+    text-transform: uppercase;
+    color: #6c8fff;
+  }
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: #6c8fff33;
+  }
+
+  /* EXECUTIVE SUMMARY */
+  .exec-summary {
+    background: #13161f;
+    border: 1px solid #2a2f40;
+    border-left: 4px solid #6c8fff;
+    border-radius: 8px;
+    padding: 22px 26px;
+    color: #c8d4f0;
+    font-size: 0.97rem;
+    line-height: 1.75;
+  }
+  .exec-summary p + p { margin-top: 10px; }
+
+  /* PILLAR PROGRESS */
+  .pillar-list {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .pillar-row {
+    background: #13161f;
+    border: 1px solid #2a2f40;
+    border-radius: 8px;
+    padding: 16px 20px;
+  }
+  .pillar-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 9px;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .pillar-name {
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: #e2e8f0;
+  }
+  .pillar-pct {
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: #6c8fff;
+    white-space: nowrap;
+  }
+  .pillar-note {
+    font-size: 0.75rem;
+    color: #7a85a0;
+    margin-top: 6px;
+    line-height: 1.5;
+  }
+  .bar-track {
+    width: 100%;
+    height: 7px;
+    background: #1e2233;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .bar-fill {
+    height: 100%;
+    border-radius: 4px;
+    background: linear-gradient(90deg, #4a6fff 0%, #6c8fff 100%);
+    transition: width 0.3s ease;
+  }
+  .bar-fill.saturated {
+    background: linear-gradient(90deg, #3a9fff 0%, #5ec8ff 100%);
+  }
+  .bar-fill.high {
+    background: linear-gradient(90deg, #4a6fff 0%, #7c9fff 100%);
+  }
+  .bar-fill.mid {
+    background: linear-gradient(90deg, #5566cc 0%, #6c8fff 100%);
+  }
+  .bar-fill.low {
+    background: linear-gradient(90deg, #445088 0%, #5a6fbb 100%);
+  }
+
+  /* LEAD CARDS */
+  .leads-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+  }
+  .lead-card {
+    background: #13161f;
+    border: 1px solid #2a2f40;
+    border-radius: 10px;
+    padding: 20px 20px 18px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    position: relative;
+    overflow: hidden;
+  }
+  .lead-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #4a6fff, #6c8fff);
+  }
+  .lead-rank {
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: #6c8fff;
+  }
+  .lead-title {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #f0f4ff;
+    line-height: 1.4;
+  }
+  .lead-source {
+    font-size: 0.75rem;
+    color: #5a7aff;
+    word-break: break-all;
+  }
+  .lead-why {
+    font-size: 0.8rem;
+    color: #9aa8c8;
+    line-height: 1.6;
+    border-top: 1px solid #2a2f40;
+    padding-top: 10px;
+    margin-top: 2px;
+  }
+
+  /* STRATEGIC POSITION */
+  .strategy-box {
+    background: #0d1320;
+    border: 1px solid #6c8fff44;
+    border-radius: 10px;
+    padding: 26px 28px;
+    position: relative;
+    overflow: hidden;
+  }
+  .strategy-box::before {
+    content: '';
+    position: absolute;
+    top: -40px; right: -40px;
+    width: 140px; height: 140px;
+    background: radial-gradient(circle, #6c8fff18 0%, transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+  }
+  .strategy-icon {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+    display: block;
+  }
+  .strategy-box p {
+    font-size: 0.93rem;
+    color: #c0cde8;
+    line-height: 1.75;
+  }
+  .strategy-box p + p { margin-top: 10px; }
+  .strategy-box strong {
+    color: #e2e8f0;
+  }
+
+  /* FOOTER */
+  .page-footer {
+    margin-top: 56px;
+    border-top: 1px solid #1e2233;
+    padding-top: 20px;
+    text-align: center;
+    font-size: 0.72rem;
+    color: #404760;
+    letter-spacing: 0.4px;
+  }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <h1>Driving Style Research — <span>Daily Brief</span></h1>
+  <span class="date-badge">2026-04-24</span>
+</header>
+
+<div class="container">
+
+  <!-- EXECUTIVE SUMMARY -->
+  <div class="section-label"><h2>Executive Summary</h2></div>
+  <div class="exec-summary">
+    <p>This cycle's 80-article sweep confirms that the core four-metric composite scoring framework (speeding, harsh acceleration, harsh braking, harsh cornering on a 0–100 scale) is now validated by at least 15 independent commercial platforms and multiple peer-reviewed studies, leaving the architecture effectively saturated. The most consequential new finding is that context-dependent, adaptive G-force thresholds are not merely preferable but empirically <em>necessary</em> — a single fixed threshold fails trucks, articulated vehicles, and cross-national deployments alike. The outstanding blocker for full product credibility remains the absence of a peer-reviewed dose-response model linking harsh-event frequency and severity to quantified component-failure intervals, which is the only gap preventing a calculable (rather than directional) maintenance-savings dashboard.</p>
+  </div>
+
+  <!-- PILLAR PROGRESS -->
+  <div class="section-label"><h2>Pillar Progress</h2></div>
+  <div class="pillar-list">
+
+    <div class="pillar-row">
+      <div class="pillar-meta">
+        <span class="pillar-name">Behavior Metrics &amp; Scoring</span>
+        <span class="pillar-pct">99%</span>
+      </div>
+      <div class="bar-track"><div class="bar-fill saturated" style="width:99%"></div></div>
+      <div class="pillar-note">Corpus exceeds 1,000 articles; 15+ commercial platforms validate the canonical four-metric composite. Scotto real-time system achieves &lt;10% scoring error; ML profiling delivers ~30% false-positive reduction. Micro-gaps remain only in cold-start ramp calibration and per-category sensitivity/specificity.</div>
+    </div>
+
+    <div class="pillar-row">
+      <div class="pillar-meta">
+        <span class="pillar-name">Safety &amp; Force Thresholds</span>
+        <span class="pillar-pct">97%</span>
+      </div>
+      <div class="bar-track"><div class="bar-fill high" style="width:97%"></div></div>
+      <div class="pillar-note">Context-dependent calibration now supported by multiple independent studies. Key additions: naturalistic truck braking comparison, adaptive vs. static DRAC benchmarks, heavy-truck lateral-acceleration rollover data, and cargo-level braking impact measurements. Remaining gap: a single unified peer-reviewed threshold table spanning all common vehicle categories with validated FPR per category.</div>
+    </div>
+
+    <div class="pillar-row">
+      <div class="pillar-meta">
+        <span class="pillar-name">Driver &amp; Route Context</span>
+        <span class="pillar-pct">94%</span>
+      </div>
+      <div class="bar-track"><div class="bar-fill high" style="width:94%"></div></div>
+      <div class="pillar-note">i-DREAMS cross-national intervention study confirms real-time and post-trip alerts reduce risk but with measurable country-level variation. Spatial clustering analysis proves harsh events concentrate on specific road segments, foundational for route-risk mapping. Gaps: road-surface telemetry signatures, per-region threshold tables, and seasonal/weather-modulated baselines.</div>
+    </div>
+
+    <div class="pillar-row">
+      <div class="pillar-meta">
+        <span class="pillar-name">Service &amp; Report Design</span>
+        <span class="pillar-pct">78%</span>
+      </div>
+      <div class="bar-track"><div class="bar-fill mid" style="width:78%"></div></div>
+      <div class="pillar-note">Competitive intelligence layer now dense; MotoWatchdog KPI Benchmark Tool provides a directly replicable design reference. Fatigue-detection integration is emerging as a standard unified-dashboard feature. Key gaps: empirical A/B testing of report layouts, driver-facing vs. manager-facing hierarchy research, and gamification effectiveness evidence.</div>
+    </div>
+
+    <div class="pillar-row">
+      <div class="pillar-meta">
+        <span class="pillar-name">Cost &amp; Maintenance Impact</span>
+        <span class="pillar-pct">66%</span>
+      </div>
+      <div class="bar-track"><div class="bar-fill low" style="width:66%"></div></div>
+      <div class="pillar-note">Causal narrative well-established (OEM tyre guides, brake-wear sensors, fleet case studies). ROI evidence strengthens: 65% collision-cost reduction, 90% overspeeding reduction, 40% high-risk score improvement in 3 months. Critical gap: no peer-reviewed dose-response curve linking harsh-event frequency/severity to specific component failure intervals.</div>
+    </div>
+
+  </div>
+
+  <!-- PROMISING LEADS -->
+  <div class="section-label"><h2>Top Promising Leads</h2></div>
+  <div class="leads-grid">
+
+    <div class="lead-card">
+      <span class="lead-rank">Lead #1</span>
+      <div class="lead-title">Harsh Braking by Truck Drivers: A Comparison of Thresholds and Driving Contexts</div>
+      <a class="lead-source" href="https://www.researchgate.net/publication/377665270_Harsh_Braking_by_Truck_Drivers_A_Comparison_of_Thresholds_and_Driving_Contexts_Using_Naturalistic_Driving_Data" target="_blank" rel="noopener">researchgate.net</a>
+      <div class="lead-why">Definitively proves that a single fixed deceleration threshold fails across all truck driving contexts, providing the strongest peer-reviewed justification for building a dynamic, context-aware threshold engine rather than shipping static G-force cutoffs to fleet operators.</div>
+    </div>
+
+    <div class="lead-card">
+      <span class="lead-rank">Lead #2</span>
+      <div class="lead-title">i-DREAMS Cross-National Intervention Effectiveness Study</div>
+      <a class="lead-source" href="https://documentserver.uhasselt.be/bitstream/1942/47846/1/The+effectiveness+of+real-time+and+post-trip+interventions+within+the+i-DREAMS+naturalistic+driving+project_+A+cross-national+analysis.pdf" target="_blank" rel="noopener">documentserver.uhasselt.be</a>
+      <div class="lead-why">The only controlled multi-country study confirming that both real-time and post-trip interventions reduce driving risk, but with measurable national variation — directly mandating a regionalization layer in our alerting strategy rather than a one-size-fits-all approach.</div>
+    </div>
+
+    <div class="lead-card">
+      <span class="lead-rank">Lead #3</span>
+      <div class="lead-title">ML-Based Telematics Risk Profiling (Toheeb et al.)</div>
+      <a class="lead-source" href="https://www.researchgate.net/profile/Oladeji-Toheeb/publication/393872316_Using_Telematics_Data_and_Machine_Learning_to_Refine_Risk_Profiles/links/687e71511a77b36b5b046429/Using-Telematics-Data-and-Machine-Learning-to-Refine-Risk-Profiles.pdf" target="_blank" rel="noopener">researchgate.net / Toheeb</a>
+      <div class="lead-why">Quantifies approximately 30% false-positive rate reduction when switching from rule-based to ML-based scoring, giving the engineering team a concrete, citable target and validating the investment in a machine-learning scoring pipeline over purely threshold-driven logic.</div>
+    </div>
+
+  </div>
+
+  <!-- STRATEGIC POSITION -->
+  <div class="section-label"><h2>Today's Strategic Position</h2></div>
+  <div class="strategy-box">
+    <span class="strategy-icon">🎯</span>
+    <p><strong>The evidence base is sufficient to ship a production-grade driver behavior scoring and alerting platform today.</strong> The four-metric composite (0–100 scale, G-force event detection) is validated by 15+ independent commercial implementations; context-adaptive thresholds are backed by peer-reviewed naturalistic driving data; and ROI figures — 65% collision-cost reduction, 90% overspeeding reduction, 40% improvement in highest-risk driver scores within three months — are strong enough for go-to-market positioning with confidence.</p>
+    <p>The <strong>single most material remaining blocker</strong> is the absence of a quantitative dose-response model linking harsh-event frequency and severity to specific component failure intervals: without it, the maintenance-savings value proposition stays directional and qualitative, forcing reliance on individual fleet operators' historical data for calibration and preventing the construction of a credible, self-service cost-savings dashboard.</p>
+  </div>
+
+</div>
+
+<div class="container">
+  <div class="page-footer">
+    Fleet Telematics Product Research · Daily Brief · 2026-04-24 · Internal Use Only
+  </div>
+</div>
+
+</body>
+</html>
